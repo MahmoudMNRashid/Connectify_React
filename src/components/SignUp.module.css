@@ -1,0 +1,149 @@
+.container {
+  display: flex;
+  background-color: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
+
+  margin: 1rem 0;
+}
+
+.section--left {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: whitesmoke;
+}
+
+.section--left img {
+  width: 300px;
+}
+
+.section--right {
+  width: 60%;
+
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+}
+
+.logo--mobile {
+  width: 60%;
+  align-self: center;
+  display: none;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.header--title {
+  font-size: 2rem;
+  font-weight: normal;
+  color: #008080;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.container__inputs {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+.container__inputs:nth-last-child(2) {
+  justify-content: center;
+  gap: 2rem;
+}
+
+.button--submit {
+  border-radius: 30px;
+  border: 1px solid #008080;
+  background-color: white;
+  color: #008080;
+  width: 100%;
+  margin: 1rem 0;
+  padding: 0.5rem 0  ;
+}
+.button--submit:hover {
+  background-color: #008080;
+  color: #fff;
+  outline: none;
+}
+
+.button--submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.footer {
+  padding-left: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+
+/* mobile */
+@media (max-width: 480px) {
+  .container {
+    margin: 30px;
+  }
+  .section--left {
+    display: none;
+  }
+  .section--right {
+    width: 100%;
+    padding: 0.5rem;
+  }
+  .logo--mobile {
+    display: block;
+  }
+  .form {
+    padding: 0.3rem;
+  }
+  .header--title {
+    font-size: 1.3rem;
+  }
+}
+/* tablets */
+@media (max-width: 768px) {
+  .container {
+    margin: 30px;
+  }
+  .section--left {
+    display: none;
+  }
+  .section--right {
+    width: 100%;
+
+    gap: 15px;
+  }
+  .logo--mobile {
+    display: block;
+  }
+
+  .container__inputs:not(:nth-last-child(2)) {
+    flex-direction: column;
+  }
+  .form {
+    padding: 0;
+    gap: 10px;
+  }
+}
+/* labtops */
+@media (min-width: 769px) and (max-width: 1024px) {
+}
+/* large */
+@media (min-width: 1025px) and (max-width: 1200px) {
+}

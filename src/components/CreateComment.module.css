@@ -1,0 +1,70 @@
+.container__createComment {
+    /* position: relative;
+    z-index: 150; */
+    /* background-color: #eee; */
+    /* transform: translate(-50%, -50%);
+    left: 20%;
+    top:-50%; */
+  
+    padding: 0.5rem 1rem;
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 36rem;
+    /* border-radius: 0.5rem; */
+    border-top: 1px solid lightslategrey;
+    align-self: center;
+  }
+  
+  .container__createComment header h2 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 0.5rem;
+    padding-top: 0.75rem;
+    color: #1f2937;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+  
+  .container__createComment form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .container__createComment form > div {
+    padding-left: 0.75rem;
+  
+    margin-top: 0.5rem;
+    /* margin-bottom: 0.5rem; */
+    width: 100%;
+  }
+  .container__createComment form > div textarea {
+    /* padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem; */
+    padding-top: 0.8rem;
+  padding-left: 0.7rem;
+    background-color: #f3f4f6;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #374151;
+    width: 100%;
+    height: 3rem;
+    border-radius: 0.25rem;
+    border-width: 1px;
+    border-color: #9ca3af;
+    resize: none;
+  }
+  
+  .container__createComment form > button {
+  
+  border: none;
+    color: #374151;
+    /* border-color: #9ca3af; */
+    align-self: flex-end;
+    font-size: 1.4rem;
+    background-color: white;
+  }
+  
+ 

@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.section--left {
+  width: 400px;
+}
+
+.section--left img {
+  width: 100%;
+}
+
+.section--right {
+}
+
+.section--right h2 {
+  font-size: 2rem;
+}
+.section--right p {
+  font-size: 1.1rem;
+  color: rgb(104, 100, 100);
+  margin-bottom: 1rem;
+}
+
+.section--right a {
+  color: white;
+  background-color: #008080;
+  border: 2px solid #008080;
+  padding: 0.5rem 2rem;
+  border-radius: 2rem;
+}
+
+.section--right a:hover {
+  color: #008080;
+  background-color: white;
+}
+
+@media (max-width: 550px) {
+  .container {
+    flex-direction: column;
+    gap: 0;
+  }
+  .section--left {
+    width: 300px;
+  }
+
+  .section--right {
+    text-align: center;
+  }
+}
