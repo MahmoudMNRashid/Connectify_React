@@ -1,4 +1,5 @@
 import { createContext, useCallback, useState } from "react";
+import { getFullName, getLogo } from "../util/help";
 
 export const PostContext = createContext({
   assets: [],
@@ -18,9 +19,14 @@ export const PostContext = createContext({
   comments: [],
   getComments: () => {},
   clearComments: () => {},
-  isAddComment: true,
   updateComment: () => {},
   deleteComment: () => {},
+  addComment: () => {},
+  activeUpdatedComment: {},
+  addActiveupdatedComment: () => {},
+  isUpdateMode: false,
+  changeModeToCreate: () => {},
+  changeModeToUpdate: () => {},
 });
 
 export default function PostContextProvider({ children }) {
@@ -29,7 +35,8 @@ export default function PostContextProvider({ children }) {
   const [comments, setComments] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [commentsModalIsOpen, setCommentsModalIsOpen] = useState(false);
-  const [isAddComment, setIsAddComment] = useState(true);
+  const [isUpdateMode, setIsUpdateMode] = useState(false); //for comment (create or update)
+  const [activeUpdatedComment, setActiveUpdatedComment] = useState({});
 
   const handleOpenModal = (key) => {
     if (key === "a") {
@@ -70,9 +77,6 @@ export default function PostContextProvider({ children }) {
       permission,
     });
   };
-  const handleChangeBetweenAddAndUpdateComment = () => {
-    setIsAddComment((prev) => !prev);
-  };
 
   const handleClearComments = () => {
     setComments([]);
@@ -81,6 +85,79 @@ export default function PostContextProvider({ children }) {
     setComments((prevData) => [...prevData, ...comments]);
   }, []);
 
+  const handleDeleteComment = (commentId) => {
+    setComments((prevComment) => {
+      const oldComments = [...prevComment];
+
+      const newComments = oldComments.filter((comment) => {
+        return comment.comment.commentId !== commentId;
+      });
+
+      return newComments;
+    });
+
+    setPostInformation((prevPost) => {
+      const newPost = { ...prevPost };
+
+      newPost.postContent.numberOfComments -= 1;
+      return newPost;
+    });
+  };
+  const handleUpdateComment = (newComment) => {
+    setComments((prev) => {
+      const allComments = [...prev];
+      console.log("all", allComments);
+      const oldComment = allComments.find((c) => {
+        return c.comment.commentId === newComment._id;
+      });
+      console.log(oldComment);
+      oldComment.comment.assets = [...newComment.assets];
+      oldComment.comment.description = newComment.description;
+
+      return allComments;
+    });
+  };
+  const handleAddComment = (newComment) => {
+    setComments((prev) => {
+      const fullName = getFullName();
+      const isFoundlogo = getLogo();
+      console.log(isFoundlogo);
+      const logo =
+        isFoundlogo !== "undefined" ? { logo: isFoundlogo } : undefined;
+      const comment = {
+        comment: {
+          description: newComment.description,
+          assets: newComment.assets,
+          createdAt: newComment.createdAt,
+          commentId: crypto.randomUUID(),
+        },
+        areYouOwnerOfComment: true,
+        canUpdate: true,
+        canDelete: true,
+        owner: {
+          firstName: fullName.firstName,
+          lastName: fullName.lastName,
+          ...logo,
+          userId: newComment.userId,
+        },
+      };
+      console.log(comment);
+      const allComments = [...prev];
+
+      return [comment, ...allComments];
+    });
+  };
+
+  const handleAddActiveupdatedComment = (comment) => {
+    setActiveUpdatedComment(comment);
+  };
+
+  const handleChangeModeToCreate = useCallback(() => {
+    setIsUpdateMode(false);
+  }, []);
+  const handleChangeModeToUpdate = useCallback(() => {
+    setIsUpdateMode(true);
+  }, []);
   const ctxValue = {
     comments,
     assets,
@@ -93,8 +170,14 @@ export default function PostContextProvider({ children }) {
     addPostInformation: handleAddPostInformation,
     getComments: handleGetComments,
     clearComments: handleClearComments,
-    isAddComment:isAddComment,
-    ChangeBetweenAddAndUpdateComment:handleChangeBetweenAddAndUpdateComment
+    deleteComment: handleDeleteComment,
+    updateComment: handleUpdateComment,
+    addComment: handleAddComment,
+    activeUpdatedComment,
+    addActiveupdatedComment: handleAddActiveupdatedComment,
+    isUpdateMode,
+    changeModeToUpdate: handleChangeModeToUpdate,
+    changeModeToCreate: handleChangeModeToCreate,
   };
   return (
     <PostContext.Provider value={ctxValue}>{children}</PostContext.Provider>

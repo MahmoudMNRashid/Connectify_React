@@ -1,4 +1,3 @@
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { convertDateFormat } from "../util/help";
 import classes from "./MiniPost.module.css";
 import { useContext, useState } from "react";
@@ -6,6 +5,7 @@ import { PostContext } from "../context/PostContext";
 import defaultImageGroup from "../assets/post/group_default.jpg";
 import defaultImageProfile from "../assets/post/profile_default.svg";
 import defaultImagePage from "../assets/post/page_default.svg";
+import ResponsiveMasonryCard from "./UI/ResponsiveMasonryCard";
 
 const MiniPost = () => {
   const { postInformation } = useContext(PostContext);
@@ -14,7 +14,6 @@ const MiniPost = () => {
   const textLimit = 300; // Adjust this value as needed for your text length preference
 
   const handleToggleText = () => {
-
     setIsExpanded(!isExpanded);
   };
   const displayedText = isExpanded
@@ -22,15 +21,24 @@ const MiniPost = () => {
     : postInformation.postContent.description.substring(0, textLimit);
 
   let contentImage = <div> error post</div>;
-  if (postInformation.permission.postType === "group" && postInformation.permission.fromAll) {
+  if (
+    postInformation.permission.postType === "group" &&
+    postInformation.permission.fromAll
+  ) {
     contentImage = (
       <div className={classes["container-images"]}>
         <img
-          src={postInformation.groupContent.cover ? postInformation.groupContent.cover.link : defaultImageGroup}
+          src={
+            postInformation.groupContent.cover
+              ? postInformation.groupContent.cover.link
+              : defaultImageGroup
+          }
         />
         <img
           src={
-            postInformation.owner.logo ? postInformation.owner.logo.asset.link : defaultImageProfile
+            postInformation.owner.logo
+              ? postInformation.owner.logo.asset.link
+              : defaultImageProfile
           }
         />
       </div>
@@ -40,27 +48,53 @@ const MiniPost = () => {
     !postInformation.permission.fromAll
   ) {
     contentImage = (
-      <img src={postInformation.owner.logo ? postInformation.owner.logo.asset.link : defaultImageProfile} />
+      <img
+        src={
+          postInformation.owner.logo
+            ? postInformation.owner.logo.asset.link
+            : defaultImageProfile
+        }
+      />
     );
   } else if (postInformation.permission.postType === "profile") {
     contentImage = (
-      <img src={postInformation.owner.logo ? postInformation.owner.logo.asset.link : defaultImageProfile} />
+      <img
+        src={
+          postInformation.owner.logo
+            ? postInformation.owner.logo.asset.link
+            : defaultImageProfile
+        }
+      />
     );
   } else {
     contentImage = (
-      <img src={postInformation.pageContent.logo ? postInformation.pageContent.logo.link : defaultImagePage} />
+      <img
+        src={
+          postInformation.pageContent.logo
+            ? postInformation.pageContent.logo.link
+            : defaultImagePage
+        }
+      />
     );
   }
 
   const contentName =
-  postInformation.permission.postType === "group" || postInformation.permission.postType === "profile" ? (
-      <p>{postInformation.owner.firsName + "   " + postInformation.owner.lastName}</p>
+    postInformation.permission.postType === "group" ||
+    postInformation.permission.postType === "profile" ? (
+      <p>
+        {postInformation.owner.firsName +
+          "   " +
+          postInformation.owner.lastName}
+      </p>
     ) : (
       <p>{postInformation.pageContent.name}</p>
     );
 
   let contentDate;
-  if (postInformation.permission.postType === "group" && postInformation.permission.fromAll) {
+  if (
+    postInformation.permission.postType === "group" &&
+    postInformation.permission.fromAll
+  ) {
     contentDate = (
       <pre>
         {postInformation.groupContent.name}
@@ -83,8 +117,7 @@ const MiniPost = () => {
     900: 2,
   };
   return (
-    <div className={classes.post}>
-    {/* <h2 className={classes.title}>Post content</h2> */}
+    <div id="miniPost" className={classes.post}>
       <header className={classes.header}>
         <div className={classes["left-info"]}>
           {contentImage}
@@ -93,10 +126,6 @@ const MiniPost = () => {
             {contentDate}
           </div>
         </div>
-
-        {/* <button className={classes.menu}>
-          <CiMenuKebab />
-        </button> */}
       </header>
 
       <main>
@@ -109,54 +138,55 @@ const MiniPost = () => {
         </button>
 
         {postInformation.postContent.assets.length < 4 && (
-          <ResponsiveMasonry columnsCountBreakPoints={columnsCountBreakPoints}>
-            <Masonry gutter="8px">
-              {postInformation.postContent.assets.map((asset) =>
-                asset.resource_type === "image" ? (
-                  <img key={asset.public_id} src={asset.link} alt="error" />
-                ) : (
-                  <video key={asset.public_id} controls width="100%">
-                    <source src={asset.link} type="video/mp4" />
-                  </video>
-                )
-              )}
-            </Masonry>
-          </ResponsiveMasonry>
+          <ResponsiveMasonryCard
+            assets={postInformation.postContent.assets}
+            columnsCountBreakPoints={columnsCountBreakPoints}
+            imageConfig={{
+              onClick: () => {},
+              style: { },
+            }}
+            videoConfig={{
+              onClick: () => {},
+              style: { },
+              showTheControl: false,
+            }}
+          />
         )}
 
         {postInformation.postContent.assets.length > 3 && (
-          <ResponsiveMasonry columnsCountBreakPoints={columnsCountBreakPoints}>
-            <Masonry style={{ position: "relative" }} gutter="8px">
-              {postInformation.postContent.assets.slice(0, 3).map((asset) =>
-                asset.resource_type === "image" ? (
-                  <img key={asset.public_id} src={asset.link} alt="error" />
-                ) : (
-                  <video key={asset.public_id} controls width="100%">
-                    <source src={asset.link} type="video/mp4" />
-                  </video>
-                )
-              )}
+          <ResponsiveMasonryCard
+            assets={postInformation.postContent.assets.slice(0, 3)}
+            columnsCountBreakPoints={columnsCountBreakPoints}
+            imageConfig={{
+              onClick: () => {},
+              style: { cursor: "pointer" },
+            }}
+            videoConfig={{
+              onClick: () => {},
+              style: { cursor: "pointer" },
+              showTheControl: false,
+            }}
+          >
+            {" "}
+            <div className={classes.more}>
+              <img
+                key={postInformation.postContent.assets[3].public_id}
+                src={postInformation.postContent.assets[3].link}
+                alt="error"
+                style={{
+                  position: "relative",
+                  zIndex: 1,
+                  width: "100%",
+                }}
+              />
 
-              <div className={classes.more}>
-                <img
-                  alt="error"
-                  style={{
-                    position: "relative",
-                    zIndex: 1,
-                    width: "100%",
-                  }}
-                />
-
-                <div className={classes.overlay}>
-                  +{postInformation.postContent.assets.length - 3} more
-                </div>
+              <div className={classes.overlay}>
+                +{postInformation.postContent.assets.length - 3} more
               </div>
-            </Masonry>
-          </ResponsiveMasonry>
+            </div>
+          </ResponsiveMasonryCard>
         )}
       </main>
-
-    
     </div>
   );
 };

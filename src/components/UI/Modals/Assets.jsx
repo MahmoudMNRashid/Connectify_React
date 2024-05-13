@@ -49,11 +49,11 @@ const Modal = () => {
           })}
         </Carousel>
       </div>
-
-      <IoMdClose
+<button  className={classes.close}><IoMdClose
         onClick={handleRemoveAssetsAndCLoseTheModal}
-        className={classes.close}
-      />
+       
+      /></button>
+      
     </>
   );
 };

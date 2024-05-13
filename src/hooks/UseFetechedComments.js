@@ -51,7 +51,6 @@ const useFetchedComments = () => {
     const scrollTop = target.scrollTop;
     const scrollHeight = target.scrollHeight;
     const clientHeight = target.clientHeight;
-console.log(`${url}?page=${page}`)
     const scrolledToBottom =
       Math.ceil(scrollTop + clientHeight) >= scrollHeight;
 
@@ -78,7 +77,6 @@ console.log(`${url}?page=${page}`)
   }, [navigate,loading, page, url,getComments]);
   useEffect(() => {
     const mainContent = document.getElementById("allComments");
-    console.log("first", mainContent);
 
     mainContent.addEventListener("scroll", handleScroll);
     return () =>  mainContent.removeEventListener("scroll", handleScroll);

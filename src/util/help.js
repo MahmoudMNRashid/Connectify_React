@@ -9,6 +9,15 @@ export const getToken = () => {
 export const getUserId = () => {
   return Cookies.get("Jto__Uid").split("__&")[1];
 };
+export const getFullName = () => {
+  return {
+    firstName: Cookies.get("Jto__Uid").split("__&")[2],
+    lastName: Cookies.get("Jto__Uid").split("__&")[3],
+  };
+};
+export const getLogo = () => {
+  return Cookies.get("Jto__Uid").split("__&")[4];
+};
 
 export function convertDateFormat(dateTimeString) {
   const months = [
@@ -27,14 +36,16 @@ export function convertDateFormat(dateTimeString) {
   ];
 
   const date = new Date(dateTimeString);
-  const year = date.getUTCFullYear();
-  const monthIndex = date.getUTCMonth();
-  const day = date.getUTCDate();
-  const hours = date.getUTCHours();
-  const minutes = date.getUTCMinutes();
+  const year = date.getFullYear();
+  const monthIndex = date.getMonth();
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
   const month = months[monthIndex];
-  const formattedDate = `${day} ${month} ${year}, at ${hours % 12 || 12}:${
-    minutes < 10 ? "0" : ""
-  }${minutes} ${hours >= 12 ? "PM" : "AM"}`;
+
+  // Convert UTC time to local time zone
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+  const formattedDate = date.toLocaleString('en-US', options);
+
   return formattedDate;
 }

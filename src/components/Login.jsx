@@ -65,18 +65,25 @@ export const LoginForm = () => {
 
       const token = response.data.token;
       const userId = response.data.userId;
+      const firstName = response.data.firstName;
+      const lastName = response.data.lastName;
+      const logo = response.data.logo;
       // Get the current date
       let currentDate = new Date();
       // Add 30 days to the current date
       currentDate.setDate(currentDate.getDate() + 30);
       // Format the date as required
       let formattedDate = currentDate.toISOString();
-console.log(formattedDate)
-      Cookies.set("Jto__Uid", `${token}__&${userId}`, {
-        // httpOnly: true,
-        // secure: true,
-        expires: new Date(formattedDate),
-      });
+      console.log(formattedDate);
+      Cookies.set(
+        "Jto__Uid",
+        `${token}__&${userId}__&${firstName}__&${lastName}__&${logo}`,
+        {
+          // httpOnly: true,
+          // secure: true,
+          expires: new Date(formattedDate),
+        }
+      );
 
       navigate("/home", { replace: true });
     } catch (error) {

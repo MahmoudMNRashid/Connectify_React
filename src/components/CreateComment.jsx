@@ -1,23 +1,42 @@
 import FileInput from "./FileInput";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import classes from "./CreateComment.module.css";
 import { IoSend } from "react-icons/io5";
 import ResponsiveMasonryCard from "./UI/ResponsiveMasonryCard";
 import { MdCancelScheduleSend } from "react-icons/md";
 import useComments from "../hooks/UseComments";
 import Loader2 from "./UI/Loader2";
+import { PostContext } from "../context/PostContext";
+import { IoMdClose } from "react-icons/io";
 const CreateComment = () => {
+  const {
+    activeUpdatedComment,
+    addActiveupdatedComment,
+    changeModeToUpdate,
+    changeModeToCreate,
+    isUpdateMode,
+  } = useContext(PostContext);
+
+  useEffect(() => {
+    if (Object.getOwnPropertyNames(activeUpdatedComment).length > 0) {
+      setDescription(activeUpdatedComment.comment.description);
+      setSelectedAssets(activeUpdatedComment.comment.assets);
+      changeModeToUpdate();
+    }
+  }, [activeUpdatedComment, changeModeToUpdate]);
   //Hooks
 
   const [selectedAssets, setSelectedAssets] = useState([]);
   const [error, setError] = useState({ hasError: false, errorMessage: "" });
   const [description, setDescription] = useState("");
-  const { isLoading, createComment } = useComments(
+
+  const { isLoading, createComment, updateComment } = useComments(
     selectedAssets,
     description,
-    setSelectedAssets,setDescription,
-    
+    setSelectedAssets,
+    setDescription
   );
+
   //Variables
   const columnsCountBreakPoints = {
     350: 5,
@@ -69,8 +88,16 @@ const CreateComment = () => {
       return;
     }
 
-    setSelectedAssets(Array.from(files));
-    console.log(files);
+    const modifyAssets = Array.from(files).map((file) => {
+      return {
+        resource_type: file.type.startsWith("image") ? "image" : "video",
+        link: URL.createObjectURL(file),
+        public_id: file.name,
+        originalFile: file,
+      };
+    });
+
+    setSelectedAssets(modifyAssets);
   };
 
   const handleRemoveAsset = (index) => {
@@ -78,9 +105,29 @@ const CreateComment = () => {
       prevAssets.filter((file, i) => i !== index)
     );
   };
+
+  const handleSubmitForm = (event) => {
+    if (isUpdateMode) {
+      updateComment(event);
+    } else {
+      createComment(event);
+    }
+  };
+
+  const handleCloseUpdateMode = () => {
+    setSelectedAssets([]);
+    setDescription("");
+    changeModeToCreate();
+    addActiveupdatedComment({});
+  };
   return (
     <div className={classes.container__createComment}>
-      <form onSubmit={(event) => createComment(event)}>
+      {isUpdateMode && (
+        <button disabled={isLoading}>
+          <IoMdClose color="red" onClick={handleCloseUpdateMode} />
+        </button>
+      )}
+      <form onSubmit={(event) => handleSubmitForm(event)}>
         <div>
           <textarea
             value={description}
@@ -98,20 +145,21 @@ const CreateComment = () => {
           hasError={error.hasError}
           errorMessage={error.errorMessage}
         />
-        <ResponsiveMasonryCard
-          assets={selectedAssets}
-          columnsCountBreakPoints={columnsCountBreakPoints}
-          imageConfig={{
-            onClick: handleRemoveAsset,
-            style: { cursor: "pointer" },
-          }}
-          videoConfig={{
-            onClick: handleRemoveAsset,
-            style: { cursor: "pointer" },
-            showTheControl: false,
-          }}
-        />
-
+        {selectedAssets.length > 0 && (
+          <ResponsiveMasonryCard
+            assets={selectedAssets}
+            columnsCountBreakPoints={columnsCountBreakPoints}
+            imageConfig={{
+              onClick: handleRemoveAsset,
+              style: { cursor: "pointer" },
+            }}
+            videoConfig={{
+              onClick: handleRemoveAsset,
+              style: { cursor: "pointer" },
+              showTheControl: false,
+            }}
+          />
+        )}
         <button disabled={isLoading || formIsDisabled}>
           {isLoading && <Loader2 />}
           {!isLoading && formIsDisabled && <MdCancelScheduleSend />}

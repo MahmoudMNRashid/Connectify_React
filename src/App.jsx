@@ -11,6 +11,7 @@ import Error from "./pages/Error";
 import { Toaster } from "react-hot-toast";
 import PostContextProvider from "./context/PostContext";
 import Test from "./pages/Test";
+import MainContextProvider from "./context/MainContext";
 function App() {
   const router = createBrowserRouter([
     { path: "/home", element: <Home /> },
@@ -35,9 +36,11 @@ function App() {
 
   return (
     <PostContextProvider>
-      <RouterProvider router={router}>
-        <Toaster />
-      </RouterProvider>
+      <MainContextProvider>
+        <RouterProvider router={router}>
+          <Toaster />
+        </RouterProvider>
+      </MainContextProvider>
     </PostContextProvider>
   );
 }

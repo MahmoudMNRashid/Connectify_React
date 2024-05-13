@@ -3,6 +3,9 @@ import classes from "./Comment.module.css";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { convertDateFormat } from "../util/help";
+import useComments from "../hooks/UseComments";
+import { PostContext } from "../context/PostContext";
+import { useContext } from "react";
 const CommentCard = ({ comment }) => {
   const owner = comment.owner;
   const commentContent = comment.comment;
@@ -11,14 +14,26 @@ const CommentCard = ({ comment }) => {
     canDelete: comment.canDelete,
     canUpdate: comment.canUpdate,
   };
+  const { deleteComment: deleteCommentApi } = useComments();
+
+  const { addActiveupdatedComment, addAssets, openModal } =
+    useContext(PostContext);
+
+  const handleAddAssetsToContextAndOpenTheModal = () => {
+    addAssets(commentContent.assets);
+    openModal("a");
+    document.body.classList.add("hide__scroll");
+  };
+
   const columnsCountBreakPoints = {
     350: 2,
     750: 2,
     900: 2,
   };
 
-  console.log(convertDateFormat("2024-04-28T21:02:58.280Z"));
-
+  const handleDeleteComment = (commentId) => {
+    deleteCommentApi(commentId);
+  };
   return (
     <>
       <div className={classes.container}>
@@ -27,10 +42,25 @@ const CommentCard = ({ comment }) => {
 
           <div className={classes["container__name--date"]}>
             <div>
-              <pre>{owner.firsName + " " + owner.lastName}</pre>
+              <pre>{owner.firstName + " " + owner.lastName}</pre>
               <i>
-                {permission.canDelete && <FaTrashAlt color="red" />}
-                <FaEdit color="#008081" widths={'10px'}  />
+                {permission.canDelete && (
+                  <FaTrashAlt
+                    color="red"
+                    onClick={() => {
+                      handleDeleteComment(commentContent.commentId);
+                    }}
+                  />
+                )}
+                {permission.canUpdate && (
+                  <FaEdit
+                    color="#008081"
+                    widths={"10px"}
+                    onClick={() => {
+                      addActiveupdatedComment(comment);
+                    }}
+                  />
+                )}
               </i>
             </div>
             <p className={classes.date}>
@@ -41,27 +71,30 @@ const CommentCard = ({ comment }) => {
         <p className={classes.desc}>{commentContent.description} </p>
         <ResponsiveMasonry columnsCountBreakPoints={columnsCountBreakPoints}>
           <Masonry gutter="8px">
-            {commentContent.assets?.map((asset) =>
-              asset.resource_type === "image" ? (
-                <img
-                  //   onClick={handleAddAssetsToContextAndOpenTheModal}
-                  style={{ cursor: "pointer" }}
-                  key={asset.public_id}
-                  src={asset.link}
-                  alt="error"
-                />
-              ) : (
-                <video
-                  //   onClick={handleAddAssetsToContextAndOpenTheModal}
-                  style={{ cursor: "pointer" }}
-                  key={asset.public_id}
-                  controls
-                  width="100%"
-                >
-                  <source src={asset.link} type="video/mp4" />
-                </video>
-              )
-            )}
+            {commentContent.assets &&
+              commentContent.assets.length > 0 &&
+              commentContent.assets.map((asset) =>
+                asset.resource_type === "image" ? (
+                  <img
+                    onClick={handleAddAssetsToContextAndOpenTheModal}
+                    style={{ cursor: "pointer" }}
+                    key={asset.public_id}
+                    src={asset.link}
+                    alt="error"
+                  />
+                ) : (
+                  <video
+                    onClick={handleAddAssetsToContextAndOpenTheModal}
+                    style={{ cursor: "pointer" }}
+                    key={asset.public_id}
+                    controls
+                    width="100%"
+                  >
+                    <source src={asset.link} type="video/mp4" />
+                  </video>
+                )
+              )}
+          
           </Masonry>
         </ResponsiveMasonry>
       </div>

@@ -1,37 +1,43 @@
 import { createPortal } from "react-dom";
 import classes from "./Comments.module.css";
 import { PostContext } from "../../../context/PostContext";
-import { useContext} from "react";
+import { useContext } from "react";
 import CommentCard from "../../CommentCard";
 import MiniPost from "../../MiniPost";
 import { MdOutlineCancel } from "react-icons/md";
 import CreateComment from "../../CreateComment";
 import useFetchedComments from "../../../hooks/UseFetechedComments";
 import Loader2 from "../Loader2";
+import { MainContext } from "../../../context/MainContext";
 const CommentsModal = () => {
-  const { closeModal, comments } = useContext(PostContext);
+  const { closeModal, comments, addActiveupdatedComment, changeModeToCreate } =
+    useContext(PostContext);
 
   const handleCLoseTheCommentsModal = () => {
     closeModal("c");
+    addActiveupdatedComment({});
+    changeModeToCreate();
     document.body.classList.remove("hide__scroll");
   };
 
   const { loading } = useFetchedComments();
 
- 
+  const { disableIsActive } = useContext(MainContext);
 
-  console.log(comments);
   return (
     <>
       <button
-       
+        disabled={disableIsActive}
         onClick={handleCLoseTheCommentsModal}
         className={classes.backdrop}
       ></button>
 
       <div className={classes.wrapper}>
         <div className={classes.header}>
-          <button  onClick={handleCLoseTheCommentsModal}>
+          <button
+            disabled={disableIsActive}
+            onClick={handleCLoseTheCommentsModal}
+          >
             <MdOutlineCancel />
           </button>
         </div>
@@ -52,7 +58,7 @@ const CommentsModal = () => {
           </section>
         </div>
         <footer>
-          <CreateComment  />
+          <CreateComment />
         </footer>
       </div>
     </>
