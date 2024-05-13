@@ -81,17 +81,16 @@ const Post = ({ data }) => {
   let contentDate;
   if (permission.postType === "group" && permission.fromAll) {
     contentDate = (
-      <pre>
+      <span>
         {groupContent.name}
-        {`  `}
-        <span className={classes.date}>
+        <span className={`${classes.date} ${classes.DateGroup}`}>
           {convertDateFormat(postContent.createdAt)}
         </span>
-      </pre>
+      </span>
     );
   } else {
     contentDate = (
-      <span className={classes.date}>
+      <span className={`${classes.date}`}>
         {convertDateFormat(postContent.createdAt)}
       </span>
     );
@@ -134,7 +133,6 @@ const Post = ({ data }) => {
     );
     openModal("c");
     document.body.classList.add("hide__scroll");
-
   };
 
   return (

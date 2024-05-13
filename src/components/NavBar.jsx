@@ -22,7 +22,7 @@ const NavBar = () => {
 
       <ul className={style.nav__lists}>
         <NavLink
-          to="/home"
+          to="/"
           className={({ isActive }) =>
             isActive
               ? `${style["nav__lists--list"]} ${style["active--link"]}`

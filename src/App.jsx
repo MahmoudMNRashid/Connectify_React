@@ -12,13 +12,27 @@ import { Toaster } from "react-hot-toast";
 import PostContextProvider from "./context/PostContext";
 import Test from "./pages/Test";
 import MainContextProvider from "./context/MainContext";
+import AuthGuard from "./pages/AuthGuard";
 function App() {
   const router = createBrowserRouter([
-    { path: "/home", element: <Home /> },
-    { path: "/profile", element: <Profile /> },
-    { path: "/logout", element: <Profile /> },
-    { path: "/error", element: <Error /> },
-    { path: "/test", element: <Test /> },
+    {
+      path: "/",
+      children: [
+        {
+          element: (
+            <AuthGuard>
+              <Home />
+            </AuthGuard>
+          ),
+          index: true,
+        },
+        { path: "/profile", element: <Profile /> },
+        { path: "/logout", element: <Profile /> },
+        { path: "/error", element: <Error /> },
+        { path: "/test", element: <Test /> },
+      ],
+    },
+
     {
       path: "/auth",
       errorElement: <ErrorPage />,

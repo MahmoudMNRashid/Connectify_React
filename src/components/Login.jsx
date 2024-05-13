@@ -85,7 +85,7 @@ export const LoginForm = () => {
         }
       );
 
-      navigate("/home", { replace: true });
+      navigate("/", { replace: true });
     } catch (error) {
       console.log(error.response.data);
       toast.error(error.response.data.message || "Something went wrong", {

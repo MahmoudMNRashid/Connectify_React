@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 export const host = "https://connectify-eosin.vercel.app";
 
 export const getToken = () => {
-  return Cookies.get("Jto__Uid").split("__&")[0];
+  return Cookies.get("Jto__Uid")?.split("__&")[0];
 };
 
 export const getUserId = () => {
