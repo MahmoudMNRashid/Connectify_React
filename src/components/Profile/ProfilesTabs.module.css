@@ -1,0 +1,33 @@
+.profile-header-tab{
+    background: #fff;
+    list-style-type: none;
+    margin: -10px 0 0;
+    padding: 0 0 0 140px;
+    white-space: nowrap;
+    border-radius: 0;    position: relative;    border-bottom: 1px solid #dee2e6;display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;list-style: none;
+}
+
+.nav-item{}
+.nav-button{
+    display: block;
+    color: #929ba1;
+    line-height: 20px;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 12px;
+    border: none;
+    background-color: transparent;
+}
+
+
+.nav-button:hover{
+
+    color: #008080;
+}
+
+.nav-button.active{
+    color: #008080;
+}

@@ -84,6 +84,9 @@
     color: #a5aebf;
     font-weight: 500;
   }
+  .DateGroup{
+    margin-left: 1rem;
+  }
   
   .menu {
     border: none;

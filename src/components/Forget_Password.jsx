@@ -32,6 +32,7 @@ export const Forget_Password = () => {
       const response = await axios.post(`${host}/auth/resetPassword`, {
         email: emailValue,
       });
+      console.log(response)
       toast.success(response.data.message, { id: toastId });
     } catch (error) {
       console.log(error.response.data);

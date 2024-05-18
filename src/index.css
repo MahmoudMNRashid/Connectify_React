@@ -69,8 +69,8 @@ li {
 
 /* i used for post  */
 .container {
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 1rem;
+  padding-right: 1rem;
   margin-left: auto;
   margin-right: auto;
   background-color: #f4f4f4;
@@ -79,31 +79,28 @@ li {
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
-  border-radius: 24px;
-  background-color: red;
+
+  border-radius: 24px;  
+
+  /* background-color: red; */
   width: 100%;
 }
 
-/* 
-Extra small devices (phones, 600px and down)
-@media only screen and (max-width: 600px) {...} */
-/* Small devices (portrait tablets and large phones, 600px and up) */
-/* @media only screen and (min-width: 600px) {...} */
-/* Medium devices (landscape tablets, 768px and up) */
+
 @media (min-width: 768px) {
   .container {
     width: 750px;
   }
 }
 
-/* Large devices (laptops/desktops, 992px and up) */
+
 @media (min-width: 992px) {
   .container {
     width: 970px;
   }
 }
 
-/* Extra large devices (large laptops and desktops, 1200px and up) */
+
 @media (min-width: 1200px) {
   .container {
     width: 1050px;
@@ -112,15 +109,21 @@ Extra small devices (phones, 600px and down)
 }
 
 .container__profile {
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 1rem;
+  padding-right: 1rem;
   margin-left: auto;
   margin-right: auto;
-  background-color: #f4f4f4;
-  background-color: red;
+ 
+
+margin-top: 1rem;
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  
+
+  /* background-color: red; */
+  width: 100%;
 }
 
 @media (min-width: 768px) {

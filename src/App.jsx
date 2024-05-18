@@ -13,6 +13,7 @@ import PostContextProvider from "./context/PostContext";
 import Test from "./pages/Test";
 import MainContextProvider from "./context/MainContext";
 import AuthGuard from "./pages/AuthGuard";
+import ProfileContextProvider from "./context/ProfileContext";
 function App() {
   const router = createBrowserRouter([
     {
@@ -26,7 +27,7 @@ function App() {
           ),
           index: true,
         },
-        { path: "/profile", element: <Profile /> },
+        { path: "/profile/:userId", element: <Profile /> },
         { path: "/logout", element: <Profile /> },
         { path: "/error", element: <Error /> },
         { path: "/test", element: <Test /> },
@@ -49,13 +50,15 @@ function App() {
   ]);
 
   return (
-    <PostContextProvider>
-      <MainContextProvider>
-        <RouterProvider router={router}>
-          <Toaster />
-        </RouterProvider>
-      </MainContextProvider>
-    </PostContextProvider>
+    <ProfileContextProvider>
+      <PostContextProvider>
+        <MainContextProvider>
+          <RouterProvider router={router}>
+            <Toaster />
+          </RouterProvider>
+        </MainContextProvider>
+      </PostContextProvider>
+    </ProfileContextProvider>
   );
 }
 

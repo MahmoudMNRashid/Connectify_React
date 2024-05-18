@@ -1,0 +1,219 @@
+.profile-header {
+  width: 100%;
+  background-color: antiquewhite;
+  position: relative;
+  /* overflow: hidden; */
+}
+
+.profile-header-cover {
+  background-color: lightblue;
+  position: relative;
+  height: 200px;
+}
+
+.profile-header-cover > button {
+
+ 
+  position: absolute;
+  right: 1%;
+  top: 1%;
+  font-size:1.7rem;
+  border: none ;
+  background: none;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+
+}
+
+.profile-header-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-header-content {
+  position: absolute;
+  top: 7%;
+  left: 5%;
+  display: flex;
+
+  gap: 1.5rem;
+
+  
+}
+
+.profile-header-img {
+  width: 120px;
+  /* height: 120px; */
+  /* overflow: hidden; */
+  position: relative;
+  z-index: 10;
+
+  padding: 3px;
+  border-radius: 4px;
+
+
+  background: none;
+  /* background-color: red; */
+}
+
+.profile-header-img img {
+  max-width: 100%;
+
+
+}
+.profile-header-img> button {
+  position: relative;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  color: #fff;
+  background-color: #008080;
+  border-color: #008080;
+  border: 1px solid transparent;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  z-index: 400;
+}
+.profile-header-img> button:hover {
+  color: #fff;
+  background-color: #138496;
+  border-color: #117a8b;
+}
+
+.menu {
+  position: absolute;
+  left: -3%;
+  bottom: -271%;;
+  z-index: 200;
+  background-color: #f9f9f9;
+  /* padding: 0.5rem 1rem; */
+  width: 100%;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  border-radius: 0.7rem;
+  overflow: hidden;
+}
+.menu header {
+  border-bottom: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: black;
+  padding: 0.5rem 0.5rem;
+}
+
+.menu main {
+  color: black;
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+justify-content: center;
+gap: 0.5rem;
+
+}
+.menu main button {
+  border: none;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 0.6rem;
+  font-size: 1rem;
+  width: 100%;
+}
+.menu main button:hover {
+  background-color:#d3d3d3 ;
+}
+
+
+
+.profile-header-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.profile-header-info h4 {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  /* color: #fff; */
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.profile-header-info p {
+  /* margin-bottom: 1.5rem; */
+  /* background-color:lightcoral; */
+
+  max-width: 550px;
+  height: 120px;
+  overflow: auto;
+}
+
+.profile-header-info p::-webkit-scrollbar {
+  display: none;
+}
+
+.profile-header-info button {
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  width: fit-content;
+  border-radius: 50%;
+  background-color: #008080;
+  color: white;
+  position: relative;
+}
+.profile-header-info button::before {
+  content: "Add Bio";
+  width: 60px;
+  padding: 0 5px;
+  display: none;
+
+  background-color: black;
+  font-size: 0.9rem;
+  position: absolute;
+  bottom: -113%;
+  font-weight: 500;
+  text-align: center;
+}
+
+.profile-header-info button::after {
+  content: "";
+  display: none;
+  position: absolute;
+  top: 60%;
+  left: 2px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid black;
+}
+
+.profile-header-info button:hover::before,
+.profile-header-info button:hover::after {
+  display: block;
+}
+
+@media (max-width: 480px) {
+  .profile-header-cover {
+    height: 240px;
+  }
+
+  .profile-header-img {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}

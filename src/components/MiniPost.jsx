@@ -96,13 +96,13 @@ const MiniPost = () => {
     postInformation.permission.fromAll
   ) {
     contentDate = (
-      <pre>
+      <span>
         {postInformation.groupContent.name}
-        {`  `}
-        <span className={classes.date}>
+        
+        <span className={`${classes.date} ${classes.DateGroup}`}>
           {convertDateFormat(postInformation.postContent.createdAt)}
         </span>
-      </pre>
+      </span>
     );
   } else {
     contentDate = (

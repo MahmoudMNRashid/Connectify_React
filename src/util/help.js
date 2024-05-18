@@ -20,28 +20,28 @@ export const getLogo = () => {
 };
 
 export function convertDateFormat(dateTimeString) {
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+  // const months = [
+  //   "January",
+  //   "February",
+  //   "March",
+  //   "April",
+  //   "May",
+  //   "June",
+  //   "July",
+  //   "August",
+  //   "September",
+  //   "October",
+  //   "November",
+  //   "December",
+  // ];
 
   const date = new Date(dateTimeString);
-  const year = date.getFullYear();
-  const monthIndex = date.getMonth();
-  const day = date.getDate();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const month = months[monthIndex];
+  // const year = date.getFullYear();
+  // const monthIndex = date.getMonth();
+  // const day = date.getDate();
+  // const hours = date.getHours();
+  // const minutes = date.getMinutes();
+  // const month = months[monthIndex];
 
   // Convert UTC time to local time zone
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };

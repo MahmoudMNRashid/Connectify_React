@@ -6,6 +6,8 @@ import { convertDateFormat } from "../util/help";
 import useComments from "../hooks/UseComments";
 import { PostContext } from "../context/PostContext";
 import { useContext } from "react";
+import defaultImageProfile from "../assets/post/profile_default.svg";
+
 const CommentCard = ({ comment }) => {
   const owner = comment.owner;
   const commentContent = comment.comment;
@@ -38,7 +40,11 @@ const CommentCard = ({ comment }) => {
     <>
       <div className={classes.container}>
         <div className={classes.header}>
-          <img src={owner.logo?.asset.link} alt="" loading="lazy" />
+          <img
+            src={owner.logo ? owner.logo.asset.link : defaultImageProfile}
+            alt=""
+            loading="lazy"
+          />
 
           <div className={classes["container__name--date"]}>
             <div>
@@ -94,7 +100,6 @@ const CommentCard = ({ comment }) => {
                   </video>
                 )
               )}
-          
           </Masonry>
         </ResponsiveMasonry>
       </div>
