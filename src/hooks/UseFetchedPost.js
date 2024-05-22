@@ -1,25 +1,49 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { getToken, host } from "../util/help";
+import { getToken } from "../util/help";
 import { useNavigate } from "react-router-dom";
 
-const useFetchedPost = () => {
+const useFetchedPost = (url) => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(2);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const [friends, setFriends] = useState({ friends: [], total: 0 });
   useEffect(() => {
+    console.log("one");
     const getpostFromFirstPage = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${host}/profile/homePosts?page=1`, {
+        const response = await axios.get(`${url + "?page=1"}`, {
           headers: { Authorization: "Bearer " + getToken() },
         });
-        setData((prevData) => [
-          ...prevData,
-          ...response.data.aggregationResult,
-        ]);
+
+        console.log(response);
+        let posts;
+        if (response.data.aggregationResult) {
+          posts = [...response.data.aggregationResult];
+        } else if (response.data.posts) {
+          console.log("yyyyyyyyyyyyy");
+          posts = [...response.data.posts];
+        }
+
+        if (response.data.aggregationResult || response.data.posts) {
+          setData((prevData) => [...prevData, ...posts]);
+        }
+
+        if (response.data.followers) {
+          setFriends((prev) => {
+            const oldFriends = { ...prev };
+
+            const newFriends = {
+              friends: [...oldFriends.friends, ...response.data.followers],
+              total: oldFriends.total,
+            };
+          
+            return newFriends;
+          });
+        }
+        setPage((prevPage) => prevPage + 1);
       } catch (error) {
         navigate("/error", {
           state: {
@@ -33,7 +57,7 @@ const useFetchedPost = () => {
     };
 
     getpostFromFirstPage();
-  }, [navigate]);
+  }, [navigate, url]);
 
   const handleScroll = useCallback(async () => {
     const scrollTop =
@@ -53,17 +77,33 @@ const useFetchedPost = () => {
     if (scrolledToBottom && !loading) {
       setLoading(true);
       try {
-        const response = await axios.get(
-          `${host}/profile/homePosts?page=${page}`,
-          {
-            headers: { Authorization: "Bearer " + getToken() },
-          }
-        );
-        setData((prevData) => [
-          ...prevData,
-          ...response.data.aggregationResult,
-        ]);
+        const response = await axios.get(url + `?page=${page}`, {
+          headers: { Authorization: "Bearer " + getToken() },
+        });
+        let posts;
+        if (response.data.aggregationResult) {
+          posts = [...response.data.aggregationResult];
+        } else if (response.data.posts) {
+          console.log("yyyyyyyyyyyyy");
+          posts = [...response.data.posts];
+        }
 
+        if (response.data.aggregationResult || response.data.posts) {
+          setData((prevData) => [...prevData, ...posts]);
+        }
+
+        if (response.data.followers) {
+          setFriends((prev) => {
+            const oldFriends = { ...prev };
+
+            const newFriends = {
+              friends: [...oldFriends.friends, ...response.data.followers],
+              total: oldFriends.total,
+            };
+          
+            return newFriends;
+          });
+        }
         setPage((prevPage) => prevPage + 1);
 
         setLoading(false);
@@ -78,14 +118,14 @@ const useFetchedPost = () => {
         setLoading(false);
       }
     }
-  }, [loading, page, navigate]);
+  }, [loading, navigate, url, page]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  return { data, loading };
+  return { data, loading, friends };
 };
 
 export default useFetchedPost;

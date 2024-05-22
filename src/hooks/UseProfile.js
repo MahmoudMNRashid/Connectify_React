@@ -10,9 +10,16 @@ const useProfile = () => {
   //Hooks
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { addMainInformation, editName, editBio, editFriendType } =
-    useContext(ProfileContext);
-  const { startTheDisable, stopTheDisable, closeModal } =
+  const {
+    addMainInformation,
+    editName,
+    editBio,
+    editFriendType,
+    editBackgroundImage,
+    deleteBackgroundImage,
+    changeAbout,
+  } = useContext(ProfileContext);
+  const { startTheDisable, stopTheDisable, closeModal, closeConfirmModal } =
     useContext(MainContext);
   const params = useParams();
 
@@ -188,7 +195,7 @@ const useProfile = () => {
       const response = await axios.post(
         `${host}/profile/unfriend`,
         {
-            idFriend,
+          idFriend,
         },
         {
           headers: { Authorization: `Bearer ${getToken()}` },
@@ -221,7 +228,7 @@ const useProfile = () => {
       const response = await axios.post(
         `${host}/profile/acceptFriendrequest`,
         {
-            senderId,
+          senderId,
         },
         {
           headers: { Authorization: `Bearer ${getToken()}` },
@@ -255,7 +262,7 @@ const useProfile = () => {
       const response = await axios.post(
         `${host}/profile/cancelFriendRequestSentToMe`,
         {
-            senderId,
+          senderId,
         },
         {
           headers: { Authorization: `Bearer ${getToken()}` },
@@ -282,6 +289,253 @@ const useProfile = () => {
     }
   };
 
+  const updateBackgroundApi = async (assets) => {
+    const formData = new FormData();
+    console.log(assets);
+    console.log([assets[0].originalFile ? assets[0].originalFile : assets[0]]);
+    formData.append("assets", assets[0].originalFile);
+
+    setIsLoading(true);
+    startTheDisable();
+    try {
+      const response = await axios.patch(
+        `${host}/profile/updateProfileBackgroundPhoto`,
+        formData,
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
+      toast.success(response.data.message);
+      if (assets[0].originalFile) {
+        editBackgroundImage(response.data.link);
+      }
+      closeModal(content.EDIT_BACKGROUND);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
+      stopTheDisable();
+    }
+  };
+
+  const deleteBackgroundApi = async (publicId) => {
+    startTheDisable();
+    try {
+      const response = await axios.delete(
+        `${host}/profile/deleteBackgroundPhoto`,
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+          data: { publicId },
+        }
+      );
+      toast.success(response.data.message);
+      closeConfirmModal();
+      deleteBackgroundImage();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong");
+    } finally {
+      stopTheDisable();
+    }
+  };
+
+  const updateAboutApi = async (desc, data) => {
+    startTheDisable();
+    let url = `${host}/profile/`;
+    console.log(data);
+    switch (desc) {
+      case "Gender":
+        url = url + "updateProfileGender";
+
+        break;
+      case "Date of birth":
+        url = url + "updateProfileBirthday";
+
+        break;
+      case "University":
+        url = url + "updateEducationCollege";
+
+        break;
+      case "Phone":
+        url = url + "updatePhoneNumber";
+
+        break;
+      case "City":
+        url = url + "updateCurrentCity";
+
+        break;
+      case "Home town":
+        url = url + "updateHometown";
+
+        break;
+      case "School":
+        url = url + "updateEducationHighSchool";
+
+        break;
+
+      default:
+        break;
+    }
+    console.log(url);
+    try {
+      const response = await axios.put(url, data, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      });
+      toast.success(response.data.message);
+
+      // deleteBackgroundImage();
+      changeAbout("UPDATE", desc, data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong");
+    } finally {
+      stopTheDisable();
+    }
+  };
+  const deleteAboutApi = async (desc, data) => {
+    startTheDisable();
+    let url = `http://localhost:8080/profile/`;
+    console.log(desc);
+    switch (desc) {
+      case "University":
+        url = url + "deleteEducationCollege";
+
+        break;
+      case "Phone":
+        url = url + "deletePhoneNumber";
+
+        break;
+      case "City":
+        url = url + "deleteCurrentCity";
+
+        break;
+      case "School":
+        url = url + "deleteEducationHighSchool";
+
+        break;
+      case "Home town":
+        url = url + "deleteHometown";
+        break;
+
+      default:
+        break;
+    }
+    try {
+      const response = await axios.delete(url, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+        data: data ? data : undefined,
+      });
+      toast.success(response.data.message);
+      closeConfirmModal();
+      // deleteBackgroundImage();
+      console.log(response);
+   
+   changeAbout('DELETE',desc)
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong");
+    } finally {
+      stopTheDisable();
+    }
+  };
+  const addAboutApi = async (desc, data) => {
+    startTheDisable();
+    let url = `${host}/profile/`;
+   
+    switch (desc) {
+      case "University":
+        url = url + "addEducationCollege";
+
+        break;
+      case "Phone":
+        url = url + "addPhoneNumber";
+
+        break;
+      case "City":
+        url = url + "addCurrentCity";
+
+        break;
+      case "School":
+        url = url + "addEducationHighSchool";
+
+        break;
+      case "Home town":
+        url = url + "addHometown";
+        break;
+
+      default:
+        break;
+    }
+    try {
+      const response = await axios.post(url, data, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      });
+      toast.success(response.data.message);
+      if (desc === "School") {
+        data = response.data.highSchool;
+      }
+      if (desc === "University") {
+        data = response.data.college;
+      }
+    console.log(response)
+      changeAbout("ADD", desc, data);
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong");
+    } finally {
+      stopTheDisable();
+    }
+  };
+
   return {
     isLoading,
     getMainInformation: getMainInformationApi,
@@ -291,8 +545,12 @@ const useProfile = () => {
     addFriendApi,
     unfriendApi,
     acceptfriendApi,
-    cancelFriendRequestSentToMeApi
+    cancelFriendRequestSentToMeApi,
+    updateBackgroundApi,
+    deleteBackgroundApi,
+    updateAboutApi,
+    addAboutApi,
+    deleteAboutApi,
   };
 };
-
 export default useProfile;

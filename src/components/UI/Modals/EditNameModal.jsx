@@ -2,7 +2,7 @@ import { createPortal } from "react-dom";
 import classes from "./EditNameModal.module.css";
 import { MdOutlineCancel } from "react-icons/md";
 import { Input } from "../Input";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ProfileContext } from "../../../context/ProfileContext";
 import validator from "validator";
 import { useInput } from "../../../hooks/UseInput";
@@ -11,12 +11,14 @@ import { MainContext, content } from "../../../context/MainContext";
 import Loader2 from "../Loader2";
 import Textarea from "../Textarea";
 import FileInput from "../../FileInput";
+import ResponsiveMasonryCard from "../ResponsiveMasonryCard";
 
 const EditNameModal = () => {
   const { disableIsActive, closeModal, contentModal } = useContext(MainContext);
 
   const { mainInformation } = useContext(ProfileContext);
-  const { isLoading, editNameApi, updateOrAddBio } = useProfile();
+  const { isLoading, editNameApi, updateOrAddBio, updateBackgroundApi } =
+    useProfile();
   const firstName = mainInformation.firstName;
   const lastName = mainInformation.lastName;
   const {
@@ -46,11 +48,16 @@ const EditNameModal = () => {
     bioInformation.valueIsValid &&
     (contentModal === content.ADD_BIO || contentModal === content.EDIT_BIO);
 
-
   const handleCloseTheModal = () => {
     closeModal(content.ADD_BIO);
   };
+  const [selectedAssets, setSelectedAssets] = useState(
+    content.EDIT_BACKGROUND === contentModal
+      ? [mainInformation.backgroundPhotos]
+      : []
+  );
 
+  const [error, setError] = useState("");
   const handleSave = () => {
     if (contentModal === content.EDIT_NAME) {
       editNameApi(firstNameValue, lastNameInformation.value);
@@ -59,18 +66,84 @@ const EditNameModal = () => {
       contentModal === content.EDIT_BIO
     ) {
       updateOrAddBio(bioInformation.value);
+    } else if (
+      contentModal === content.EDIT_BACKGROUND ||
+      contentModal === content.ADD_BACKGROUND
+    ) {
+      updateBackgroundApi(selectedAssets);
     }
   };
 
+  const formEdit_BackgroundIsVaild =
+    (contentModal === content.EDIT_BACKGROUND ||
+      contentModal === content.ADD_BACKGROUND) &&
+    selectedAssets.length === 1;
+ 
+  const handleRemoveAsset = (index) => {
+    setSelectedAssets((prevAssets) =>
+      prevAssets.filter((file, i) => i !== index)
+    );
+  };
+  const handleAssetsChanges = (event) => {
+    setError({});
+    setSelectedAssets([]);
+    const file = event.target.files[0];
+    let areAllFilesValid = true;
+
+    // Check if all files are images    or size of any asset not up 10 MB
+
+    const fileType = file.type;
+
+    if (!fileType.startsWith("image")) {
+      setError({
+        hasError: true,
+        errorMessage: "Only images  are allowed.",
+      });
+    }
+    const fileSize = file.size;
+    if (fileSize > 10485760) {
+      areAllFilesValid = false;
+      setError({
+        hasError: true,
+        errorMessage: "File size exceeds 10 MB",
+      });
+    }
+
+    if (!areAllFilesValid) {
+      return;
+    }
+
+    //Check if the user upload more than 1 assets
+    if (file.length > 1) {
+      setError({
+        hasError: true,
+        errorMessage: "You can only upload up to 1 files.",
+      });
+      return;
+    }
+
+    const modifyAssets = {
+      resource_type: file.type.startsWith("image") ? "image" : "video",
+      link: URL.createObjectURL(file),
+      public_id: file.name,
+      originalFile: file,
+    };
+
+    setSelectedAssets([modifyAssets]);
+  };
+  const columnsCountBreakPoints = {
+    350: 1,
+    750: 1,
+    900: 1,
+  };
   let disabledTheButton = true;
   if (contentModal === content.ADD_BIO || contentModal === content.EDIT_BIO) {
     disabledTheButton = isLoading || !formAdd_Edit_BioIsValid;
- 
   } else if (contentModal === content.EDIT_NAME) {
     disabledTheButton = isLoading || !formEditNameIsValid;
+  } else if (contentModal === content.EDIT_BACKGROUND || contentModal === content.ADD_BACKGROUND) {
+    disabledTheButton = isLoading || !formEdit_BackgroundIsVaild;
   }
-
-  
   return (
     <>
       <button
@@ -122,16 +195,32 @@ const EditNameModal = () => {
             />
           )}
 
-{
-  contentModal===content.EDIT_BACKGROUND && <FileInput
-
-    
-  />
-}
-
-
-
-
+          {(contentModal === content.EDIT_BACKGROUND ||
+            contentModal === content.ADD_BACKGROUND) && (
+            <>
+              <FileInput
+                accept="image/*"
+                onChange={handleAssetsChanges}
+                hasError={error.hasError}
+                errorMessage={error.errorMessage}
+              />
+              {selectedAssets.length > 0 && (
+                <ResponsiveMasonryCard
+                  assets={selectedAssets}
+                  columnsCountBreakPoints={columnsCountBreakPoints}
+                  imageConfig={{
+                    onClick: handleRemoveAsset,
+                    style: { cursor: "pointer" },
+                  }}
+                  videoConfig={{
+                    onClick: handleRemoveAsset,
+                    style: { cursor: "pointer" },
+                    showTheControl: false,
+                  }}
+                />
+              )}
+            </>
+          )}
         </div>
 
         <footer className={classes.footer}>

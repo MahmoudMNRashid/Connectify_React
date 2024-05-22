@@ -5,6 +5,7 @@ import { CgProfile } from "react-icons/cg";
 import { CiSearch } from "react-icons/ci";
 import { GoSignOut } from "react-icons/go";
 import { NavLink } from "react-router-dom";
+import { getUserId } from "../util/help";
 const NavBar = () => {
   return (
     <header className={style.header}>
@@ -36,7 +37,7 @@ const NavBar = () => {
         </NavLink>
 
         <NavLink
-          to="/profile"
+          to={`/profile/${getUserId()}`}
           className={({ isActive }) =>
             isActive
               ? `${style["nav__lists--list"]} ${style["active--link"]}`

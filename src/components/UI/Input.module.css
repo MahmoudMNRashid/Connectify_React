@@ -34,7 +34,7 @@
 }
 
 .text--invalid {
-  font-size: 13px;
+  font-size: 13px !important;
   color: #ff3333;
   display: flex;
 }

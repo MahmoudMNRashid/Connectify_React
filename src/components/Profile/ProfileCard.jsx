@@ -19,12 +19,22 @@ import { BsFillPersonDashFill } from "react-icons/bs";
 import { TfiClose } from "react-icons/tfi";
 import { FcAddImage } from "react-icons/fc";
 import { FcEditImage } from "react-icons/fc";
+import { FcRemoveImage } from "react-icons/fc";
+import { FcImageFile } from "react-icons/fc";
+import ConfirmModalInstance from "../UI/Modals/ConfirmModal";
+import { PostContext } from "../../context/PostContext";
 const ProfileCard = () => {
   const { mainInformation } = useContext(ProfileContext);
-  const { openModal, modalEditNameIsOpen } = useContext(MainContext);
-  const { isLoading, getMainInformation } = useProfile();
+  const {
+    openModal,
+    modalEditNameIsOpen,
+    openConfirmModal,
+    confirmModalIsOpen,
+  } = useContext(MainContext);
+  const { isLoading, getMainInformation, deleteBackgroundApi } = useProfile();
 
   useEffect(() => {
+    console.log("aaaa");
     getMainInformation();
   }, [getMainInformation]);
 
@@ -43,7 +53,9 @@ const ProfileCard = () => {
       : false;
 
   const bio = mainInformation.bio ? mainInformation.bio : "";
-  const backgroundImage = Array.isArray(mainInformation.backgroundPhotos)
+  const backgroundImage = Array.isArray(
+    mainInformation.backgroundPhotos ? mainInformation.backgroundPhotos : []
+  )
     ? defaultBackgroundImage
     : mainInformation.backgroundPhotos?.link;
 
@@ -65,17 +77,32 @@ const ProfileCard = () => {
   const handleOpenModalEditBackground = () => {
     openModal("background", content.EDIT_BACKGROUND);
   };
+  const handleOpenModalADDBackground = () => {
+    openModal("background", content.ADD_BACKGROUND);
+  };
 
+  const handleDeleteBackground = () => {
+    openConfirmModal(deleteBackgroundApi);
+  };
+  const { addAssets, openModal: openAssetsModal } = useContext(PostContext);
 
+  const handleAddAssetsToContextAndOpenTheModal = () => {
+    addAssets([mainInformation.backgroundPhotos]);
+    openAssetsModal("a");
+    document.body.classList.add("hide__scroll");
+  };
 
   const showEditBioButton = isHeOwner && bio !== "";
   const showAddBioButton = isHeOwner && bio === "";
-  const showAddBackground = Array.isArray(mainInformation.backgroundPhotos)
+  const showAddBackground = Array.isArray(
+    mainInformation.backgroundPhotos ? mainInformation.backgroundPhotos : []
+  )
     ? true
     : false;
   return (
     <>
       {modalEditNameIsOpen && <EditNameModalInstance />}
+     
       {isLoading && <SkeletonLoaders />}
 
       {!isLoading && (
@@ -84,7 +111,7 @@ const ProfileCard = () => {
             <img src={backgroundImage} />
 
             {showAddBackground && (
-              <button>
+              <button onClick={handleOpenModalADDBackground}>
                 <FcAddImage />
               </button>
             )}
@@ -92,6 +119,16 @@ const ProfileCard = () => {
             {!showAddBackground && (
               <button onClick={handleOpenModalEditBackground}>
                 <FcEditImage />
+              </button>
+            )}
+            {!showAddBackground && (
+              <button onClick={handleDeleteBackground}>
+                <FcRemoveImage />
+              </button>
+            )}
+            {!showAddBackground && (
+              <button onClick={handleAddAssetsToContextAndOpenTheModal}>
+                <FcImageFile />
               </button>
             )}
           </div>

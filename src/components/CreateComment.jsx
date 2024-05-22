@@ -16,6 +16,17 @@ const CreateComment = () => {
     changeModeToCreate,
     isUpdateMode,
   } = useContext(PostContext);
+  const [selectedAssets, setSelectedAssets] = useState([]);
+  const [error, setError] = useState("");
+  const [description, setDescription] = useState("");
+
+  const { isLoading, createComment, updateComment } = useComments(
+    selectedAssets,
+    description,
+    setSelectedAssets,
+    setDescription
+  );
+
 
   useEffect(() => {
     if (Object.getOwnPropertyNames(activeUpdatedComment).length > 0) {
@@ -26,15 +37,7 @@ const CreateComment = () => {
   }, [activeUpdatedComment, changeModeToUpdate]);
   //Hooks
 
-  const [error, setError] = useState("");
-  const [description, setDescription] = useState("");
 
-  const { isLoading, createComment, updateComment } = useComments(
-    selectedAssets,
-    description,
-    setSelectedAssets,
-    setDescription
-  );
 
   //Variables
 
@@ -59,7 +62,7 @@ const CreateComment = () => {
     changeModeToCreate();
     addActiveupdatedComment({});
   };
-  const [selectedAssets, setSelectedAssets] = useState([]);
+
 
   const handleRemoveAsset = (index) => {
     setSelectedAssets((prevAssets) =>

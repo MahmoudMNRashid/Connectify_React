@@ -7,9 +7,10 @@ import ModalInstance from "../components/UI/Modals/Assets";
 import { useContext } from "react";
 import { PostContext } from "../context/PostContext";
 import CommentsModalInstance from "../components/UI/Modals/Comments";
+import { host } from "../util/help";
 
 const Home = () => {
-  const { data: posts, loading } = useFetchedPost([]);
+  const { data: posts, loading } = useFetchedPost(`${host}/profile/homePosts?page=1`);
   const { modalIsOpen, commentsModalIsOpen } = useContext(PostContext);
 
   return (
