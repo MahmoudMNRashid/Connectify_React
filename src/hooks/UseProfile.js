@@ -360,7 +360,7 @@ const useProfile = () => {
     }
   };
 
-  const updateAboutApi = async (desc, data) => {
+  const updateAboutApi = async (desc, data, fn) => {
     startTheDisable();
     let url = `${host}/profile/`;
     console.log(data);
@@ -406,6 +406,7 @@ const useProfile = () => {
 
       // deleteBackgroundImage();
       changeAbout("UPDATE", desc, data);
+      fn();
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -423,7 +424,10 @@ const useProfile = () => {
       stopTheDisable();
     }
   };
-  const deleteAboutApi = async (desc, data) => {
+
+  // will pass another parameter which is function sometimes will use
+  // now will use for after delete
+  const deleteAboutApi = async (desc, data, fn) => {
     startTheDisable();
     let url = `http://localhost:8080/profile/`;
     console.log(desc);
@@ -460,8 +464,9 @@ const useProfile = () => {
       closeConfirmModal();
       // deleteBackgroundImage();
       console.log(response);
-   
-   changeAbout('DELETE',desc)
+
+      changeAbout("DELETE", desc);
+      fn();
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -478,10 +483,10 @@ const useProfile = () => {
       stopTheDisable();
     }
   };
-  const addAboutApi = async (desc, data) => {
+  const addAboutApi = async (desc, data,fn) => {
     startTheDisable();
     let url = `${host}/profile/`;
-   
+
     switch (desc) {
       case "University":
         url = url + "addEducationCollege";
@@ -517,8 +522,9 @@ const useProfile = () => {
       if (desc === "University") {
         data = response.data.college;
       }
-    console.log(response)
+      console.log(response);
       changeAbout("ADD", desc, data);
+      fn()
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {

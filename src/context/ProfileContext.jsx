@@ -127,7 +127,8 @@ export default function ProfileContextProvider({ children }) {
         case "Date of birth":
           setMainInformation((prev) => {
             const newInfo = { ...prev };
-            newInfo.birthDay = data.birthDay;
+            console.log(data)
+            newInfo.birthDay = data.birthday;
             return newInfo;
           });
           break;
@@ -180,101 +181,93 @@ export default function ProfileContextProvider({ children }) {
         default:
           break;
       }
-      else if (type==='ADD'){
-        switch (desc) {
-          
-          
-          case "Phone":
-            setMainInformation((prev) => {
-              const newInfo = { ...prev };
-              newInfo.phoneNumber = data.phoneNumber;
-              return newInfo;
-            });
-            break;
-          case "City":
-            setMainInformation((prev) => {
-              const newInfo = { ...prev };
-              newInfo.placesLived.currentCity = data.name;
-              return newInfo;
-            });
-            break;
-          case "Home town":
-            setMainInformation((prev) => {
-              const newInfo = { ...prev };
-              newInfo.placesLived.homeTown = data.name;
-              return newInfo;
-            });
-            break;
-          case "University":
-            setMainInformation((prev) => {
-              const newInfo = { ...prev };
-             
-              newInfo.education.college[0] = data;
-              return newInfo;
-            });
-            break;
-          case "School":
-            setMainInformation((prev) => {
-              const newInfo = { ...prev };
-             
-              newInfo.education.highSchool[0] = data;
-              return newInfo;
-            });
-            break;
-  
-          default:
-            break;
-        }
+    else if (type === "ADD") {
+      switch (desc) {
+        case "Phone":
+          setMainInformation((prev) => {
+            const newInfo = { ...prev };
+            newInfo.phoneNumber = data.phoneNumber;
+            return newInfo;
+          });
+          break;
+        case "City":
+          setMainInformation((prev) => {
+            const newInfo = { ...prev };
+            newInfo.placesLived.currentCity = data.name;
+            return newInfo;
+          });
+          break;
+        case "Home town":
+          setMainInformation((prev) => {
+            const newInfo = { ...prev };
+            newInfo.placesLived.homeTown = data.name;
+            return newInfo;
+          });
+          break;
+        case "University":
+          setMainInformation((prev) => {
+            const newInfo = { ...prev };
 
+            newInfo.education.college[0] = data;
+            return newInfo;
+          });
+          break;
+        case "School":
+          setMainInformation((prev) => {
+            const newInfo = { ...prev };
+
+            newInfo.education.highSchool[0] = data;
+            return newInfo;
+          });
+          break;
+
+        default:
+          break;
       }
+    } else if (type === "DELETE") {
+      switch (desc) {
+        case "Phone":
+          setMainInformation((prev) => {
+            const newInfo = { ...prev };
+            newInfo.phoneNumber = undefined;
+            return newInfo;
+          });
+          break;
+        case "City":
+          setMainInformation((prev) => {
+            const newInfo = { ...prev };
+            newInfo.placesLived.currentCity = undefined;
+            return newInfo;
+          });
+          break;
+        case "Home town":
+          setMainInformation((prev) => {
+            const newInfo = { ...prev };
+            newInfo.placesLived.homeTown = undefined;
+            return newInfo;
+          });
+          break;
+        case "University":
+          setMainInformation((prev) => {
+            const newInfo = { ...prev };
 
-      else if (type==='DELETE'){
-        switch (desc) {
-          
-          
-          case "Phone":
-            setMainInformation((prev) => {
-              const newInfo = { ...prev };
-              newInfo.phoneNumber = undefined;
-              return newInfo;
-            });
-            break;
-          case "City":
-            setMainInformation((prev) => {
-              const newInfo = { ...prev };
-              newInfo.placesLived.currentCity = undefined;
-              return newInfo;
-            });
-            break;
-          case "Home town":
-            setMainInformation((prev) => {
-              const newInfo = { ...prev };
-              newInfo.placesLived.homeTown = undefined;
-              return newInfo;
-            });
-            break;
-          case "University":
-            setMainInformation((prev) => {
-              const newInfo = { ...prev };
-             
-              newInfo.education.college[0] = data;
-              return newInfo;
-            });
-            break;
-          case "School":
-            setMainInformation((prev) => {
-              const newInfo = { ...prev };
-             
-              newInfo.education.highSchool[0] = data;
-              return newInfo;
-            });
-            break;
-  
-          default:
-            break;
-        }
+            newInfo.education.college = [];
+            return newInfo;
+          });
+          break;
+        case "School":
+          setMainInformation((prev) => {
+            const newInfo = { ...prev };
 
+            newInfo.education.highSchool = [];
+            return newInfo;
+          });
+          break;
+
+        default:
+          break;
       }
+    }
   };
   const ctxValue = {
     selectedTap,

@@ -89,24 +89,40 @@
   color: #ff3333;
 }
 
-.button__holder{
+.button__holder {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
   align-self: center;
 }
+
+.buttons__holder{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
 .cancel {
   color: #ff3333;
-  font-size: 1.5rem;
-  cursor: pointer;
-  
-}
-.confirm{
-  color:#008080;
-  font-size: 1.5rem;
-  cursor: pointer;
+  font-size: 2rem;
+  cursor: pointer; border: none;
+  background: none;
  
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.confirm {
+  border: none;
+  background: none;
+  color: #008080;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.confirm:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .info > button {

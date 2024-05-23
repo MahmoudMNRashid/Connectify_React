@@ -80,7 +80,16 @@ const InfoCard = ({ info }) => {
       return newModes;
     });
   };
-  console.log(info);
+
+  const disableButton =
+    desc === "Gender" ||
+    desc === "City" ||
+    desc === "Home town" ||
+    desc === "Phone" ||
+    desc === "Date of birth"
+      ? !valueIsValid
+      : !valueIsValid && !valueIsValid2;
+
   const handleCLickAdd = () => {
     setModes((prev) => {
       const newModes = { ...prev };
@@ -151,16 +160,59 @@ const InfoCard = ({ info }) => {
     modes.edit === false &&
     modes.add === false &&
     isHeOwner;
-  const showInputs = modes.edit === true || modes.add === true;
-  const showInfo =name?true:false
-    // modes.edit === false && modes.add === false && modes.addStatment === false;
-  const showSelectOnly = desc === "Gender";
-  const show_InputSelect_HighSchool = desc === "School";
-  const show_InputSelect_Unversity = desc === "University";
+  // const showInputs = modes.edit === true || modes.add === true;
+  const showInfo =
+    name &&
+    modes.edit === false &&
+    modes.add === false &&
+    modes.addStatment === false;
+  // modes.edit === false && modes.add === false && modes.addStatment === false;
+
+  const showSelectOnly =
+    (modes.edit === true &&
+      modes.add === false &&
+      modes.addStatment === false &&
+      desc === "Gender") ||
+    (modes.edit === false &&
+      modes.add === true &&
+      modes.addStatment === false &&
+      desc === "Gender");
+
+  const show_InputSelect_HighSchool =
+    (modes.edit === true &&
+      modes.add === false &&
+      modes.addStatment === false &&
+      desc === "School") ||
+    (modes.edit === false &&
+      modes.add === true &&
+      modes.addStatment === false &&
+      desc === "School");
+
+  const show_InputSelect_Unversity =
+    (modes.edit === true &&
+      modes.add === false &&
+      modes.addStatment === false &&
+      desc === "University") ||
+    (modes.edit === false &&
+      modes.add === true &&
+      modes.addStatment === false &&
+      desc === "University");
+
   const showInputOnly =
-    !showSelectOnly &&
-    !show_InputSelect_HighSchool &&
-    !show_InputSelect_Unversity;
+    (modes.edit === true &&
+      modes.add === false &&
+      modes.addStatment === false &&
+      (desc === "Home town" ||
+        desc === "City" ||
+        desc === "Phone" ||
+        desc === "Date of birth")) ||
+    (modes.edit === false &&
+      modes.add === true &&
+      modes.addStatment === false &&
+      (desc === "Home town" ||
+        desc === "City" ||
+        desc === "Phone" ||
+        desc === "Date of birth"));
 
   const showDeleteButton =
     showbuttons &&
@@ -175,52 +227,67 @@ const InfoCard = ({ info }) => {
         case "Gender":
           updateAboutApi(
             desc,
-            value === "Male" ? { gender: "male" } : { gender: "female" }
+            value === "Male" ? { gender: "male" } : { gender: "female" },
+            handleCLoseInput
           );
-          handleCLoseInput();
+
           break;
         case "Date of birth":
-          updateAboutApi(desc, { birthday: value });
-          handleCLoseInput();
+          updateAboutApi(desc, { birthday: value }, handleCLoseInput);
 
           break;
         case "University":
-          updateAboutApi(desc, {
-            nameofCollege: value,
-            graduated: value2 === "Yes" ? 1 : 0,
-            id: _idCollege,
-          });
-          handleCLoseInput();
+          updateAboutApi(
+            desc,
+            {
+              nameofCollege: value,
+              graduated: value2 === "Yes" ? 1 : 0,
+              id: _idCollege,
+            },
+            handleCLoseInput
+          );
 
           break;
         case "Phone":
-          updateAboutApi(desc, {
-            phoneNumber: value,
-          });
-          handleCLoseInput();
+          updateAboutApi(
+            desc,
+            {
+              phoneNumber: value,
+            },
+            handleCLoseInput
+          );
 
           break;
         case "City":
-          updateAboutApi(desc, {
-            name: value,
-          });
-          handleCLoseInput();
+          updateAboutApi(
+            desc,
+            {
+              name: value,
+            },
+            handleCLoseInput
+          );
 
           break;
         case "Home town":
-          updateAboutApi(desc, {
-            name: value,
-          });
-          handleCLoseInput();
+          updateAboutApi(
+            desc,
+            {
+              name: value,
+            },
+            handleCLoseInput
+          );
           break;
 
         case "School":
-          updateAboutApi(desc, {
-            nameofHighSchool: value,
-            id: _idSchool,
-            year: value2,
-          });
-          handleCLoseInput();
+          updateAboutApi(
+            desc,
+            {
+              nameofHighSchool: value,
+              id: _idSchool,
+              year: value2,
+            },
+            handleCLoseInput
+          );
 
           break;
 
@@ -232,36 +299,52 @@ const InfoCard = ({ info }) => {
     if (modes.add) {
       switch (desc) {
         case "University":
-          addAboutApi(desc, {
-            nameofCollege: value,
-            graduated: value2 === "Yes" ? 1 : 0,
-          });
-          afterAdd();
+          addAboutApi(
+            desc,
+            {
+              nameofCollege: value,
+              graduated: value2 === "Yes" ? 1 : 0,
+            },
+            afterAdd
+          );
+
           break;
         case "School":
-          addAboutApi(desc, {
-            nameofHighSchool: value,
-            year: value2,
-          });
-          afterAdd();
+          addAboutApi(
+            desc,
+            {
+              nameofHighSchool: value,
+              year: value2,
+            },
+            afterAdd
+          );
           break;
         case "Phone":
-          addAboutApi(desc, {
-            phoneNumber: value,
-          });
-          afterAdd();
+          addAboutApi(
+            desc,
+            {
+              phoneNumber: value,
+            },
+            afterAdd
+          );
           break;
         case "City":
-          addAboutApi(desc, {
-            name: value,
-          });
-          afterAdd();
+          addAboutApi(
+            desc,
+            {
+              name: value,
+            },
+            afterAdd
+          );
           break;
         case "Home town":
-          addAboutApi(desc, {
-            name: value,
-          });
-          afterAdd();
+          addAboutApi(
+            desc,
+            {
+              name: value,
+            },
+            afterAdd
+          );
           break;
 
         default:
@@ -274,40 +357,50 @@ const InfoCard = ({ info }) => {
     switch (desc) {
       case "University":
         openConfirmModal(() => {
-          deleteAboutApi(desc, { idCollege: _idCollege });
+          deleteAboutApi(desc, { idCollege: _idCollege }, afterDelete);
         });
-        afterDelete();
         break;
       case "Phone":
         openConfirmModal(() => {
-          deleteAboutApi(desc);
+          deleteAboutApi(desc, undefined, afterDelete);
         });
-        afterDelete();
         break;
       case "City":
         openConfirmModal(() => {
-          deleteAboutApi(desc);
+          deleteAboutApi(desc, undefined, afterDelete);
         });
-        afterDelete();
         break;
       case "Home town":
         openConfirmModal(() => {
-          deleteAboutApi(desc);
+          deleteAboutApi(desc, undefined, afterDelete);
         });
-        afterDelete();
         break;
 
       case "School":
         openConfirmModal(() => {
-          deleteAboutApi(desc, { idHighSchool: _idSchool });
+          deleteAboutApi(desc, { idHighSchool: _idSchool }, afterDelete);
         });
-        afterDelete();
         break;
 
       default:
         break;
     }
   };
+
+  const buttonsJsx = (
+    <div className={classes.buttons__holder}>
+      <button onClick={handleCLoseInput} className={classes.cancel}>
+        <MdOutlineClose />
+      </button>
+      <button
+        className={classes.confirm}
+        onClick={handleSave}
+        disabled={disableButton}
+      >
+        <GiConfirmed />
+      </button>
+    </div>
+  );
   return (
     <div className={classes.container}>
       {confirmModalIsOpen && <ConfirmModalInstance />}
@@ -329,136 +422,100 @@ const InfoCard = ({ info }) => {
             </button>
           )}
 
-          {showInputs && (
-            <div>
-              {showInputOnly && (
-                <div className={classes.input__x}>
-                  <Input
-                    placeholder={replacement || `Add ${desc}`}
-                    textError={textError}
-                    type={desc === "Date of birth" ? "date" : "text"}
-                    value={value}
-                    onChange={(event) => handleInputChange(event)}
-                    onBlur={handleInputBlur}
-                    hasError={hasError}
-                  />
-                  <MdOutlineClose
-                    className={classes.cancel}
-                    onClick={handleCLoseInput}
-                  />
-                  <GiConfirmed
-                    onClick={handleSave}
-                    className={classes.confirm}
-                  />
-                </div>
-              )}
+          <div>
+            {showInputOnly && (
+              <div className={classes.input__x}>
+                <Input
+                  placeholder={replacement || `Add ${desc}`}
+                  textError={textError}
+                  type={desc === "Date of birth" ? "date" : "text"}
+                  value={value}
+                  onChange={(event) => handleInputChange(event)}
+                  onBlur={handleInputBlur}
+                  hasError={hasError}
+                />
+                {buttonsJsx}
+              </div>
+            )}
 
-              {showSelectOnly && (
-                <div className={classes.select__x}>
-                  <div className={classes.select}>
-                    <select
-                      className={`${hasError ? classes.invalid : null}`}
-                      value={value}
-                      onChange={(event) => handleInputChange(event)}
-                      onBlur={handleInputBlur}
-                    >
-                      <option value="0">Select gender:</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                    </select>
-                    {hasError && (
-                      <p className={classes["text--invalid"]}>{textError}</p>
-                    )}
-                  </div>
-                  <MdOutlineClose
-                    className={classes.cancel}
-                    onClick={handleCLoseInput}
-                  />
-                  <GiConfirmed
-                    onClick={handleSave}
-                    className={classes.confirm}
-                  />
-                </div>
-              )}
-              {show_InputSelect_HighSchool && (
-                <div className={classes["input-select__x"]}>
-                  <Input
-                    placeholder={replacement || `Add ${desc}`}
-                    textError={textError}
-                    type="text"
+            {showSelectOnly && (
+              <div className={classes.select__x}>
+                <div className={classes.select}>
+                  <select
+                    className={`${hasError ? classes.invalid : null}`}
                     value={value}
                     onChange={(event) => handleInputChange(event)}
                     onBlur={handleInputBlur}
-                    hasError={hasError}
-                  />
-                  <div className={classes.select}>
-                    <select
-                      className={`${hasError2 ? classes.invalid : null}`}
-                      value={value2}
-                      onChange={(event) => handleInputChange2(event)}
-                      onBlur={handleInputBlur2}
-                    >
-                      {renderOptions()}
-                    </select>
-                    {hasError2 && (
-                      <p className={classes["text--invalid"]}>{textError2}</p>
-                    )}
-                  </div>
-                  <div className={classes.button__holder}>
-                    {" "}
-                    <MdOutlineClose
-                      className={classes.cancel}
-                      cursor={"pointer"}
-                      onClick={handleCLoseInput}
-                    />
-                    <GiConfirmed
-                      onClick={handleSave}
-                      className={classes.confirm}
-                    />
-                  </div>
+                  >
+                    <option value="0">Select gender:</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                  {hasError && (
+                    <p className={classes["text--invalid"]}>{textError}</p>
+                  )}
                 </div>
-              )}
-              {show_InputSelect_Unversity && (
-                <div className={classes["input-select__x"]}>
-                  <Input
-                    placeholder={replacement || `Add ${desc}`}
-                    textError={textError}
-                    type="text"
-                    value={value}
-                    onChange={(event) => handleInputChange(event)}
-                    onBlur={handleInputBlur}
-                    hasError={hasError}
-                  />
-                  <div className={classes.select}>
-                    <select
-                      className={`${hasError2 ? classes.invalid : null}`}
-                      value={value2}
-                      onChange={(event) => handleInputChange2(event)}
-                      onBlur={handleInputBlur2}
-                    >
-                      <option value="graduated?">graduated?</option>
-                      <option value="Yes">Yes</option>
-                      <option value="No">No</option>
-                    </select>
-                    {hasError2 && (
-                      <p className={classes["text--invalid"]}>{textError2}</p>
-                    )}
-                  </div>
-                  <div className={classes.button__holder}>
-                    <MdOutlineClose
-                      className={classes.cancel}
-                      cursor={"pointer"}
-                      onClick={handleCLoseInput}
-                    />
-                    <GiConfirmed
-                      onClick={handleSave}
-                      className={classes.confirm}
-                    />
-                  </div>
+                {buttonsJsx}
+              </div>
+            )}
+
+            {show_InputSelect_HighSchool && (
+              <div className={classes["input-select__x"]}>
+                <Input
+                  placeholder={replacement || `Add ${desc}`}
+                  textError={textError}
+                  type="text"
+                  value={value}
+                  onChange={(event) => handleInputChange(event)}
+                  onBlur={handleInputBlur}
+                  hasError={hasError}
+                />
+                <div className={classes.select}>
+                  <select
+                    className={`${hasError2 ? classes.invalid : null}`}
+                    value={value2}
+                    onChange={(event) => handleInputChange2(event)}
+                    onBlur={handleInputBlur2}
+                  >
+                    {renderOptions()}
+                  </select>
+                  {hasError2 && (
+                    <p className={classes["text--invalid"]}>{textError2}</p>
+                  )}
                 </div>
-              )}
-            </div>
-          )}
+                {buttonsJsx}
+              </div>
+            )}
+            {show_InputSelect_Unversity && (
+              <div className={classes["input-select__x"]}>
+                <Input
+                  placeholder={replacement || `Add ${desc}`}
+                  textError={textError}
+                  type="text"
+                  value={value}
+                  onChange={(event) => handleInputChange(event)}
+                  onBlur={handleInputBlur}
+                  hasError={hasError}
+                />
+                <div className={classes.select}>
+                  <select
+                    className={`${hasError2 ? classes.invalid : null}`}
+                    value={value2}
+                    onChange={(event) => handleInputChange2(event)}
+                    onBlur={handleInputBlur2}
+                  >
+                    <option value="graduated?">graduated?</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  {hasError2 && (
+                    <p className={classes["text--invalid"]}>{textError2}</p>
+                  )}
+                </div>
+                {buttonsJsx}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className={classes.buttons}>

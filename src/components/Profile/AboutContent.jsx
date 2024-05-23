@@ -7,12 +7,24 @@ const AboutContent = () => {
   const { mainInformation } = useContext(ProfileContext);
 
   const convertedInformation = extractAndConvertDataProfile(mainInformation);
-
+console.log(convertedInformation)
   return (
     <div className="container__profile">
-      <div style={{display:'flex', flexWrap:'wrap', gap:'2rem',justifyContent:'center',margin:'1rem'}}>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "2rem",
+          justifyContent: "center",
+          margin: "1rem",
+        }}
+      >
         {convertedInformation.map((info) => {
-          return info ? <InfoCard key={info.icon} info={info} /> : null;
+          if (mainInformation.isHeOwner) {
+            return <InfoCard key={info.icon} info={info} />;
+          } else if ((info.name!==''&&info.desc!=='Email') && !mainInformation.isHeOwner) {
+            return <InfoCard key={info.icon} info={info} />;
+          }
         })}
       </div>
     </div>

@@ -21,7 +21,7 @@ import { FcAddImage } from "react-icons/fc";
 import { FcEditImage } from "react-icons/fc";
 import { FcRemoveImage } from "react-icons/fc";
 import { FcImageFile } from "react-icons/fc";
-import ConfirmModalInstance from "../UI/Modals/ConfirmModal";
+
 import { PostContext } from "../../context/PostContext";
 const ProfileCard = () => {
   const { mainInformation } = useContext(ProfileContext);
@@ -29,7 +29,6 @@ const ProfileCard = () => {
     openModal,
     modalEditNameIsOpen,
     openConfirmModal,
-    confirmModalIsOpen,
   } = useContext(MainContext);
   const { isLoading, getMainInformation, deleteBackgroundApi } = useProfile();
 
