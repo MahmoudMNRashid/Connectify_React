@@ -25,15 +25,11 @@ import { FcImageFile } from "react-icons/fc";
 import { PostContext } from "../../context/PostContext";
 const ProfileCard = () => {
   const { mainInformation } = useContext(ProfileContext);
-  const {
-    openModal,
-    modalEditNameIsOpen,
-    openConfirmModal,
-  } = useContext(MainContext);
+  const { openModal, modalEditNameIsOpen, openConfirmModal } =
+    useContext(MainContext);
   const { isLoading, getMainInformation, deleteBackgroundApi } = useProfile();
 
   useEffect(() => {
-    console.log("aaaa");
     getMainInformation();
   }, [getMainInformation]);
 
@@ -101,7 +97,7 @@ const ProfileCard = () => {
   return (
     <>
       {modalEditNameIsOpen && <EditNameModalInstance />}
-     
+
       {isLoading && <SkeletonLoaders />}
 
       {!isLoading && (
@@ -242,14 +238,17 @@ const ButtonType = ({
               <main>
                 <button
                   onClick={() => {
-                    acceptfriendApi(mainInformation._id);
+                    acceptfriendApi(mainInformation._id, "MAIN INFORMATION");
                   }}
                 >
                   <BsFillPersonPlusFill /> Confirm
                 </button>
                 <button
                   onClick={() => {
-                    cancelFriendRequestSentToMeApi(mainInformation._id);
+                    cancelFriendRequestSentToMeApi(
+                      mainInformation._id,
+                      "MAIN INFORMATION"
+                    );
                   }}
                 >
                   <TfiClose /> Cancel
@@ -262,7 +261,10 @@ const ButtonType = ({
       {!isHeOwner && !isHeFriend && areYouSendFriendRequestToHim && (
         <button
           onClick={() => {
-            cancelFriendRequestSentByMeApi(mainInformation._id);
+            cancelFriendRequestSentByMeApi(
+              mainInformation._id,
+              "MAIN INFORMATION"
+            );
           }}
         >
           <MdPersonRemoveAlt1 />

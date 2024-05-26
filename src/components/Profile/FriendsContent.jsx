@@ -4,7 +4,7 @@ import FriendCard from "./FriendCard";
 import { host } from "../../util/help";
 import SkeletonLoader2 from "../UI/SkeletonLoader2";
 import { FaUserFriends } from "react-icons/fa";
-import classes from './FriendsContent.module.css'
+import classes from "./FriendsContent.module.css";
 const FriendsContent = () => {
   let { userId } = useParams();
   const { friends, loading } = useFetchedPost(
@@ -16,12 +16,9 @@ const FriendsContent = () => {
     <>
       <div className="container__profile">
         <header className={classes.header}>
-        
           <FaUserFriends /> Total Friends : {friends.total}
         </header>
-        <div
-       className={classes.flex}
-        >
+        <div className={classes.flex}>
           {!loading &&
             friends.friends.length > 0 &&
             friends.friends.map((friend) => {
@@ -32,10 +29,13 @@ const FriendsContent = () => {
             <p>There Are No Friends Yet</p>
           )}
 
-          {loading && <SkeletonLoader2 />}
-          {loading && <SkeletonLoader2 />}
-          {loading && <SkeletonLoader2 />}
-          {loading && <SkeletonLoader2 />}
+          {loading && (
+            <>
+              {Array.from({ length: 20 }).map((_, index) => (
+                <SkeletonLoader2 key={index} />
+              ))}
+            </>
+          )}
         </div>
       </div>
     </>

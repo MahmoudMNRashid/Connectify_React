@@ -1,0 +1,98 @@
+.container {
+  width: 40%;
+  min-width: 300px;
+  border-radius: 1rem;
+  overflow: hidden;
+  /* padding: 1rem; */
+  background: hsla(186, 33%, 94%, 1);
+
+  background: linear-gradient(
+    90deg,
+    hsla(186, 33%, 94%, 1) 0%,
+    hsla(216, 41%, 79%, 1) 100%
+  );
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.background__logo {
+  width: 100%;
+
+  position: relative;
+  height: fit-content;
+}
+.background {
+  width: 100%;
+  height: 150px;
+}
+.background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logo {
+  width: 75px;
+  height: 75px;
+
+  border-radius: 50%;
+  overflow: hidden;
+  position: absolute;
+  left: 10%;
+  top: 70%;
+}
+.logo img {
+  width: 100%;
+  height: 100%;
+  /* object-fit:cover; */
+  object-position: center;
+}
+
+.desc {
+  margin-top: 2.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2.5rem 1rem;
+}
+
+.info {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0 1rem;
+}
+
+.info > p {
+  display: flex;
+
+  align-items: center;
+  gap: 1rem;
+}
+
+.info a {
+  color: #432183;
+  text-decoration: underline;
+}
+.info span{
+    font-size: 0.88rem;
+}
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cancel {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 1rem;
+  font-size: 1.2rem;
+  background-color: #d2c9d3;
+  margin: 1rem;
+}
+
+.cancel:hover {
+  background-color: #e7e5e7;
+}

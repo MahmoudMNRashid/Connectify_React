@@ -13,13 +13,49 @@ export const ProfileContext = createContext({
   editBackgroundImage: () => {},
   deleteBackgroundImage: () => {},
   changeAbout: () => {},
+  groupInvites: { invites: [], total: 0 },
+  AddGroupInvites: () => {},
+  DeleteGroupInvite: () => {},
+  pageInvites: { invites: [], total: 0 },
+  AddPageInvites: () => {},
+  DeletePageInvite: () => {},
+  AcceptPageInvite: () => {},
+  joinedPages: { pages: [], total: 0 },
+  addJoinedPages: () => {},
+  setJoinedPages: () => {},
+  ownedPages: { pages: [], total: 0 },
+  addOwnedPages: () => {},
+  setOwnedPages: () => {},
+  joinedGroups: { groups: [], total: 0 },
+  addJoinedGroups: () => {},
+  setJoinedGroups: () => {},
+  friendsRequestSend: { requests: [], total: 0 },
+  addFriendsRequestSend: () => {},
+  setFriendsRequestSend: () => {},
+  RemoveRequestFromFriendsRequestSend: () => {},
+  friendsRequestRecieve: { requests: [], total: 0 },
+  addFriendsRequestRecieve: () => {},
+  setFriendsRequestRecieve: () => {},
+  RemoveRequestFromFriendsRequestRecieve: () => {},
 });
 
 export default function ProfileContextProvider({ children }) {
   const [selectedTap, setSelectedTap] = useState("");
   const [mainInformation, setMainInformation] = useState({});
   const [friends, setFriends] = useState({});
-
+  const [joinedPages, setJoinedPages] = useState({ pages: [], total: 0 });
+  const [ownedPages, setOwnedPages] = useState({ pages: [], total: 0 });
+  const [joinedGroups, setJoinedGroups] = useState({ group: [], total: 0 });
+  const [groupInvites, setGroupInvites] = useState({ invites: [], total: 0 });
+  const [pageInvites, setPageInvites] = useState({ invites: [], total: 0 });
+  const [friendsRequestSend, setFriendsRequestSend] = useState({
+    requests: [],
+    total: 0,
+  });
+  const [friendsRequestRecieve, setFriendsRequestRecieve] = useState({
+    requests: [],
+    total: 0,
+  });
   const handleSelect = (selectedTap) => {
     setSelectedTap(selectedTap);
   };
@@ -127,7 +163,7 @@ export default function ProfileContextProvider({ children }) {
         case "Date of birth":
           setMainInformation((prev) => {
             const newInfo = { ...prev };
-            console.log(data)
+            console.log(data);
             newInfo.birthDay = data.birthday;
             return newInfo;
           });
@@ -269,6 +305,213 @@ export default function ProfileContextProvider({ children }) {
       }
     }
   };
+  const handleAddGroupInvites = useCallback((newInvite, total) => {
+    setGroupInvites((prev) => {
+      const oldInvites = { ...prev };
+      console.log(newInvite, total);
+      console.log(oldInvites);
+      const newInvites = {
+        invites: [...oldInvites.invites, ...newInvite],
+        total: total,
+      };
+      console.log(newInvite);
+      return newInvites;
+    });
+  }, []);
+  const handleAddPageInvites = useCallback((newInvite, total) => {
+    setPageInvites((prev) => {
+      const oldInvites = { ...prev };
+      console.log(newInvite, total);
+      console.log(oldInvites);
+      const newInvites = {
+        invites: [...oldInvites.invites, ...newInvite],
+        total: total,
+      };
+      console.log(newInvite);
+      return newInvites;
+    });
+  }, []);
+
+  const handleDeletePageInvite = useCallback((idInvite) => {
+    setPageInvites((prev) => {
+      const oldInvites = { ...prev };
+      const invitesWithoutDeletedInvite = oldInvites.invites.filter(
+        (invite) => {
+          invite.idInvite !== idInvite;
+        }
+      );
+      console.log(invitesWithoutDeletedInvite);
+      const newInvites = {
+        invites: invitesWithoutDeletedInvite,
+        total: oldInvites.total - 1,
+      };
+
+      return newInvites;
+    });
+
+    setMainInformation((prev) => {
+      const oldMainInfo = { ...prev };
+
+      oldMainInfo.pageInvites -= 1;
+      return oldMainInfo;
+    });
+  }, []);
+  const handleAcceptPageInvite = useCallback((idPage) => {
+    var filteredCount;
+    setPageInvites((prev) => {
+      const oldInvites = { ...prev };
+      const invitesWithoutDeletedInvite = oldInvites.invites.filter(
+        (invite) => {
+          invite.page.pageId !== idPage;
+        }
+      );
+      filteredCount =
+        oldInvites.invites.length - invitesWithoutDeletedInvite.length;
+      const newInvites = {
+        invites: invitesWithoutDeletedInvite,
+        total: filteredCount,
+      };
+
+      return newInvites;
+    });
+    setMainInformation((prev) => {
+      const oldMainInfo = { ...prev };
+
+      oldMainInfo.pageInvites -= filteredCount;
+      return oldMainInfo;
+    });
+  }, []);
+  const handleDeleteGroupInvite = useCallback((idInvite) => {
+    setGroupInvites((prev) => {
+      const oldInvites = { ...prev };
+      const invitesWithoutDeletedInvite = oldInvites.invites.filter(
+        (invite) => {
+          invite.idInvite !== idInvite;
+        }
+      );
+      console.log(invitesWithoutDeletedInvite);
+      const newInvites = {
+        invites: invitesWithoutDeletedInvite,
+        total: oldInvites.total - 1,
+      };
+
+      return newInvites;
+    });
+    setMainInformation((prev) => {
+      const oldMainInfo = { ...prev };
+
+      oldMainInfo.groupInvites -= 1;
+      return oldMainInfo;
+    });
+  }, []);
+
+  const handleAddJoinedPages = useCallback((newPage, total) => {
+    setJoinedPages((prev) => {
+      const oldPages = { ...prev };
+
+      const newPages = {
+        pages: [...oldPages.pages, ...newPage],
+        total: total,
+      };
+
+      return newPages;
+    });
+  }, []);
+  const setJoinedPagesDirectly = useCallback((pages) => {
+    setJoinedPages(pages);
+  }, []);
+  const handleAddOwnedPages = useCallback((newPage, total) => {
+    setOwnedPages((prev) => {
+      const oldPages = { ...prev };
+
+      const newPages = {
+        pages: [...oldPages.pages, ...newPage],
+        total: total,
+      };
+
+      return newPages;
+    });
+  }, []);
+  const setOwnedPagesDirectly = useCallback((pages) => {
+    setOwnedPages(pages);
+  }, []);
+
+  const handleAddJoinedGroups = useCallback((newGroup, total) => {
+    setJoinedGroups((prev) => {
+      const oldGroups = { ...prev };
+
+      const newGroups = {
+        groups: [...oldGroups.group, ...newGroup],
+        total: total,
+      };
+
+      return newGroups;
+    });
+  }, []);
+  const setJoinedGroupsDirectly = useCallback((groups) => {
+    setJoinedPages(groups);
+  }, []);
+  const handleAddFriendsRequestSend = useCallback((newRequests, total) => {
+    setFriendsRequestSend((prev) => {
+      const oldRequests = { ...prev };
+
+      const Requests = {
+        requests: [...oldRequests.requests, ...newRequests],
+        total: total,
+      };
+
+      return Requests;
+    });
+  }, []);
+  const setFriendsRequestSendDirectly = useCallback((requests) => {
+    setFriendsRequestSend(requests);
+  }, []);
+
+  const handleRemoveRequestFromFriendsRequestSend = (userId) => {
+    setFriendsRequestSend((prev) => {
+      console.log("prev", prev.requests);
+      const newRequests = prev.requests.filter(
+        (request) => request.userId !== userId
+      );
+
+      console.log("now", newRequests);
+      return { requests: newRequests, total: prev.total - 1 };
+    });
+  };
+  const handleAddFriendsRequestRecieve = useCallback((newRequests, total) => {
+    setFriendsRequestRecieve((prev) => {
+      const oldRequests = { ...prev };
+
+      const Requests = {
+        requests: [...oldRequests.requests, ...newRequests],
+        total: total,
+      };
+
+      return Requests;
+    });
+  }, []);
+  const setFriendsRequestRecieveDirectly = useCallback((requests) => {
+    setFriendsRequestRecieve(requests);
+  }, []);
+
+  const handleRemoveRequestFromFriendsRequestRecieve = (userId) => {
+    setFriendsRequestRecieve((prev) => {
+      console.log("prev", prev.requests);
+      const newRequests = prev.requests.filter(
+        (request) => request.userId !== userId
+      );
+
+      console.log("now", newRequests);
+      return { requests: newRequests, total: prev.total - 1 };
+    });
+    setMainInformation((prev) => {
+      const oldMainInfo = { ...prev };
+
+      oldMainInfo.incomingRequest -= 1;
+      return oldMainInfo;
+    });
+  };
+
   const ctxValue = {
     selectedTap,
     selectTap: handleSelect,
@@ -282,6 +525,32 @@ export default function ProfileContextProvider({ children }) {
     friends,
     addFriends: handleAddFriends,
     changeAbout: handleAbout,
+    AddGroupInvites: handleAddGroupInvites,
+    groupInvites,
+    DeleteGroupInvite: handleDeleteGroupInvite,
+    AddPageInvites: handleAddPageInvites,
+    pageInvites,
+    DeletePageInvite: handleDeletePageInvite,
+    AcceptPageInvite: handleAcceptPageInvite,
+    joinedPages,
+    addJoinedPages: handleAddJoinedPages,
+    setJoinedPages: setJoinedPagesDirectly,
+    ownedPages,
+    addOwnedPages: handleAddOwnedPages,
+    setOwnedPages: setOwnedPagesDirectly,
+    joinedGroups,
+    addJoinedGroups: handleAddJoinedGroups,
+    setJoinedGroups: setJoinedGroupsDirectly,
+    friendsRequestSend,
+    addFriendsRequestSend: handleAddFriendsRequestSend,
+    setFriendsRequestSend: setFriendsRequestSendDirectly,
+    RemoveRequestFromFriendsRequestSend:
+      handleRemoveRequestFromFriendsRequestSend,
+    friendsRequestRecieve,
+    addFriendsRequestRecieve: handleAddFriendsRequestRecieve,
+    setFriendsRequestRecieve: setFriendsRequestRecieveDirectly,
+    RemoveRequestFromFriendsRequestRecieve:
+      handleRemoveRequestFromFriendsRequestRecieve,
   };
   return (
     <ProfileContext.Provider value={ctxValue}>

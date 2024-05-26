@@ -18,6 +18,11 @@ const useProfile = () => {
     editBackgroundImage,
     deleteBackgroundImage,
     changeAbout,
+    DeleteGroupInvite,
+    DeletePageInvite,
+    AcceptPageInvite,
+    RemoveRequestFromFriendsRequestSend,
+    RemoveRequestFromFriendsRequestRecieve,
   } = useContext(ProfileContext);
   const { startTheDisable, stopTheDisable, closeModal, closeConfirmModal } =
     useContext(MainContext);
@@ -122,7 +127,7 @@ const useProfile = () => {
     }
   };
 
-  const cancelFriendRequestSentByMeApi = async (reciverId) => {
+  const cancelFriendRequestSentByMeApi = async (reciverId, from) => {
     setIsLoading(true);
     startTheDisable();
     try {
@@ -136,7 +141,15 @@ const useProfile = () => {
         }
       );
       toast.success(response.data.message);
-      editFriendType("areYouSendFriendRequestToHim-false");
+
+      if (from === "OUTGOING REQUESTS") {
+        console.log("dddd");
+        RemoveRequestFromFriendsRequestSend(reciverId);
+      }
+      if (from === "MAIN INFORMATION") {
+        editFriendType("areYouSendFriendRequestToHim-false");
+      }
+
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -221,7 +234,7 @@ const useProfile = () => {
       stopTheDisable();
     }
   };
-  const acceptfriendApi = async (senderId) => {
+  const acceptfriendApi = async (senderId, from) => {
     setIsLoading(true);
     startTheDisable();
     try {
@@ -235,7 +248,14 @@ const useProfile = () => {
         }
       );
       toast.success(response.data.message);
-      editFriendType("isHeFriend-true");
+
+      if (from === "INCOMING REQUESTS") {
+        console.log("dddd");
+        RemoveRequestFromFriendsRequestRecieve(senderId);
+      }
+      if (from === "MAIN INFORMATION") {
+        editFriendType("isHeFriend-true");
+      }
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -255,7 +275,7 @@ const useProfile = () => {
     }
   };
 
-  const cancelFriendRequestSentToMeApi = async (senderId) => {
+  const cancelFriendRequestSentToMeApi = async (senderId, from) => {
     setIsLoading(true);
     startTheDisable();
     try {
@@ -269,7 +289,15 @@ const useProfile = () => {
         }
       );
       toast.success(response.data.message);
-      editFriendType("isHeSendFriendRequestToYou-false");
+
+      if (from === "INCOMING REQUESTS") {
+        console.log("dddd");
+        RemoveRequestFromFriendsRequestRecieve(senderId);
+      }
+      if (from === "MAIN INFORMATION") {
+        editFriendType("isHeSendFriendRequestToYou-false");
+      }
+
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -483,7 +511,7 @@ const useProfile = () => {
       stopTheDisable();
     }
   };
-  const addAboutApi = async (desc, data,fn) => {
+  const addAboutApi = async (desc, data, fn) => {
     startTheDisable();
     let url = `${host}/profile/`;
 
@@ -524,7 +552,7 @@ const useProfile = () => {
       }
       console.log(response);
       changeAbout("ADD", desc, data);
-      fn()
+      fn();
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -538,6 +566,106 @@ const useProfile = () => {
       }
       toast.error(error.response?.data.message || "Something went wrong");
     } finally {
+      stopTheDisable();
+    }
+  };
+
+  const deleteGroupInvite = async (_id) => {
+    setIsLoading(true);
+    startTheDisable();
+    try {
+      const response = await axios.post(
+        `${host}/profile/cancelInvite`,
+        {
+          _id,
+        },
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
+      toast.success(response.data.message);
+      DeleteGroupInvite(_id);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
+      stopTheDisable();
+    }
+  };
+  const deletePageInvite = async (_InvitationId) => {
+    setIsLoading(true);
+    startTheDisable();
+    try {
+      const response = await axios.post(
+        `${host}/page/cancelInvite`,
+        {
+          _InvitationId,
+        },
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
+      toast.success(response.data.message);
+      DeletePageInvite(_InvitationId);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
+      stopTheDisable();
+    }
+  };
+  const acceptPageInvite = async (_InvitationId, idPage) => {
+    setIsLoading(true);
+    startTheDisable();
+    try {
+      const response = await axios.post(
+        `${host}/page/acceptInvite`,
+        {
+          _InvitationId,
+        },
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
+      toast.success(response.data.message);
+      AcceptPageInvite(idPage);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
       stopTheDisable();
     }
   };
@@ -557,6 +685,9 @@ const useProfile = () => {
     updateAboutApi,
     addAboutApi,
     deleteAboutApi,
+    deleteGroupInvite,
+    deletePageInvite,
+    acceptPageInvite,
   };
 };
 export default useProfile;

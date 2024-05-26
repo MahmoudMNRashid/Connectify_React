@@ -1,16 +1,25 @@
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { getToken } from "../util/help";
 import { useNavigate } from "react-router-dom";
+import { ProfileContext } from "../context/ProfileContext";
 
 const useFetchedPost = (url) => {
+  console.log(url);
   const [data, setData] = useState([]);
   const [page, setPage] = useState(2);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [friends, setFriends] = useState({ friends: [], total: 0 });
+  const {
+    AddGroupInvites,
+    AddPageInvites,
+    addJoinedPages,
+    addJoinedGroups,
+    addOwnedPages,
+    addFriendsRequestSend,addFriendsRequestRecieve
+  } = useContext(ProfileContext);
   useEffect(() => {
-    console.log("one");
     const getpostFromFirstPage = async () => {
       setLoading(true);
       try {
@@ -23,7 +32,6 @@ const useFetchedPost = (url) => {
         if (response.data.aggregationResult) {
           posts = [...response.data.aggregationResult];
         } else if (response.data.posts) {
-          console.log("yyyyyyyyyyyyy");
           posts = [...response.data.posts];
         }
 
@@ -37,12 +45,64 @@ const useFetchedPost = (url) => {
 
             const newFriends = {
               friends: [...oldFriends.friends, ...response.data.followers],
-              total: oldFriends.total,
+              total: response.data.extraInfo.totalItems,
             };
-          
+
             return newFriends;
           });
         }
+        if (
+          response.data.Invites &&
+          url.includes("getInvitationsSentToMeFromGroups")
+        ) {
+          console.log("dasdasdasda");
+          AddGroupInvites(
+            response.data.Invites,
+            response.data.extraInfo.totalItems
+          );
+        }
+        if (
+          response.data.Invites &&
+          url.includes("getInvitationsSentToMeFromPages")
+        ) {
+          AddPageInvites(
+            response.data.Invites,
+            response.data.extraInfo.totalItems
+          );
+        }
+
+        if (response.data.pages && url.includes("getPagesLiked")) {
+          addJoinedPages(
+            response.data.pages,
+            response.data.extraInfo.totalItems
+          );
+        }
+        if (response.data.pages && url.includes("getPagesIOwned")) {
+          addOwnedPages(
+            response.data.pages,
+            response.data.extraInfo.totalItems
+          );
+        }
+
+        if (response.data.groups) {
+          addJoinedGroups(
+            response.data.groups,
+            response.data.extraInfo.totalItems
+          );
+        }
+        if (response.data.friendsRequestSend) {
+          addFriendsRequestSend(
+            response.data.friendsRequestSend,
+            response.data.extraInfo.totalItems
+          );
+        }
+        if (response.data.friendsRequestRecieve) {
+          addFriendsRequestRecieve(
+            response.data.friendsRequestRecieve,
+            response.data.extraInfo.totalItems
+          );
+        }
+
         setPage((prevPage) => prevPage + 1);
       } catch (error) {
         navigate("/error", {
@@ -57,7 +117,16 @@ const useFetchedPost = (url) => {
     };
 
     getpostFromFirstPage();
-  }, [navigate, url]);
+  }, [
+    navigate,
+    url,
+    AddGroupInvites,
+    AddPageInvites,
+    addJoinedPages,
+    addJoinedGroups,
+    addOwnedPages,
+    addFriendsRequestSend,addFriendsRequestRecieve
+  ]);
 
   const handleScroll = useCallback(async () => {
     const scrollTop =
@@ -84,7 +153,6 @@ const useFetchedPost = (url) => {
         if (response.data.aggregationResult) {
           posts = [...response.data.aggregationResult];
         } else if (response.data.posts) {
-          console.log("yyyyyyyyyyyyy");
           posts = [...response.data.posts];
         }
 
@@ -98,16 +166,68 @@ const useFetchedPost = (url) => {
 
             const newFriends = {
               friends: [...oldFriends.friends, ...response.data.followers],
-              total: oldFriends.total,
+              total: response.data.extraInfo.totalItems,
             };
-          
+
             return newFriends;
           });
+        }
+        if (
+          response.data.Invites &&
+          url.includes("getInvitationsSentToMeFromGroups")
+        ) {
+          console.log("dasddadads");
+          AddGroupInvites(
+            response.data.Invites,
+            response.data.extraInfo.totalItems
+          );
+        }
+        if (
+          response.data.Invites &&
+          url.includes("getInvitationsSentToMeFromPages")
+        ) {
+          AddPageInvites(
+            response.data.Invites,
+            response.data.extraInfo.totalItems
+          );
+        }
+        if (response.data.pages && url.includes("getPagesLiked")) {
+          addJoinedPages(
+            response.data.pages,
+            response.data.extraInfo.totalItems
+          );
+        }
+        if (response.data.pages && url.includes("getPagesIOwned")) {
+          addOwnedPages(
+            response.data.pages,
+            response.data.extraInfo.totalItems
+          );
+        }
+
+        if (response.data.groups) {
+          addJoinedGroups(
+            response.data.groups,
+            response.data.extraInfo.totalItems
+          );
+        }
+
+        if (response.data.friendsRequestSend) {
+          addFriendsRequestSend(
+            response.data.friendsRequestSend,
+            response.data.extraInfo.totalItems
+          );
+        }
+        if (response.data.friendsRequestRecieve) {
+          addFriendsRequestRecieve(
+            response.data.friendsRequestRecieve,
+            response.data.extraInfo.totalItems
+          );
         }
         setPage((prevPage) => prevPage + 1);
 
         setLoading(false);
       } catch (error) {
+        console.log(error);
         navigate("/error", {
           state: {
             status: error.response.status,
@@ -118,7 +238,18 @@ const useFetchedPost = (url) => {
         setLoading(false);
       }
     }
-  }, [loading, navigate, url, page]);
+  }, [
+    loading,
+    navigate,
+    url,
+    page,
+    AddGroupInvites,
+    AddPageInvites,
+    addJoinedPages,
+    addJoinedGroups,
+    addOwnedPages,
+    addFriendsRequestSend,addFriendsRequestRecieve
+  ]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
