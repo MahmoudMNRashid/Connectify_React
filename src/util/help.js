@@ -11,13 +11,18 @@ export const getUserId = () => {
   return Cookies.get("Jto__Uid").split("__&")[1];
 };
 export const getFullName = () => {
-  return {
-    firstName: Cookies.get("Jto__Uid").split("__&")[2],
-    lastName: Cookies.get("Jto__Uid").split("__&")[3],
-  };
+  const firstName = Cookies.get("Jto__Uid").split("__&")[2];
+  const lastName = Cookies.get("Jto__Uid").split("__&")[3];
+  return firstName + "   " + lastName;
 };
 export const getLogo = () => {
-  return Cookies.get("Jto__Uid").split("__&")[4];
+  const public_id = Cookies.get("Jto__Uid").split("__&")[4];
+  const link = Cookies.get("Jto__Uid").split("__&")[5];
+  const logo = {
+    asset: { public_id, link, resource_type: "image" },
+  };
+
+  return logo;
 };
 
 export function convertDateFormat(dateTimeString) {
@@ -77,7 +82,7 @@ export function extractAndConvertDataProfile(information) {
   const data = [];
 
   const gender = {
-    name: information.gender==='male'?'Male':'Female',
+    name: information.gender === "male" ? "Male" : "Female",
     icon: "FaTransgender",
     title: "Basic info",
     desc: "Gender",
@@ -116,13 +121,13 @@ export function extractAndConvertDataProfile(information) {
     information.education.college.length > 0
       ? {
           name: information.education.college[0].name,
-          graduated: information.education.college[0].graduated?'Yes':'No',
+          graduated: information.education.college[0].graduated ? "Yes" : "No",
           _id: information.education.college[0]._id,
           icon: "FaUniversity",
           title: "Education",
           desc: "University",
           validator: (value) => validator.isLength(value, { min: 1 }),
-          validator2: (value) => value === 'Yes'|| value === 'No',
+          validator2: (value) => value === "Yes" || value === "No",
           textError: "University should not be empty",
           textError2: "graduate should be: Yes or Not Yes",
         }

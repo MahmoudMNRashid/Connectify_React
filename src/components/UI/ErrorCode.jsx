@@ -15,7 +15,7 @@ const Error = ({ status, message }) => {
       : _500;
 
   const handleClick = () => {
-    navigate("/home", { replace: true });
+    navigate("/", { replace: true });
   };
   return (
     <div className={style.contianer}>

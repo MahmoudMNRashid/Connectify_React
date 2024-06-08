@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 // eslint-disable-next-line react-refresh/only-export-components
 export const content = Object.freeze({
   ADD_BIO: "add bio",
@@ -26,12 +26,12 @@ export const MainContext = createContext({
 
 export default function MainContextProvider({ children }) {
   const [disableIsActive, setDisableIsActive] = useState(false);
-  const handleStartTheDisable = () => {
+  const handleStartTheDisable = useCallback(() => {
     setDisableIsActive(true);
-  };
-  const handleStopTheDisable = () => {
+  }, []);
+  const handleStopTheDisable = useCallback(() => {
     setDisableIsActive(false);
-  };
+  }, []);
   //////////////////////////////////////
   const [contentModal, setContentModal] = useState("");
   const [modalEditNameIsOpen, setModalEditNameIsOpen] = useState(false);
@@ -79,6 +79,7 @@ export default function MainContextProvider({ children }) {
   const [activeFn, setActiveFn] = useState(null);
 
   const handleOpenconfirmModal = (fn) => {
+    console.log('first')
     setConfirmModalIsOpen(true);
     setActiveFn(() => fn);
   };

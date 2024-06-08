@@ -8,7 +8,7 @@ const ResponsiveMasonryCard = ({
   videoConfig,
   children
 }) => {
-
+console.log(assets)
   return (
     <ResponsiveMasonry columnsCountBreakPoints={columnsCountBreakPoints}>
       <Masonry gutter="8px">
@@ -22,6 +22,7 @@ const ResponsiveMasonryCard = ({
                 onClick={() => imageConfig.onClick(index)}
                 style={{ ...imageConfig.style }}
               />
+              <div>hu</div>
             </Fragment>
           ) : (
             <Fragment key={file.link}>

@@ -14,6 +14,9 @@ import Test from "./pages/Test";
 import MainContextProvider from "./context/MainContext";
 import AuthGuard from "./pages/AuthGuard";
 import ProfileContextProvider from "./context/ProfileContext";
+import Group from "./pages/Group";
+import GroupContextProvider from "./context/GroupContext";
+import Page from "./pages/Page";
 function App() {
   const router = createBrowserRouter([
     {
@@ -28,6 +31,8 @@ function App() {
           index: true,
         },
         { path: "/profile/:userId", element: <Profile /> },
+        { path: "/group/:groupId", element: <Group /> },
+        { path: "/page/:pageId", element: <Page /> },
         { path: "/logout", element: <Profile /> },
         { path: "/error", element: <Error /> },
         { path: "/test", element: <Test /> },
@@ -50,15 +55,17 @@ function App() {
   ]);
 
   return (
-    <ProfileContextProvider>
-      <PostContextProvider>
-        <MainContextProvider>
-          <RouterProvider router={router}>
-            <Toaster />
-          </RouterProvider>
-        </MainContextProvider>
-      </PostContextProvider>
-    </ProfileContextProvider>
+    <GroupContextProvider>
+      <ProfileContextProvider>
+        <PostContextProvider>
+          <MainContextProvider>
+            <RouterProvider router={router}>
+              <Toaster />
+            </RouterProvider>
+          </MainContextProvider>
+        </PostContextProvider>
+      </ProfileContextProvider>
+    </GroupContextProvider>
   );
 }
 

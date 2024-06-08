@@ -98,7 +98,7 @@ const MiniPost = () => {
     contentDate = (
       <span>
         {postInformation.groupContent.name}
-        
+
         <span className={`${classes.date} ${classes.DateGroup}`}>
           {convertDateFormat(postInformation.postContent.createdAt)}
         </span>
@@ -143,11 +143,11 @@ const MiniPost = () => {
             columnsCountBreakPoints={columnsCountBreakPoints}
             imageConfig={{
               onClick: () => {},
-              style: { },
+              style: {},
             }}
             videoConfig={{
               onClick: () => {},
-              style: { },
+              style: {},
               showTheControl: false,
             }}
           />

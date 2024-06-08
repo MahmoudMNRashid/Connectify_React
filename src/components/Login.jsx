@@ -77,7 +77,9 @@ export const LoginForm = () => {
       console.log(formattedDate);
       Cookies.set(
         "Jto__Uid",
-        `${token}__&${userId}__&${firstName}__&${lastName}__&${logo}`,
+        `${token}__&${userId}__&${firstName}__&${lastName}__&${
+          logo ? logo.asset.public_id : "undefined"
+        }__&${logo ? logo.asset.link : "undefined"}`,
         {
           // httpOnly: true,
           // secure: true,

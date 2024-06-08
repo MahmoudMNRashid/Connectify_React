@@ -6,12 +6,12 @@ import useProfile from "../../../hooks/UseProfile";
 import { MainContext } from "../../../context/MainContext";
 import Loader2 from "../Loader2";
 import { GiConfirmed } from "react-icons/gi";
-import { ProfileContext } from "../../../context/ProfileContext";
+// import { ProfileContext } from "../../../context/ProfileContext";
 const ConfirmModal = () => {
   const { disableIsActive, closeConfirmModal, activeFn } =
     useContext(MainContext);
 
-  const { mainInformation } = useContext(ProfileContext);
+  // const { mainInformation } = useContext(ProfileContext);
   const { isLoading } = useProfile();
 
   const handleCloseTheModal = () => {
@@ -20,9 +20,9 @@ const ConfirmModal = () => {
 
   const handleConfirm = () => {
 
-const arg = Array.isArray(mainInformation.backgroundPhotos)?undefined:mainInformation.backgroundPhotos.public_id
+// const arg = Array.isArray(mainInformation.backgroundPhotos)?undefined:mainInformation.backgroundPhotos.public_id
 
-    activeFn(arg);
+    activeFn();
   };
 
   return (

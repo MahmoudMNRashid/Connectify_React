@@ -13,9 +13,12 @@ import defaultImagePage from "../assets/post/page_default.svg";
 import useLikedUnLikedPost from "../hooks/UseLikedUnlikedPost.js";
 import { PostContext } from "../context/PostContext.jsx";
 import { convertDateFormat } from "../util/help.js";
+import { useNavigate } from "react-router-dom";
 
 const Post = ({ data }) => {
+  // console.log(data)
   //Hooks
+  const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
   //Variables
   const textLimit = 300; // Adjust this value as needed for your text length preference
@@ -35,6 +38,13 @@ const Post = ({ data }) => {
   };
 
   //Functions
+
+  const handleMoveToGroup = () => {
+    navigate(`/group/${groupContent.groupId}`);
+  };
+  const handleMoveToPage = () => {
+    navigate(`/page/${pageContent.pageId}`);
+  };
   const handleToggleText = () => {
     setIsExpanded(!isExpanded);
   };
@@ -48,6 +58,7 @@ const Post = ({ data }) => {
     contentImage = (
       <div className={classes["container-images"]}>
         <img
+          onClick={handleMoveToGroup}
           src={groupContent.cover ? groupContent.cover.link : defaultImageGroup}
         />
         <img
@@ -67,7 +78,10 @@ const Post = ({ data }) => {
     );
   } else {
     contentImage = (
-      <img src={pageContent.logo ? pageContent.logo.link : defaultImagePage} />
+      <img
+        onClick={handleMoveToPage}
+        src={pageContent.logo ? pageContent.logo.link : defaultImagePage}
+      />
     );
   }
 
@@ -81,8 +95,8 @@ const Post = ({ data }) => {
   let contentDate;
   if (permission.postType === "group" && permission.fromAll) {
     contentDate = (
-      <span>
-        {groupContent.name}
+      <span className={classes.datee}>
+        <span onClick={handleMoveToGroup}>{groupContent.name}</span>
         <span className={`${classes.date} ${classes.DateGroup}`}>
           {convertDateFormat(postContent.createdAt)}
         </span>

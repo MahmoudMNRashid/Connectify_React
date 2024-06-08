@@ -1,0 +1,73 @@
+.dataHolder1 {
+  width: 288px;
+  min-height: 113px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #eee;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.dataHolder1 > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1.24rem;
+}
+.dataHolder1 > div > p:nth-of-type(2) {
+  height: 30px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dataHolder1 > button {
+  border: none;
+  width: 200px;
+  height: 28px;
+  border-radius: 1rem;
+  padding: 0.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 600;
+  background-color: #32363f;
+  color: #eee;
+  border: 1px solid #32363f;
+  margin: 1rem 0rem;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+}
+
+.actions .buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.actions .buttons button {
+  border: none;
+  padding: 0.5rem 2rem;
+  border-radius: 1rem;
+}
+.actions .buttons button:nth-of-type(1) {
+  background-color: #75abad;
+  color: white;
+}
+.actions .buttons button:nth-of-type(1):disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.actions .buttons button:nth-of-type(2) {
+  background-color: #803d3b;
+  color: white;
+}
