@@ -15,7 +15,7 @@ const FriendCard = ({ friend }) => {
               alt="Randy Robertson"
             />
             <p className="pt-2 text-lg font-semibold">
-              {friend.firsName} {friend.lastName}
+              {friend.firstName} {friend.lastName}
             </p>
           </div>
         </div>

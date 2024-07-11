@@ -22,7 +22,7 @@ console.log(assets)
                 onClick={() => imageConfig.onClick(index)}
                 style={{ ...imageConfig.style }}
               />
-              <div>hu</div>
+             
             </Fragment>
           ) : (
             <Fragment key={file.link}>

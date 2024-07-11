@@ -1,4 +1,5 @@
 import { createContext, useCallback, useState } from "react";
+import { getFullName, getLogo, getUserId } from "../util/help";
 
 export const ProfileContext = createContext({
   selectedTap: "",
@@ -37,6 +38,14 @@ export const ProfileContext = createContext({
   addFriendsRequestRecieve: () => {},
   setFriendsRequestRecieve: () => {},
   RemoveRequestFromFriendsRequestRecieve: () => {},
+  posts: { posts: [], total: 0, hasMore: true, firstTime: false },
+  addPosts: () => {},
+  deletePost____: () => {},
+  updatePost____: () => {},
+  createPost____: () => {},
+  addNewPhoto: () => {},
+  deleteCurrentPhotoOrPrevious: () => {},
+  setPreviousPhotoAsCurrentProfilePhoto_: () => {},
 });
 
 export default function ProfileContextProvider({ children }) {
@@ -56,9 +65,27 @@ export default function ProfileContextProvider({ children }) {
     requests: [],
     total: 0,
   });
+
+  const [posts, setPosts] = useState({
+    posts: [],
+    total: 0,
+    hasMore: true,
+    firstTime: false,
+  });
   const handleSelect = (selectedTap) => {
     setSelectedTap(selectedTap);
   };
+
+  const handleAddPosts = useCallback((newPosts, total, hasMore, firstTime) => {
+    setPosts((prev) => {
+      return {
+        posts: [...prev.posts, ...newPosts],
+        total,
+        hasMore,
+        firstTime,
+      };
+    });
+  }, []);
 
   const handleAddMainInformation = useCallback((data) => {
     setMainInformation(data);
@@ -219,6 +246,20 @@ export default function ProfileContextProvider({ children }) {
       }
     else if (type === "ADD") {
       switch (desc) {
+        case "Gender":
+          setMainInformation((prev) => {
+            const newInfo = { ...prev };
+            newInfo.gender = data.gender;
+            return newInfo;
+          });
+          break;
+        case "Date of birth":
+          setMainInformation((prev) => {
+            const newInfo = { ...prev };
+            newInfo.birthDay = data.birthday;
+            return newInfo;
+          });
+          break;
         case "Phone":
           setMainInformation((prev) => {
             const newInfo = { ...prev };
@@ -511,7 +552,138 @@ export default function ProfileContextProvider({ children }) {
       return oldMainInfo;
     });
   };
+  const handleDeletePost = (postId) => {
+    if (posts.firstTime) {
+      setPosts((prev) => {
+        const posts = prev.posts;
+        const newPosts = posts.filter((post) => post.post._idPost !== postId);
 
+        return {
+          posts: newPosts,
+          total: prev.total - 1,
+          hasMore: prev.hasMore,
+          firstTime: prev.firstTime,
+        };
+      });
+    } else {
+      return;
+    }
+  };
+  const handleUpdatePost = (newPost) => {
+    if (posts.firstTime) {
+      setPosts((prev) => {
+        const allPosts = [...prev.posts];
+        const post = allPosts.find((p) => {
+          return p.post._idPost === newPost._id;
+        });
+        const oldPost = { ...post };
+
+        oldPost.post.assets = newPost.assets;
+        oldPost.post.description = newPost.description;
+        if (oldPost.whoCanComment) {
+          oldPost.post.whoCanComment = newPost.whoCanComment;
+        }
+        if (oldPost.whoCanSee) {
+          oldPost.post.whoCanSee = newPost.whoCanSee;
+        }
+
+        const newPosts = allPosts.filter((p) => {
+          return p.post._idPost !== newPost._id;
+        });
+
+        newPosts.unshift(oldPost);
+
+        return {
+          posts: newPosts,
+          total: prev.total,
+          firstTime: prev.firstTime,
+          hasMore: prev.hasMore,
+        };
+      });
+    } else {
+      return;
+    }
+  };
+  const handleCreatePost = (newPost) => {
+    if (posts.firstTime === true) {
+      setPosts((prev) => {
+        const posts = [...prev.posts];
+        const post = {
+          owner: {
+            userId: getUserId(),
+            firstName: getFullName().split("   ")[0],
+            lastName: getFullName().split("   ")[1],
+            logo: getLogo(),
+          },
+          post: {
+            _idPost: newPost._id,
+            description: newPost.description,
+            assets: newPost.assets,
+            whoCanSee: newPost.whoCanSee,
+            whoCanComment: newPost.whoCanComment,
+            numberOfComments: 0,
+            numberOfLikes: 0,
+            createdAt: newPost.createdAt,
+            updatedAt: newPost.updatedAt,
+            isHeLikedInPost: false,
+            canCommentOrLike: true,
+          },
+
+          isHeOwnerOfPost: true,
+          canUpdate: true,
+          canDelete: true,
+        };
+
+        posts.unshift(post);
+        console.log(posts);
+        return {
+          posts,
+          total: prev.total + 1,
+          hasMore: prev.hasMore,
+          firstTime: prev.firstTime,
+        };
+      });
+    } else {
+      return;
+    }
+  };
+
+  const handleAddNewPhotoAndSet = (asset) => {
+    setMainInformation((prev) => {
+      const info = { ...prev };
+      info.profilePhotos.push({ asset, date: new Date() });
+      return info;
+    });
+  };
+  const handleDeleteCurrentPhotoOrPrevious = (publicId) => {
+    setMainInformation((prev) => {
+      const info = { ...prev };
+      const newProfilePhoto = info.profilePhotos.filter((asset) => {
+        return asset.asset.public_id !== publicId;
+      });
+      info.profilePhotos = [...newProfilePhoto];
+      return info;
+    });
+  };
+  const handleSetPreviousPhotoAsCurrentProfilePhoto = (publicId) => {
+    console.log(publicId);
+    setMainInformation((prev) => {
+      const info = { ...prev };
+      const previousPhoto = info.profilePhotos.find((asset) => {
+        return asset.asset.public_id === publicId;
+      });
+      console.log(previousPhoto);
+      previousPhoto.data = new Date();
+      const newPhotos = info.profilePhotos.filter((asset) => {
+        return asset.asset.public_id !== publicId;
+      });
+
+      newPhotos.push(previousPhoto);
+      console.log(newPhotos);
+      info.profilePhotos = [...newPhotos];
+      return info;
+    });
+  };
   const ctxValue = {
     selectedTap,
     selectTap: handleSelect,
@@ -551,6 +723,15 @@ export default function ProfileContextProvider({ children }) {
     setFriendsRequestRecieve: setFriendsRequestRecieveDirectly,
     RemoveRequestFromFriendsRequestRecieve:
       handleRemoveRequestFromFriendsRequestRecieve,
+    posts,
+    addPosts: handleAddPosts,
+    deletePost____: handleDeletePost,
+    updatePost____: handleUpdatePost,
+    createPost____: handleCreatePost,
+    addNewPhoto: handleAddNewPhotoAndSet,
+    deleteCurrentPhotoOrPrevious: handleDeleteCurrentPhotoOrPrevious,
+    setPreviousPhotoAsCurrentProfilePhoto_:
+      handleSetPreviousPhotoAsCurrentProfilePhoto,
   };
   return (
     <ProfileContext.Provider value={ctxValue}>

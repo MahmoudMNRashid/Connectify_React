@@ -1,4 +1,4 @@
-import CommentCard from "../components/CommentCard";
+import CommentCard from "../components/Post/CommentCard";
 
 const Test = () => {
   return <div style={{backgroundColor:'#eeeeee'}} className="center_In_Page">

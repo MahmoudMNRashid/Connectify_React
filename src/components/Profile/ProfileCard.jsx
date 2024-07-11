@@ -9,7 +9,7 @@ import SkeletonLoaders from "../UI/SkeletonLoaders";
 import useProfile from "../../hooks/UseProfile";
 import { FaUserEdit } from "react-icons/fa";
 import { MainContext, content } from "../../context/MainContext";
-import EditNameModalInstance from "../UI/Modals/EditNameModal";
+import EditNameModalInstance from "../UI/Modals/MainModal";
 import { FaRegEdit } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { BsPersonCheckFill } from "react-icons/bs";
@@ -21,7 +21,7 @@ import { FcAddImage } from "react-icons/fc";
 import { FcEditImage } from "react-icons/fc";
 import { FcRemoveImage } from "react-icons/fc";
 import { FcImageFile } from "react-icons/fc";
-
+import { TbEditCircle } from "react-icons/tb";
 import { PostContext } from "../../context/PostContext";
 const ProfileCard = () => {
   const { mainInformation } = useContext(ProfileContext);
@@ -94,6 +94,10 @@ const ProfileCard = () => {
   )
     ? true
     : false;
+
+  const openModalForHandleTheLogo = () => {
+    openModal("profile", content.HANDLE_LOGO);
+  };
   return (
     <>
       {modalEditNameIsOpen && <EditNameModalInstance />}
@@ -131,7 +135,12 @@ const ProfileCard = () => {
           <div className={style["profile-header-content"]}>
             <div className={style["profile-header-img"]}>
               <img src={logo} alt="" />
-
+              <button
+                className={style.edit__logo}
+                onClick={openModalForHandleTheLogo}
+              >
+                <TbEditCircle />
+              </button>
               <ButtonType
                 isHeOwner={isHeOwner}
                 isHeFriend={isHeFriend}

@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { GroupContext } from "../../context/GroupContext";
-import Post from "../Post";
+import Post from "../Post/Post";
 import classes from "./ReportCard.module.css";
 import { GoReport } from "react-icons/go";
 import defaultProfile from "../../assets/post/profile_default.svg";
@@ -152,7 +152,7 @@ const ReportCard = ({ data, isAdmin }) => {
             </div>
 
             <p>
-              {from.firsName} {from.lastName}
+              {from.firstName} {from.lastName}
             </p>
           </div>
           <button>Visit</button>

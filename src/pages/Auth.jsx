@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
-import { LoginForm } from "../components/Login";
-import Signup from "../components/Signup";
+import { LoginForm } from "../components/Auth/Login";
+import Signup from "../components/Auth/Signup";
 import { Toaster } from "react-hot-toast";
 
 export const Auth = () => {

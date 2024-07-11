@@ -4,13 +4,19 @@ import { getToken } from "../util/help";
 import { useNavigate } from "react-router-dom";
 import { ProfileContext } from "../context/ProfileContext";
 import { GroupContext } from "../context/GroupContext";
+import { PageContext } from "../context/PageContext";
+import { PostContext } from "../context/PostContext";
 
 const useFetchedPost = (url, type) => {
-  const [data, setData] = useState([]);
   const [page, setPage] = useState(2);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [friends, setFriends] = useState({ friends: [], total: 0 });
+  const [result, setResult] = useState({
+    posts: [],
+    total: 0,
+    firstTime: false,
+    hasMore: true,
+  });
   const {
     AddGroupInvites,
     AddPageInvites,
@@ -19,6 +25,8 @@ const useFetchedPost = (url, type) => {
     addOwnedPages,
     addFriendsRequestSend,
     addFriendsRequestRecieve,
+    addPosts: addProfilePosts,
+    posts: profilePosts,
   } = useContext(ProfileContext);
 
   const {
@@ -45,6 +53,23 @@ const useFetchedPost = (url, type) => {
     groupJoiningRequests,
     groupFriendsNotJoin,
   } = useContext(GroupContext);
+
+  const {
+    pagePosts,
+    pageFollowers,
+    pageBlockedUsers,
+    pageFriendsNotJoin,
+    pageModerator,
+    pageRates,
+    addPagePosts,
+    addPageFollowers,
+    addPageBlockedUsers,
+    addPageFriendsNotJoined,
+    addPageModerator,
+    addPageRates,
+  } = useContext(PageContext);
+
+  const { addPosts, posts } = useContext(PostContext);
   const getpostFromFirstPage = useCallback(async () => {
     setLoading(true);
     try {
@@ -53,17 +78,33 @@ const useFetchedPost = (url, type) => {
       });
 
       console.log(response);
-      let posts;
-      if (response.data.aggregationResult) {
-        posts = [...response.data.aggregationResult];
-      } else if (response.data.posts) {
-        posts = [...response.data.posts];
+      if (response.data.posts && url.includes("/search")) {
+        setResult(() => {
+          return {
+            posts: response.data.posts,
+            firstTime: true,
+            hasMore: response.data.extraInfo.hasNextPage,
+            total: response.data.extraInfo.totalItems,
+          };
+        });
+      }
+      if (response.data.homePosts) {
+        addPosts(
+          response.data.homePosts,
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
+        );
       }
 
-      if (response.data.aggregationResult || response.data.posts) {
-        setData((prevData) => [...prevData, ...posts]);
+      if (response.data.posts && url.includes("/profile/posts")) {
+        addProfilePosts(
+          response.data.posts,
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
+        );
       }
-
       if (response.data.followers) {
         setFriends((prev) => {
           const oldFriends = { ...prev };
@@ -207,9 +248,57 @@ const useFetchedPost = (url, type) => {
           true
         );
       }
+      if (response.data.posts && url.includes("/page/posts")) {
+        addPagePosts(
+          response.data.posts,
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
+        );
+      }
+
+      if (response.data.followers && url.includes("/page/followers")) {
+        addPageFollowers(
+          response.data.followers,
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
+        );
+      }
+      if (response.data.blockedUsers && url.includes("/page/usersBlocked")) {
+        addPageBlockedUsers(
+          response.data.blockedUsers,
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
+        );
+      }
+      if (
+        response.data.friendsNotJoin &&
+        url.includes("/page/friendsWhoDidNotLike")
+      ) {
+        addPageFriendsNotJoined(
+          response.data.friendsNotJoin,
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
+        );
+      }
+      if (response.data.moderator && url.includes("/page/moderator")) {
+        addPageModerator(response.data.moderator, 1, false, true);
+      }
+      if (response.data.rates && url.includes("page/rates")) {
+        addPageRates(
+          { rates: response.data.rates, avgRate: response.data.avgRate || 0 },
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
+        );
+      }
 
       setPage((prevPage) => prevPage + 1);
     } catch (error) {
+      console.log(error);
       navigate("/error", {
         state: {
           status: error.response.status,
@@ -220,6 +309,7 @@ const useFetchedPost = (url, type) => {
       setLoading(false);
     }
   }, [
+    url,
     AddGroupInvites,
     AddPageInvites,
     addFriendsRequestRecieve,
@@ -230,7 +320,6 @@ const useFetchedPost = (url, type) => {
     addJoinedPages,
     addOwnedPages,
     navigate,
-    url,
     addGroupAdmins,
     addGroupModerator,
     addGroupReports,
@@ -240,8 +329,25 @@ const useFetchedPost = (url, type) => {
     addGroupYourPinnedPosts,
     addGroupJoiningRequests,
     addGroupFriendsNotJoined,
+    addPagePosts,
+    addPageFollowers,
+    addPageBlockedUsers,
+    addPageFriendsNotJoined,
+    addPageModerator,
+    addPageRates,
+    addPosts,
+    addProfilePosts,
   ]);
   useEffect(() => {
+    if (result.firstTime === true && type === "SEARCH_RESULTS") {
+      return;
+    }
+    if (profilePosts.firstTime === true && type === "PROFILE_POSTS") {
+      return;
+    }
+    if (posts.firstTime === true && type === "HOME_POSTS") {
+      return;
+    }
     if (groupMembers.firstTime === true && type === "MEMBERS") {
       return;
     }
@@ -284,9 +390,34 @@ const useFetchedPost = (url, type) => {
     ) {
       return;
     }
-    getpostFromFirstPage();
+    if (pagePosts.firstTime === true && type === "POSTS_PAGE") {
+      return;
+    }
+    if (pageFollowers.firstTime === true && type === "FOLLOWERS") {
+      return;
+    }
+    if (pageBlockedUsers.firstTime === true && type === "BLOCKED_USERS_PAGE") {
+      return;
+    }
+    if (
+      pageFriendsNotJoin.firstTime === true &&
+      type === "FRIEND_NOT_JOINED_PAGE"
+    ) {
+      return;
+    }
+    if (pageModerator.firstTime === true && type === "MODERATOR_PAGE") {
+      return;
+    }
+    if (pageRates.firstTime === true && type === "RATES") {
+      return;
+    }
+    if (url) {
+      getpostFromFirstPage();
+    }
   }, [
     getpostFromFirstPage,
+    type,
+    url,
     groupMembers,
     groupPosts,
     groupAdmins,
@@ -298,7 +429,15 @@ const useFetchedPost = (url, type) => {
     groupYourPinnedPosts,
     groupJoiningRequests,
     groupFriendsNotJoin,
-    type,
+    pagePosts,
+    pageFollowers,
+    pageBlockedUsers,
+    pageFriendsNotJoin,
+    pageModerator,
+    pageRates,
+    posts,
+    profilePosts,
+    result,
   ]);
 
   const handleScroll = useCallback(async () => {
@@ -322,15 +461,32 @@ const useFetchedPost = (url, type) => {
         const response = await axios.get(url + `?page=${page}`, {
           headers: { Authorization: "Bearer " + getToken() },
         });
-        let posts;
-        if (response.data.aggregationResult) {
-          posts = [...response.data.aggregationResult];
-        } else if (response.data.posts) {
-          posts = [...response.data.posts];
+        if (response.data.posts && url.includes("/search")) {
+          setResult((prev) => {
+            const old = { ...prev };
+            return {
+              posts: [...old.posts, ...response.data.posts],
+              firstTime: true,
+              hasMore: response.data.extraInfo.hasNextPage,
+              total: response.data.extraInfo.totalItems,
+            };
+          });
         }
-
-        if (response.data.aggregationResult || response.data.posts) {
-          setData((prevData) => [...prevData, ...posts]);
+        if (response.data.posts && url.includes("/profile/posts")) {
+          addProfilePosts(
+            response.data.posts,
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
+          );
+        }
+        if (response.data.homePosts) {
+          addPosts(
+            response.data.homePosts,
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
+          );
         }
 
         if (response.data.followers) {
@@ -479,6 +635,52 @@ const useFetchedPost = (url, type) => {
             true
           );
         }
+        if (response.data.posts && url.includes("/page/posts")) {
+          addPagePosts(
+            response.data.posts,
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
+          );
+        }
+        if (response.data.followers && url.includes("/page/followers")) {
+          addPageFollowers(
+            response.data.followers,
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
+          );
+        }
+        if (response.data.blockedUsers && url.includes("/page/usersBlocked")) {
+          addPageBlockedUsers(
+            response.data.blockedUsers,
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
+          );
+        }
+        if (
+          response.data.friendsNotJoin &&
+          url.includes("/page/friendsWhoDidNotLike")
+        ) {
+          addPageFriendsNotJoined(
+            response.data.friendsNotJoin,
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
+          );
+        }
+        if (response.data.moderator && url.includes("/page/moderator")) {
+          addPageModerator(response.data.moderator, 1, false, true);
+        }
+        if (response.data.rates && url.includes("page/rates")) {
+          addPageRates(
+            { rates: response.data.rates, avgRate: response.data.avgRate || 0 },
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
+          );
+        }
         setPage((prevPage) => prevPage + 1);
 
         setLoading(false);
@@ -517,9 +719,26 @@ const useFetchedPost = (url, type) => {
     addGroupJoiningRequests,
     addGroupAdminReports,
     addGroupFriendsNotJoined,
+    addPagePosts,
+    addPageFollowers,
+    addPageBlockedUsers,
+    addPageFriendsNotJoined,
+    addPageModerator,
+    addPageRates,
+    addPosts,
+    addProfilePosts,
   ]);
 
   useEffect(() => {
+    if (!result.hasMore && type === "SEARCH_RESULTS") {
+      return;
+    }
+    if (!profilePosts.hasMore && type === "PROFILE_POSTS") {
+      return;
+    }
+    if (!posts.hasMore && type === "HOME_POSTS") {
+      return;
+    }
     if (!groupMembers.hasMore && type === "MEMBERS") {
       return;
     }
@@ -553,11 +772,31 @@ const useFetchedPost = (url, type) => {
     if (!groupFriendsNotJoin.hasMore && type === "FRIEND_NOT_JOINED") {
       return;
     }
+    if (!pagePosts.hasMore && type === "POSTS_PAGE") {
+      return;
+    }
+    if (!pageFollowers.hasMore && type === "FOLLOWERS") {
+      return;
+    }
+    if (!pageBlockedUsers.hasMore && type === "BLOCKED_USERS_PAGE") {
+      return;
+    }
+    if (!pageFriendsNotJoin.hasMore && type === "FRIEND_NOT_JOINED_PAGE") {
+      return;
+    }
+    if (!pageModerator.hasMore && type === "MODERAOTR_PAGE") {
+      return;
+    }
+    if (!pageRates.hasMore && type === "RATES") {
+      return;
+    }
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [
     handleScroll,
+    type,
+    posts,
     groupMembers,
     groupPosts,
     groupAdmins,
@@ -569,10 +808,17 @@ const useFetchedPost = (url, type) => {
     groupJoiningRequests,
     groupAdminReports,
     groupFriendsNotJoin,
-    type,
+    pagePosts,
+    pageFollowers,
+    pageBlockedUsers,
+    pageFriendsNotJoin,
+    pageModerator,
+    pageRates,
+    profilePosts,
+    result,
   ]);
 
-  return { data, loading, friends };
+  return { loading, result };
 };
 
 export default useFetchedPost;

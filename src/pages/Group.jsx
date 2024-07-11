@@ -35,9 +35,12 @@ import Content__Settings from "../components/Group/Content__Settings";
 import Content__InviteFriend from "../components/Group/Content__InviteFriend";
 import Content__LeaveGroup from "../components/Group/Content__LeaveGroup";
 import { GroupContext } from "../context/GroupContext";
+import { MainContext } from "../context/MainContext";
+import MainModalInstance from "../components/UI/Modals/MainModal";
 const Group = () => {
   const { getgroupInformation } = useGroup();
   const { modalIsOpen, commentsModalIsOpen } = useContext(PostContext);
+  const { modalEditNameIsOpen } = useContext(MainContext);
 
   useEffect(() => {
     getgroupInformation();
@@ -183,7 +186,8 @@ const Group = () => {
   const tabsToDisplay = roleBasedTabs[role] || [];
   return (
     <div className="all">
-      {modalIsOpen && <ModalInstance />}
+      {modalIsOpen && <ModalInstance />}{" "}
+      {modalEditNameIsOpen && <MainModalInstance />}
       {commentsModalIsOpen && <CommentsModalInstance />}
       <Toaster />
       <div className="left">

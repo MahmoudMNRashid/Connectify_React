@@ -6,6 +6,7 @@ import axios from "axios";
 import { getToken, host } from "../util/help";
 import toast from "react-hot-toast";
 import { GroupContext } from "../context/GroupContext";
+import { PostContext } from "../context/PostContext";
 
 const useGroup = () => {
   //context
@@ -17,6 +18,7 @@ const useGroup = () => {
     removeAdminReport,
     removePost,
     removeMemberOrAdmin,
+    removeAllPostsForMember,
     upgradeMember,
     downgradeAdmin,
     unblockMember,
@@ -28,6 +30,8 @@ const useGroup = () => {
     addDescription_,
     addCover_,
   } = useContext(GroupContext);
+
+  const { deleteAllPostsForMember } = useContext(PostContext);
   //hooks
 
   const [isLoading, setIsLoading] = useState(false);
@@ -193,18 +197,28 @@ const useGroup = () => {
     }
   };
 
-  const blockMemberOrAdmin = async (memberId, keepPosts, memberRole) => {
+  const blockMemberOrAdmin = async (
+    memberId,
+    keepPosts,
+    memberRole,
+    groupID,
+  ) => {
     startLoadingAndDisable();
     try {
-      console.log(memberId);
+      console.log(groupId || groupID);
       const response = await axios.post(
         `${host}/group/blockMemberOrAdmin`,
-        { memberId, groupId, keepPosts },
+        { memberId, keepPosts, groupId: groupId || groupID },
         { headers: { Authorization: `Bearer ${getToken()}` } }
       );
       console.log(response);
 
       removeMemberOrAdmin(memberId, memberRole);
+
+      if (keepPosts === 0) {
+        deleteAllPostsForMember(memberId);
+        removeAllPostsForMember(memberId);
+      }
       toast.success(response.data.message);
     } catch (error) {
       console.log(error);
@@ -721,6 +735,39 @@ const useGroup = () => {
       stopLoadingAndDisable();
     }
   };
+
+  const addReport = async (groupId, postId, description) => {
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
+
+    try {
+      const response = await axios.post(
+        `${host}/group/reportPost`,
+        { groupId, postId, description },
+
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
+
+      toast.success(response.data.message, { id: toastId });
+    } catch (error) {
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
+    } finally {
+      stopLoadingAndDisable();
+    }
+  };
   return {
     isLoading,
     getgroupInformation,
@@ -743,6 +790,7 @@ const useGroup = () => {
     inviteFriend,
     leaveGroup,
     deleteGroup,
+    addReport,
   };
 };
 

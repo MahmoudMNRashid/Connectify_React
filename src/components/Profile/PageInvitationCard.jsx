@@ -13,7 +13,7 @@ const PageInvitationCard = ({ invite }) => {
   const { selectTap } = useContext(ProfileContext);
   const { deletePageInvite, isLoading } = useProfile();
   const { acceptPageInvite, isLoading1 } = useProfile();
-  const senderName = invite.sender.firsName + "  " + invite.sender.lastName;
+  const senderName = invite.sender.firstName + "  " + invite.sender.lastName;
   const pageName = invite.page.name;
   const dateInvite = convertDateFormat(invite.inviteDate);
 

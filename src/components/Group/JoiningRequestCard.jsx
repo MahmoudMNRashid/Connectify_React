@@ -12,7 +12,7 @@ const JoiningRequestCard = ({ data }) => {
       ? data.logo.assets.link
       : defaultLogo;
 
-  const fullName = data.firsName + "   " + data.lastName;
+  const fullName = data.firstName + "   " + data.lastName;
   const requestDate = extractDate(data.requestDate);
   const userId = data.userId;
   return (

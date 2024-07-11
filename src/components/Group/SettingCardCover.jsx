@@ -1,6 +1,6 @@
 import { useState } from "react";
 import classes from "./SettingCardCover.module.css";
-import FileInput from "../FileInput";
+import FileInput from "../UI/FileInput";
 import toast from "react-hot-toast";
 import useGroup from "../../hooks/UseGroup";
 const SettingCardCover = ({ result }) => {

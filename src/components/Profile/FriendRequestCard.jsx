@@ -6,7 +6,7 @@ import defaultProfile from "../../assets/post/profile_default.svg";
 import useProfile from "../../hooks/UseProfile";
 import Loader2 from "../UI/Loader2";
 const FriendRequestCard = ({ request, out, me }) => {
-  const name = request.firsName + "  " + request.lastName;
+  const name = request.firstName + "  " + request.lastName;
   const sendDate = extractDate(request.sendingDate);
   const userId = request.userId;
   const logo =

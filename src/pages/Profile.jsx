@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/UI/NavBar";
 import ProfileCard from "../components/Profile/ProfileCard";
 import { ProfileContext } from "../context/ProfileContext";
 import AboutContent from "../components/Profile/AboutContent";
@@ -17,9 +17,12 @@ import JoinedGroupContent from "../components/Profile/JoinedGroupContent";
 import OwnedPagesContent from "../components/Profile/OwnedPagesContent";
 import OutgoingRequestsContent from "../components/Profile/OutgoingRequestsContent";
 import IncomingRequestsContent from "../components/Profile/IncomingRequestsContent";
+import ConfirmModalInstance from "../components/UI/Modals/ConfirmModal";
+import { MainContext } from "../context/MainContext";
 
 const Profile = () => {
   const { selectedTap } = useContext(ProfileContext);
+  const {  confirmModalIsOpen } = useContext(MainContext);
 
   const { modalIsOpen, commentsModalIsOpen } = useContext(PostContext);
   const renderContent = () => {
@@ -58,7 +61,7 @@ const Profile = () => {
     <div>
       {modalIsOpen && <ModalInstance />}
       {commentsModalIsOpen && <CommentsModalInstance />}
-      <Toaster />
+      {confirmModalIsOpen && <ConfirmModalInstance />} <Toaster />
       <NavBar />
       <div className="container__profile">
         <ProfileCard />

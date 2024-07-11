@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { Description } from "@mui/icons-material";
+
 import { createContext, useCallback, useState } from "react";
+import { getFullName, getLogo, getUserId } from "../util/help";
 
 export const GroupContext = createContext({
   groupInformation: {},
@@ -40,7 +41,7 @@ export const GroupContext = createContext({
   addGroupPosts: (newPosts) => {},
   addGroupMembers: (members) => {},
   addGroupAdmins: (admins) => {},
-  addGroupModerator: (admins) => {},
+  addGroupModerator: (moderator) => {},
   addGroupReports: (reports) => {},
   addGroupAdminReports: (reports) => {},
   addGroupBlockedUsers: (blockedUsers) => {},
@@ -52,6 +53,7 @@ export const GroupContext = createContext({
   removeAdminReport: (reportId) => {},
   removePost: (postId) => {},
   removeMemberOrAdmin: (memberId, memberRole) => {},
+  removeAllPostsForMember: (userId) => {},
   upgradeMember: (memberId) => {},
   downgradeAdmin: (adminId) => {},
   unblockMember: (memberId) => {},
@@ -62,6 +64,9 @@ export const GroupContext = createContext({
   changeSetting: (value, type) => {},
   addDescription_: (description) => {},
   addCover_: (cover) => {},
+  deletePost__: (postId) => {},
+  updatePost__: (newPost) => {},
+  createPost__: (newPost) => {},
   //   SearchGroupMembers: (members) => {},
 });
 
@@ -423,6 +428,22 @@ export default function GroupContextProvider({ children }) {
       });
     }
   }, []);
+  const handleRemoveAllPostsForMember = (userId) => {
+    setGroupPosts((prev) => {
+      const posts = prev.posts;
+      const totalPostsBeforeDelete = posts.length;
+
+      const newPosts = posts.filter((post) => post.owner.userId !== userId);
+      const totalPostsAfterDelete = newPosts.length;
+
+      return {
+        posts: newPosts,
+        total: totalPostsBeforeDelete - totalPostsAfterDelete,
+        hasMore: prev.hasMore,
+        firstTime: prev.firstTime,
+      };
+    });
+  };
 
   const handleUpgradeMember = (memberId) => {
     var member;
@@ -578,7 +599,7 @@ export default function GroupContextProvider({ children }) {
 
         members.push({
           userId: userData.userId,
-          firstName: userData.firsName,
+          firstName: userData.firstName,
           lastName: userData.lastName,
           logo: userData.logo,
           joiningDate: new Date(),
@@ -685,7 +706,113 @@ export default function GroupContextProvider({ children }) {
       return info;
     });
   };
+  const handleDeletePost = (postId) => {
+    if(groupPosts.firstTime){setGroupPosts((prev) => {
+      const posts = prev.posts;
+      const newPosts = posts.filter((post) => post.post._idPost !== postId);
 
+      return {
+        posts: newPosts,
+        total: prev.total - 1,
+        hasMore: prev.hasMore,
+        firstTime: prev.firstTime,
+      };
+    });}else{return}
+  }
+  const handleUpdatePost = (newPost) => {
+    if (groupPosts.firstTime) {
+      setGroupPosts((prev) => {
+        const allPosts = [...prev.posts];
+        const post = allPosts.find((p) => {
+          return p.post._idPost === newPost._id;
+        });
+        const oldPost = { ...post };
+
+        oldPost.post.assets = newPost.assets;
+        oldPost.post.description = newPost.description;
+        if (oldPost.whoCanComment) {
+          oldPost.post.whoCanComment = newPost.whoCanComment;
+        }
+        if (oldPost.whoCanSee) {
+          oldPost.post.whoCanSee = newPost.whoCanSee;
+        }
+
+        const newPosts = allPosts.filter((p) => {
+          return p.post._idPost !== newPost._id;
+        });
+
+        newPosts.unshift(oldPost);
+
+        return {
+          posts: newPosts,
+          total: prev.total,
+          firstTime: prev.firstTime,
+          hasMore: prev.hasMore,
+        };
+      });
+    } else {
+      return;
+    }
+  };
+  const handleCreatePost = (newPost) => {
+    if (
+      (groupInformation.immediatePost === "anyoneInGroup" ||
+        groupInformation.role === "moderator" ||
+        groupInformation.role === "admin") &&
+      groupPosts.firstTime === true
+    ) {
+      setGroupPosts((prev) => {
+        const posts = [...prev.posts];
+        const post = {
+          owner: {
+            userId: getUserId(),
+            firstName: getFullName().split("   ")[0],
+            lastName: getFullName().split("   ")[1],
+            logo: getLogo(),
+          },
+          post: {
+            _idPost: newPost._id,
+            description: newPost.description,
+            assets: newPost.assets,
+            whoCanSee: newPost.whoCanSee,
+            whoCanComment: newPost.whoCanComment,
+            numberOfComments: 0,
+            numberOfLikes: 0,
+            createdAt: newPost.createdAt,
+            updatedAt: newPost.updatedAt,
+            isHeLikedInPost: false,
+            userRole: groupInformation.role,
+          },
+          group: {
+            groupId: groupInformation._id,
+            description: groupInformation.description,
+            name: groupInformation.name,
+            cover: groupInformation.cover,
+            yourRoleInGroup: groupInformation.role,
+          },
+          isHeOwnerOfPost: true,
+          canUpdate: true,
+          canDelete: true,
+
+          canReport: false,
+          canBlock: false,
+          canCommentOrLike:
+            groupInformation.role === "not member " ? false : true,
+        };
+
+        posts.unshift(post);
+        console.log(posts);
+        return {
+          posts,
+          total: prev.total + 1,
+          hasMore: prev.hasMore,
+          firstTime: prev.firstTime,
+        };
+      });
+    } else {
+      return;
+    }
+  };
   //   const handleSearchGroupMembers = useCallback((newMembers, total) => {
   //     setGroupMembers((prev) => {
   //       return { members: [...newMembers], total: total };
@@ -720,6 +847,7 @@ export default function GroupContextProvider({ children }) {
     removeAdminReport: handleRemoveAdminReport,
     removePost: handleRemovePost,
     removeMemberOrAdmin: handleRemoveMemberOrAdmin,
+    removeAllPostsForMember: handleRemoveAllPostsForMember,
     upgradeMember: handleUpgradeMember,
     downgradeAdmin: handleDowngradeAdmin,
     addGroupBlockedUsers: handleAddGroupBlockedUsers,
@@ -731,6 +859,9 @@ export default function GroupContextProvider({ children }) {
     changeSetting: handleChangeSetting,
     addDescription_: handleAddDescription,
     addCover_: handleAddCover,
+    deletePost__: handleDeletePost,
+    updatePost__: handleUpdatePost,
+    createPost__: handleCreatePost,
     // SearchGroupMembers: handleSearchGroupMembers,
   };
   return (

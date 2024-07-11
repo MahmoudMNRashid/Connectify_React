@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useCallback, useContext, useState } from "react";
-import { getToken, host } from "../util/help";
+import { getToken, host, localHost } from "../util/help";
 import { useNavigate, useParams } from "react-router-dom";
 import { ProfileContext } from "../context/ProfileContext";
 import toast from "react-hot-toast";
-import { MainContext, content } from "../context/MainContext";
+import { MainContext } from "../context/MainContext";
 
 const useProfile = () => {
   //Hooks
@@ -23,6 +23,9 @@ const useProfile = () => {
     AcceptPageInvite,
     RemoveRequestFromFriendsRequestSend,
     RemoveRequestFromFriendsRequestRecieve,
+    addNewPhoto,
+    deleteCurrentPhotoOrPrevious,
+    setPreviousPhotoAsCurrentProfilePhoto_,
   } = useContext(ProfileContext);
   const { startTheDisable, stopTheDisable, closeModal, closeConfirmModal } =
     useContext(MainContext);
@@ -32,6 +35,15 @@ const useProfile = () => {
   const userId = params.userId;
 
   //Function
+  const startLoadingAndDisable = useCallback(() => {
+    setIsLoading(true);
+    startTheDisable();
+  }, [startTheDisable]);
+
+  const stopLoadingAndDisable = useCallback(() => {
+    setIsLoading(false);
+    stopTheDisable();
+  }, [stopTheDisable]);
   const getMainInformationApi = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -57,8 +69,8 @@ const useProfile = () => {
   }, [addMainInformation, userId, navigate]);
 
   const editNameApi = async (newFirstName, newLastName) => {
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.put(
         `${host}/profile/updatePofileFirstAndLastName`,
@@ -70,9 +82,10 @@ const useProfile = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-      toast.success(response.data.message);
       editName(newFirstName, newLastName);
-      closeModal("n");
+
+      toast.success(response.data.message, { id: toastId });
+      closeModal();
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -85,16 +98,17 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
 
   const updateOrAddBio = async (bio) => {
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.patch(
         `${host}/profile/updateProfileBio`,
@@ -105,9 +119,10 @@ const useProfile = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-      toast.success(response.data.message);
+
       editBio(bio);
-      closeModal(content.ADD_BIO);
+      toast.success(response.data.message, { id: toastId });
+      closeModal();
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -120,10 +135,11 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
 
@@ -323,8 +339,8 @@ const useProfile = () => {
     console.log([assets[0].originalFile ? assets[0].originalFile : assets[0]]);
     formData.append("assets", assets[0].originalFile);
 
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.patch(
         `${host}/profile/updateProfileBackgroundPhoto`,
@@ -333,11 +349,11 @@ const useProfile = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
       if (assets[0].originalFile) {
         editBackgroundImage(response.data.link);
       }
-      closeModal(content.EDIT_BACKGROUND);
+      closeModal();
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -350,10 +366,11 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
 
@@ -669,6 +686,212 @@ const useProfile = () => {
       stopTheDisable();
     }
   };
+  const createPage = async (name, categories) => {
+    setIsLoading(true);
+    startTheDisable();
+    try {
+      const response = await axios.post(
+        `${localHost}/page/createPage`,
+        {
+          name,
+          categories,
+        },
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
+      toast.success(response.data.message);
+      console.log(response);
+      closeModal();
+      navigate(`/page/${response.data.result._id}`);
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
+      stopTheDisable();
+    }
+  };
+  const createGroup = async (name, privacy, visibility) => {
+    console.log(privacy, visibility);
+    setIsLoading(true);
+    startTheDisable();
+    try {
+      const response = await axios.post(
+        `${localHost}/group/createGroup`,
+        {
+          name,
+          privacy,
+          visibility,
+        },
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
+      toast.success(response.data.message);
+      console.log(response);
+      closeModal();
+      navigate(`/group/${response.data.groupId}`);
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
+      stopTheDisable();
+    }
+  };
+  const deleteAccount = async () => {
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
+
+    try {
+      const response = await axios.delete(`${host}/profile/deleteAccount`, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      });
+      console.log(response);
+      toast.success(response.data.message, { id: toastId });
+
+      navigate("/");
+      closeConfirmModal();
+    } catch (error) {
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
+    } finally {
+      stopLoadingAndDisable();
+    }
+  };
+
+  const addNewProfilePhotoAndSet = async (assets) => {
+    const formData = new FormData();
+    formData.append("assets", assets[0].originalFile);
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
+    try {
+      const response = await axios.post(
+        `${host}/profile/addProfilePhotoAndSet`,
+        formData,
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
+
+      toast.success(response.data.message, { id: toastId });
+      addNewPhoto(response.data.photo);
+      closeModal();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
+    } finally {
+      stopLoadingAndDisable();
+    }
+  };
+  const deleteCurrentPhotoOrPreviousPhoto = async (publicId) => {
+    var toastId = toast.loading("Wait...");
+    try {
+      const response = await axios.delete(
+        `${host}/profile/deleteCurrentProfilePhotoOrPreviousPhoto`,
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+          data: { publicId },
+        }
+      );
+
+      toast.success(response.data.message, { id: toastId });
+      deleteCurrentPhotoOrPrevious(publicId);
+      // closeModal();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
+    } finally {
+      stopLoadingAndDisable();
+    }
+  };
+  const setPreviousPhotoAsCurrentProfilePhoto = async (publicID) => {
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
+    try {
+      const response = await axios.post(
+        `${host}/profile/setPreviousPhotoAsCurrentProfilePhoto`,
+        { publicID },
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
+
+      toast.success(response.data.message, { id: toastId });
+      setPreviousPhotoAsCurrentProfilePhoto_(publicID);
+      // closeModal();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
+    } finally {
+      stopLoadingAndDisable();
+    }
+  };
 
   return {
     isLoading,
@@ -688,6 +911,12 @@ const useProfile = () => {
     deleteGroupInvite,
     deletePageInvite,
     acceptPageInvite,
+    createPage,
+    createGroup,
+    deleteAccount,
+    addNewProfilePhotoAndSet,
+    deleteCurrentPhotoOrPreviousPhoto,
+    setPreviousPhotoAsCurrentProfilePhoto,
   };
 };
 export default useProfile;

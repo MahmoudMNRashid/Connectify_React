@@ -12,7 +12,7 @@ export const GroupInvitationCard = ({ invite }) => {
   console.log(invite);
   const { deleteGroupInvite, isLoading } = useProfile();
   const { selectTap } = useContext(ProfileContext);
-  const senderName = invite.sender.firsName + "  " + invite.sender.lastName;
+  const senderName = invite.sender.firstName + "  " + invite.sender.lastName;
   const groupName = invite.group.name;
   const dateInvite = convertDateFormat(invite.inviteDate);
   const description = invite.group.description

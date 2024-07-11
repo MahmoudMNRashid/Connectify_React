@@ -49,7 +49,7 @@ const MiniPostGroup = ({ post, your }) => {
           </div>
           <div className={classes.info}>
             {!your && (
-              <p>{post.owner.firsName + "   " + post.owner.lastName}</p>
+              <p>{post.owner.firstName + "   " + post.owner.lastName}</p>
             )}
             {your && <p>{getFullName()}</p>}
             <span className={classes.date}>

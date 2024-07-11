@@ -1,6 +1,6 @@
 import axios from "axios";
 import { host } from "../util/help";
-import Reset_Password from "../components/Reset_Password";
+import Reset_Password from "../components/Auth/Reset_Password";
 import { Toaster } from "react-hot-toast";
 
 const ResetPassword = () => {

@@ -1,0 +1,80 @@
+.cont {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.cont > button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: rgb(71, 68, 68);
+}
+
+.cont > button:nth-child(1) {
+  position: absolute;
+  left: -4%;
+}
+.cont > button:nth-child(3) {
+  position: absolute;
+  right: -4%;
+}
+.container {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  width: 400px;
+  height: 300px;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.img__container {
+  flex: 1 0 100%;
+  display: flex;
+  /* justify-content: center; */
+  flex-direction: column;
+
+  position: relative;
+}
+
+.img__container img {
+  width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.buttons__container {
+  position: absolute;
+  right: 1%;
+  top: 1%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.buttons__container > button {
+  background: none;
+  border: none;
+  color: #eee;
+  box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
+    rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
+    rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px,
+    rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
+    rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+  font-size: 1.3rem;
+}
+
+.buttons__container > button:nth-child(1) {
+  color: #ff3333;
+}
+.intro {
+    font-size: 0.8rem;
+    color: #a5aebf;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+  }

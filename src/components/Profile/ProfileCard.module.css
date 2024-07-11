@@ -15,32 +15,28 @@
   position: absolute;
   right: 1%;
   top: 1%;
-  font-size:1.7rem;
-  border: none ;
+  font-size: 1.7rem;
+  border: none;
   background: none;
   /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
-
-
 }
 .profile-header-cover > button:nth-of-type(2) {
   position: absolute;
   right: 5%;
   top: 1%;
-  font-size:1.7rem;
-  border: none ;
+  font-size: 1.7rem;
+  border: none;
   background: none;
   /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
-
 }
 .profile-header-cover > button:nth-of-type(3) {
   position: absolute;
   right: 9%;
   top: 1%;
-  font-size:1.7rem;
-  border: none ;
+  font-size: 1.7rem;
+  border: none;
   background: none;
   /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
-
 }
 
 .profile-header-cover img {
@@ -56,8 +52,6 @@
   display: flex;
 
   gap: 1.5rem;
-
-  
 }
 
 .profile-header-img {
@@ -69,18 +63,16 @@
 
   padding: 3px;
   border-radius: 4px;
-
+  position: relative;
 
   background: none;
-  /* background-color: red; */
+
 }
 
 .profile-header-img img {
   max-width: 100%;
-
-
 }
-.profile-header-img> button {
+.profile-header-img > button {
   position: relative;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
@@ -101,7 +93,7 @@
   gap: 0.3rem;
   z-index: 400;
 }
-.profile-header-img> button:hover {
+.profile-header-img > button:hover {
   color: #fff;
   background-color: #138496;
   border-color: #117a8b;
@@ -110,13 +102,13 @@
 .menu {
   position: absolute;
   left: -3%;
-  bottom: -271%;;
+  bottom: -271%;
   z-index: 200;
   background-color: #f9f9f9;
   /* padding: 0.5rem 1rem; */
   width: 100%;
   min-width: 120px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   border-radius: 0.7rem;
   overflow: hidden;
 }
@@ -131,12 +123,11 @@
 
 .menu main {
   color: black;
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-justify-content: center;
-gap: 0.5rem;
-
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.5rem;
 }
 .menu main button {
   border: none;
@@ -149,10 +140,8 @@ gap: 0.5rem;
   width: 100%;
 }
 .menu main button:hover {
-  background-color:#d3d3d3 ;
+  background-color: #d3d3d3;
 }
-
-
 
 .profile-header-info {
   display: flex;
@@ -235,4 +224,19 @@ gap: 0.5rem;
     flex-direction: column;
     justify-content: space-between;
   }
+}
+
+.edit__logo {
+  background: none !important;
+  position: absolute !important;
+  font-size: 1.2rem !important;
+  top: 2px !important;
+  right: 2% !important;
+  width: fit-content !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px,
+    rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px,
+    rgba(0, 0, 0, 0.09) 0px 32px 16px !important; 
+  color: #e2dcdc !important;
 }

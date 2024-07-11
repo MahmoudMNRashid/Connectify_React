@@ -15,10 +15,11 @@
 //     const value = event.target.value;
 //     const filteredNames = groupMembers.members.filter(
 //       (member) =>
-//         member.firsName.toLowerCase().includes(value.toLowerCase()) ||
+//         member.firstName.toLowerCase().includes(value.toLowerCase()) ||
 //         member.lastName.toLowerCase().includes(value.toLowerCase())
 //     );
 
 //     const length = filteredNames.length;
 //     SearchGroupMembers(filteredNames, length);
 //   };
+
