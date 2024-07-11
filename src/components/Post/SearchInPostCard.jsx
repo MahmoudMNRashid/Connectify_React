@@ -33,7 +33,7 @@ const SearchInPostCard = () => {
   const posts = resultSearch.posts;
   useEffect(() => {
     return () => {
-      console.log("first");
+   
       resetResultSearch();
     };
   }, [resetResultSearch]);

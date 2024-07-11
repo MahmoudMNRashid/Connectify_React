@@ -16,12 +16,12 @@ const Content__Reports = () => {
   const { groupReports } = useContext(GroupContext);
 
   const reports = groupReports.reports;
-  console.log(groupReports);
+
   return (
     <>
       <div className="M_A_M__Content__Container">
         {reports.map((report) => {
-            console.log(report.reportId)
+         
           return <ReportCard key={report.reportId||crypto.randomUUID()} data={report} />;
         })}
         {!loading && reports.length === 0 && (

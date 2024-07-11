@@ -9,7 +9,7 @@ import { useContext } from "react";
 import useProfile from "../../hooks/UseProfile";
 import Loader2 from "../UI/Loader2";
 export const GroupInvitationCard = ({ invite }) => {
-  console.log(invite);
+ 
   const { deleteGroupInvite, isLoading } = useProfile();
   const { selectTap } = useContext(ProfileContext);
   const senderName = invite.sender.firstName + "  " + invite.sender.lastName;

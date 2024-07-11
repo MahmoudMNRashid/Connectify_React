@@ -7,14 +7,14 @@ import { Loader } from "../UI/Loader";
 
 const UserTab = ({ query, startSearch }) => {
   const { usersResult,  } = useContext(MainContext);
-  console.log("users", usersResult);
+
   const { loading } = useSearchAll(
     `${host}/profile/searchProfiles?query=${query}`,
     "USER",
     startSearch
   );
 
-  console.log(usersResult);
+ 
   return (
     <div className="conatiner_results">
       {usersResult.users.map((user) => {

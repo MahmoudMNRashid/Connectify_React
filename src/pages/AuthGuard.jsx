@@ -43,7 +43,7 @@ const AuthGuard = ({ children }) => {
     return <Navigate to="/auth" replace />;
   }
 
-  console.log("checked");
+
   return children;
 };
 

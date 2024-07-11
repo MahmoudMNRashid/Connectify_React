@@ -190,7 +190,7 @@ export default function ProfileContextProvider({ children }) {
         case "Date of birth":
           setMainInformation((prev) => {
             const newInfo = { ...prev };
-            console.log(data);
+         
             newInfo.birthDay = data.birthday;
             return newInfo;
           });
@@ -349,26 +349,24 @@ export default function ProfileContextProvider({ children }) {
   const handleAddGroupInvites = useCallback((newInvite, total) => {
     setGroupInvites((prev) => {
       const oldInvites = { ...prev };
-      console.log(newInvite, total);
-      console.log(oldInvites);
+
       const newInvites = {
         invites: [...oldInvites.invites, ...newInvite],
         total: total,
       };
-      console.log(newInvite);
+    
       return newInvites;
     });
   }, []);
   const handleAddPageInvites = useCallback((newInvite, total) => {
     setPageInvites((prev) => {
       const oldInvites = { ...prev };
-      console.log(newInvite, total);
-      console.log(oldInvites);
+     
       const newInvites = {
         invites: [...oldInvites.invites, ...newInvite],
         total: total,
       };
-      console.log(newInvite);
+   
       return newInvites;
     });
   }, []);
@@ -381,7 +379,7 @@ export default function ProfileContextProvider({ children }) {
           invite.idInvite !== idInvite;
         }
       );
-      console.log(invitesWithoutDeletedInvite);
+  
       const newInvites = {
         invites: invitesWithoutDeletedInvite,
         total: oldInvites.total - 1,
@@ -430,7 +428,7 @@ export default function ProfileContextProvider({ children }) {
           invite.idInvite !== idInvite;
         }
       );
-      console.log(invitesWithoutDeletedInvite);
+
       const newInvites = {
         invites: invitesWithoutDeletedInvite,
         total: oldInvites.total - 1,
@@ -510,12 +508,11 @@ export default function ProfileContextProvider({ children }) {
 
   const handleRemoveRequestFromFriendsRequestSend = (userId) => {
     setFriendsRequestSend((prev) => {
-      console.log("prev", prev.requests);
+   
       const newRequests = prev.requests.filter(
         (request) => request.userId !== userId
       );
 
-      console.log("now", newRequests);
       return { requests: newRequests, total: prev.total - 1 };
     });
   };
@@ -537,12 +534,12 @@ export default function ProfileContextProvider({ children }) {
 
   const handleRemoveRequestFromFriendsRequestRecieve = (userId) => {
     setFriendsRequestRecieve((prev) => {
-      console.log("prev", prev.requests);
+  
       const newRequests = prev.requests.filter(
         (request) => request.userId !== userId
       );
 
-      console.log("now", newRequests);
+   
       return { requests: newRequests, total: prev.total - 1 };
     });
     setMainInformation((prev) => {
@@ -635,7 +632,7 @@ export default function ProfileContextProvider({ children }) {
         };
 
         posts.unshift(post);
-        console.log(posts);
+      
         return {
           posts,
           total: prev.total + 1,
@@ -666,20 +663,20 @@ export default function ProfileContextProvider({ children }) {
     });
   };
   const handleSetPreviousPhotoAsCurrentProfilePhoto = (publicId) => {
-    console.log(publicId);
+    
     setMainInformation((prev) => {
       const info = { ...prev };
       const previousPhoto = info.profilePhotos.find((asset) => {
         return asset.asset.public_id === publicId;
       });
-      console.log(previousPhoto);
+
       previousPhoto.data = new Date();
       const newPhotos = info.profilePhotos.filter((asset) => {
         return asset.asset.public_id !== publicId;
       });
 
       newPhotos.push(previousPhoto);
-      console.log(newPhotos);
+     
       info.profilePhotos = [...newPhotos];
       return info;
     });

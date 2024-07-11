@@ -32,12 +32,12 @@ const useLikedUnLikedPost = ({
         ? setLikesNumber((prev) => prev + 1)
         : setLikesNumber((prev) => prev - 1);
 
-      const response = await axios.post(
+     await axios.post(
         `${host}/post/${postType}/${type}`,
         dataType,
         { headers: { Authorization: "Bearer " + getToken() } }
       );
-      console.log(response);
+     
     } catch (error) {
       setIsHeLiked((prev) => !prev);
       type === "likePost"

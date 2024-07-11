@@ -22,7 +22,7 @@ const Add_Edit_Logo_Cover_PageCard = () => {
     defaultAssets = [pageInformation.cover];
   }
   const [selectedAssets, setSelectedAssets] = useState(defaultAssets);
-  console.log(selectedAssets);
+ 
   const [error, setError] = useState("");
 
   const handleRemoveAsset = (index) => {

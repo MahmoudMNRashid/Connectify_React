@@ -15,7 +15,7 @@ const Content__BlockedUsers = () => {
   );
   const { pageBlockedUsers } = useContext(PageContext);
 
-  console.log(pageBlockedUsers);
+
   const blockedUsers = pageBlockedUsers.blockedUsers;
 
   return (

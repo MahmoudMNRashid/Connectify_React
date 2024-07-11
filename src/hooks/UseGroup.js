@@ -59,7 +59,7 @@ const useGroup = () => {
         `${host}/group/mainInformations/${groupId}`,
         { headers: { Authorization: `Bearer ${getToken()}` } }
       );
-      console.log(response);
+   
       addGroupInformation(response.data.mainInfo[0]);
     } catch (error) {
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -91,7 +91,7 @@ const useGroup = () => {
         { groupId },
         { headers: { Authorization: `Bearer ${getToken()}` } }
       );
-      console.log(response);
+  
       handleRequestJoin(response.data.message);
     } catch (error) {
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -116,7 +116,7 @@ const useGroup = () => {
         { groupId },
         { headers: { Authorization: `Bearer ${getToken()}` } }
       );
-      console.log(response);
+   
       handleRequestJoin(response.data.message);
     } catch (error) {
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -166,7 +166,7 @@ const useGroup = () => {
   const deleteAdminReport = async (reportId) => {
     startLoadingAndDisable();
     const toastId = toast.loading("wait....");
-    console.log(reportId);
+  
     try {
       const response = await axios.delete(
         `${host}/group/deleteReportPostFromAdmin`,
@@ -205,13 +205,13 @@ const useGroup = () => {
   ) => {
     startLoadingAndDisable();
     try {
-      console.log(groupId || groupID);
+   
       const response = await axios.post(
         `${host}/group/blockMemberOrAdmin`,
         { memberId, keepPosts, groupId: groupId || groupID },
         { headers: { Authorization: `Bearer ${getToken()}` } }
       );
-      console.log(response);
+     
 
       removeMemberOrAdmin(memberId, memberRole);
 
@@ -239,13 +239,13 @@ const useGroup = () => {
   const unblockAMember = async (memberId) => {
     startLoadingAndDisable();
     try {
-      console.log(memberId);
+    
       const response = await axios.post(
         `${host}/group/unblockMember`,
         { memberId, groupId },
         { headers: { Authorization: `Bearer ${getToken()}` } }
       );
-      console.log(response);
+  
 
       unblockMember(memberId);
       toast.success(response.data.message);
@@ -269,13 +269,13 @@ const useGroup = () => {
   const upgradeMemberToAdmin = async (memberId) => {
     startLoadingAndDisable();
     try {
-      console.log(memberId);
+    
       const response = await axios.post(
         `${host}/group/addAdmin`,
         { memberId, groupId },
         { headers: { Authorization: `Bearer ${getToken()}` } }
       );
-      console.log(response);
+
 
       toast.success(response.data.message);
       upgradeMember(memberId);
@@ -303,7 +303,7 @@ const useGroup = () => {
         { adminId, groupId },
         { headers: { Authorization: `Bearer ${getToken()}` } }
       );
-      console.log(response);
+  
 
       toast.success(response.data.message);
       downgradeAdmin(adminId);
@@ -335,7 +335,7 @@ const useGroup = () => {
           data: { postId, groupId },
         }
       );
-      console.log(response);
+  
       removePost(postId);
       toast.success(response.data.message);
     } catch (error) {
@@ -491,7 +491,7 @@ const useGroup = () => {
     var data;
     switch (type) {
       case "PRIVACY":
-        console.log("first");
+      
         url = `${host}/group/changePrivacy`;
         data = { groupId, privacy: value };
         break;

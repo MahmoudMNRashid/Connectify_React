@@ -19,7 +19,7 @@ import usePost from "../../hooks/UsePost.js";
 import { MainContext, content } from "../../context/MainContext.jsx";
 
 const Post = ({ data, place }) => {
-  // console.log(data);
+
   //Hooks
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);

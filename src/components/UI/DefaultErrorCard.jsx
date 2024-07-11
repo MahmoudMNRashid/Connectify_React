@@ -5,7 +5,7 @@ import _500 from "../../assets/Errors/500.svg";
 import _401 from "../../assets/Errors/401.svg";
 import { Link } from "react-router-dom";
 const DefaultErrorCard = ({ status,message }) => {
-  console.log(status);
+
   let error;
   if (status === 403) {
     error = _403;

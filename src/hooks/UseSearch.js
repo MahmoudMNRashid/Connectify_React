@@ -59,7 +59,7 @@ const useSearch = (url) => {
         const response = await axios.get(url + `&page=${page}`, {
           headers: { Authorization: "Bearer " + getToken() },
         });
-        console.log(response);
+    
         addResultSearch(
           response.data.posts,
           response.data.extraInfo.totalItems,

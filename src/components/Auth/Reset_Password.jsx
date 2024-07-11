@@ -44,7 +44,7 @@ const Reset_Password = () => {
       navigate(`/auth?mode=login`, { replace: true });
       toast.success(response.data.message, { id: toastId });
     } catch (error) {
-      console.log(error);
+    
 
       toast.error(error.response.data.message || "Something went wrong", {
         id: toastId,

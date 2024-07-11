@@ -10,7 +10,7 @@ import useGroup from "../../hooks/UseGroup";
 const GroupMainInfoCard = () => {
   const { groupInformation: data } = useContext(GroupContext);
   const { sendJoinRequest,cancelJoinRequest } = useGroup();
-  console.log(data);
+
 
   const cover =
     data.cover && data.cover.link ? data.cover.link : defaultCoverGroup;

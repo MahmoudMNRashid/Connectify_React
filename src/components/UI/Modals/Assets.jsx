@@ -8,7 +8,7 @@ import { IoMdClose } from "react-icons/io";
 const Modal = () => {
   const { assets, closeModal, addAssets } = useContext(PostContext);
 
-  console.log(assets);
+ 
 
   const handleRemoveAssetsAndCLoseTheModal = () => {
     addAssets([]);

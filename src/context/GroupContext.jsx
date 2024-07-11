@@ -318,11 +318,11 @@ export default function GroupContextProvider({ children }) {
       const reportsLength = prev.total;
       const hasMore = prev.hasMore;
       const firstTime = prev.firstTime;
-      console.log("reports", reports);
+      
       const newReports = reports.filter((report) => {
         return report.reportId !== reportId;
       });
-      console.log("newreports", newReports);
+     
       return {
         reports: newReports,
         total: reportsLength - 1,
@@ -337,11 +337,11 @@ export default function GroupContextProvider({ children }) {
       const reportsLength = prev.total;
       const hasMore = prev.hasMore;
       const firstTime = prev.firstTime;
-      console.log("reports", reports);
+     
       const newReports = reports.filter((report) => {
         return report.reportId !== reportId;
       });
-      console.log("newreports", newReports);
+   
       return {
         reports: newReports,
         total: reportsLength - 1,
@@ -453,11 +453,11 @@ export default function GroupContextProvider({ children }) {
       member = members.find((member) => {
         return member.userId === memberId;
       });
-      console.log("a", members);
+   
       const newMembers = members.filter((member) => {
         return member.userId !== memberId;
       });
-      console.log("first", newMembers);
+    
 
       return { ...prev, members: newMembers, total: total - 1 };
     });
@@ -509,11 +509,11 @@ export default function GroupContextProvider({ children }) {
         return member.userId === memberId;
       });
 
-      console.log(blockedMember);
+  
       const newBLockedMembers = blockedMembers.filter((member) => {
         return member.userId !== memberId;
       });
-      console.log(newBLockedMembers);
+   
       return { ...prev, blockedUsers: newBLockedMembers, total: total - 1 };
     });
 
@@ -580,11 +580,11 @@ export default function GroupContextProvider({ children }) {
       request = prev.requests.find((request) => {
         return request.userId === userData.userId;
       });
-      console.log(prev.requests);
+   
       const newRequests = prev.requests.filter((request) => {
         return request.userId !== userData.userId;
       });
-      console.log(newRequests);
+  
       return {
         requests: newRequests,
         total: prev.total - 1,
@@ -681,7 +681,7 @@ export default function GroupContextProvider({ children }) {
         break;
       case "COVER":
         setGroupInformation((prev) => {
-          console.log(value);
+         
           const info = { ...prev };
           info.cover = value;
           return info;
@@ -801,7 +801,7 @@ export default function GroupContextProvider({ children }) {
         };
 
         posts.unshift(post);
-        console.log(posts);
+        
         return {
           posts,
           total: prev.total + 1,

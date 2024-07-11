@@ -9,6 +9,7 @@ import { useContext } from "react";
 import defaultImageProfile from "../../assets/post/profile_default.svg";
 
 const CommentCard = ({ comment }) => {
+ 
   const owner = comment.owner;
   const commentContent = comment.comment;
   const permission = {

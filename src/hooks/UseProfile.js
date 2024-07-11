@@ -51,7 +51,7 @@ const useProfile = () => {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
       addMainInformation(response.data.mainInfo[0]);
-      console.log(response);
+   
     } catch (error) {
       if (error.response?.status === 403 || error.response?.status === 401) {
         navigate("/error", {
@@ -86,7 +86,7 @@ const useProfile = () => {
 
       toast.success(response.data.message, { id: toastId });
       closeModal();
-      console.log(response);
+
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -123,7 +123,7 @@ const useProfile = () => {
       editBio(bio);
       toast.success(response.data.message, { id: toastId });
       closeModal();
-      console.log(response);
+    
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -159,14 +159,14 @@ const useProfile = () => {
       toast.success(response.data.message);
 
       if (from === "OUTGOING REQUESTS") {
-        console.log("dddd");
+  
         RemoveRequestFromFriendsRequestSend(reciverId);
       }
       if (from === "MAIN INFORMATION") {
         editFriendType("areYouSendFriendRequestToHim-false");
       }
 
-      console.log(response);
+   
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -199,7 +199,7 @@ const useProfile = () => {
       );
       toast.success(response.data.message);
       editFriendType("areYouSendFriendRequestToHim-true");
-      console.log(response);
+
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -232,7 +232,7 @@ const useProfile = () => {
       );
       toast.success(response.data.message);
       editFriendType("isHeFriend-false");
-      console.log(response);
+
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -266,13 +266,13 @@ const useProfile = () => {
       toast.success(response.data.message);
 
       if (from === "INCOMING REQUESTS") {
-        console.log("dddd");
+      
         RemoveRequestFromFriendsRequestRecieve(senderId);
       }
       if (from === "MAIN INFORMATION") {
         editFriendType("isHeFriend-true");
       }
-      console.log(response);
+
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -307,14 +307,14 @@ const useProfile = () => {
       toast.success(response.data.message);
 
       if (from === "INCOMING REQUESTS") {
-        console.log("dddd");
+      
         RemoveRequestFromFriendsRequestRecieve(senderId);
       }
       if (from === "MAIN INFORMATION") {
         editFriendType("isHeSendFriendRequestToYou-false");
       }
 
-      console.log(response);
+     
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -335,8 +335,7 @@ const useProfile = () => {
 
   const updateBackgroundApi = async (assets) => {
     const formData = new FormData();
-    console.log(assets);
-    console.log([assets[0].originalFile ? assets[0].originalFile : assets[0]]);
+   
     formData.append("assets", assets[0].originalFile);
 
     startLoadingAndDisable();
@@ -354,7 +353,7 @@ const useProfile = () => {
         editBackgroundImage(response.data.link);
       }
       closeModal();
-      console.log(response);
+     
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -387,7 +386,7 @@ const useProfile = () => {
       toast.success(response.data.message);
       closeConfirmModal();
       deleteBackgroundImage();
-      console.log(response);
+
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -408,7 +407,7 @@ const useProfile = () => {
   const updateAboutApi = async (desc, data, fn) => {
     startTheDisable();
     let url = `${host}/profile/`;
-    console.log(data);
+   
     switch (desc) {
       case "Gender":
         url = url + "updateProfileGender";
@@ -442,7 +441,7 @@ const useProfile = () => {
       default:
         break;
     }
-    console.log(url);
+ 
     try {
       const response = await axios.put(url, data, {
         headers: { Authorization: `Bearer ${getToken()}` },
@@ -452,7 +451,7 @@ const useProfile = () => {
       // deleteBackgroundImage();
       changeAbout("UPDATE", desc, data);
       fn();
-      console.log(response);
+     
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -475,7 +474,7 @@ const useProfile = () => {
   const deleteAboutApi = async (desc, data, fn) => {
     startTheDisable();
     let url = `http://localhost:8080/profile/`;
-    console.log(desc);
+  
     switch (desc) {
       case "University":
         url = url + "deleteEducationCollege";
@@ -508,7 +507,7 @@ const useProfile = () => {
       toast.success(response.data.message);
       closeConfirmModal();
       // deleteBackgroundImage();
-      console.log(response);
+ 
 
       changeAbout("DELETE", desc);
       fn();
@@ -567,7 +566,7 @@ const useProfile = () => {
       if (desc === "University") {
         data = response.data.college;
       }
-      console.log(response);
+     
       changeAbout("ADD", desc, data);
       fn();
     } catch (error) {
@@ -602,7 +601,7 @@ const useProfile = () => {
       );
       toast.success(response.data.message);
       DeleteGroupInvite(_id);
-      console.log(response);
+   
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -635,7 +634,7 @@ const useProfile = () => {
       );
       toast.success(response.data.message);
       DeletePageInvite(_InvitationId);
-      console.log(response);
+  
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -668,7 +667,7 @@ const useProfile = () => {
       );
       toast.success(response.data.message);
       AcceptPageInvite(idPage);
-      console.log(response);
+
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -701,7 +700,7 @@ const useProfile = () => {
         }
       );
       toast.success(response.data.message);
-      console.log(response);
+    
       closeModal();
       navigate(`/page/${response.data.result._id}`);
     } catch (error) {
@@ -722,7 +721,7 @@ const useProfile = () => {
     }
   };
   const createGroup = async (name, privacy, visibility) => {
-    console.log(privacy, visibility);
+
     setIsLoading(true);
     startTheDisable();
     try {
@@ -738,7 +737,7 @@ const useProfile = () => {
         }
       );
       toast.success(response.data.message);
-      console.log(response);
+   
       closeModal();
       navigate(`/group/${response.data.groupId}`);
     } catch (error) {
@@ -766,7 +765,7 @@ const useProfile = () => {
       const response = await axios.delete(`${host}/profile/deleteAccount`, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
-      console.log(response);
+     
       toast.success(response.data.message, { id: toastId });
 
       navigate("/");
@@ -806,7 +805,7 @@ const useProfile = () => {
       toast.success(response.data.message, { id: toastId });
       addNewPhoto(response.data.photo);
       closeModal();
-      console.log(response);
+        
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -839,7 +838,7 @@ const useProfile = () => {
       toast.success(response.data.message, { id: toastId });
       deleteCurrentPhotoOrPrevious(publicId);
       // closeModal();
-      console.log(response);
+  
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -873,7 +872,7 @@ const useProfile = () => {
       toast.success(response.data.message, { id: toastId });
       setPreviousPhotoAsCurrentProfilePhoto_(publicID);
       // closeModal();
-      console.log(response);
+   
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {

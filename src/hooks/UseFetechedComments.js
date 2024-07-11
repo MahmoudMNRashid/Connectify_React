@@ -60,7 +60,7 @@ const useFetchedComments = () => {
         const response = await axios.get(`${url}?page=${page}`, {
           headers: { Authorization: "Bearer " + getToken() },
         });
-        console.log('second response',response)
+       
         getComments(response.data.comments);
         setPage((prevPage) => prevPage + 1);
       } catch (error) {

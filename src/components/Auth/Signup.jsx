@@ -114,14 +114,14 @@ const Signup = () => {
       });
       toast.success(response.data.message, { id: toastId });
     } catch (error) {
-      console.log(error.response.data.data);
+      
       toast.error(error.response.data.message || "Something went wrong", {
         id: toastId,
       });
     }
     setiIsLoading(false);
   };
-  console.log(formIsValid);
+ 
   return (
     <div className={style.container}>
       <section className={style["section--left"]}>

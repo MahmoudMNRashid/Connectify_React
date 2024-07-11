@@ -48,7 +48,7 @@ const usePage = () => {
       const response = await axios.get(`${host}/page/MainInfo/${pageId}`, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
-      console.log(response);
+   
       addPageInformation(response.data.mainInfo[0]);
     } catch (error) {
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -241,7 +241,7 @@ const usePage = () => {
     startTheDisable();
     const toastId = toast.loading("wait...");
     let url = `${host}/page/`;
-    console.log(data);
+  
     switch (desc) {
       case "Gender":
         url = url + "updateGender";
@@ -278,7 +278,7 @@ const usePage = () => {
       default:
         break;
     }
-    console.log(url);
+
     try {
       const response = await axios.post(url, data, {
         headers: { Authorization: `Bearer ${getToken()}` },
@@ -288,7 +288,7 @@ const usePage = () => {
       // deleteBackgroundImage();
       changeAbout("UPDATE", desc, data);
       fn();
-      console.log(response);
+    
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -315,7 +315,7 @@ const usePage = () => {
     startTheDisable();
     const toastId = toast.loading("wait...");
     let url = `${host}/page/`;
-    console.log(desc);
+    
     switch (desc) {
       case "Gender":
         url = url + "deleteGender";
@@ -358,7 +358,7 @@ const usePage = () => {
       });
       toast.success(response.data.message, { id: toastId });
       closeConfirmModal();
-      console.log(response);
+     
 
       changeAbout("DELETE", desc);
       fn();
@@ -431,7 +431,7 @@ const usePage = () => {
       if (desc === "University") {
         data = response.data.college;
       }
-      console.log(response);
+    
       changeAbout("ADD", desc, data);
       fn();
     } catch (error) {
@@ -664,8 +664,7 @@ const usePage = () => {
     startLoadingAndDisable();
     var toastId = toast.loading("Wait...");
     const formData = new FormData();
-    console.log(assets);
-    console.log([assets[0].originalFile ? assets[0].originalFile : assets[0]]);
+
     formData.append("assets", assets[0].originalFile);
     formData.append("pageId", pageId);
 
@@ -681,7 +680,7 @@ const usePage = () => {
       const response = await axios.post(url, formData, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
-      console.log(response);
+  
       toast.success(response.data.message, { id: toastId });
       editLogoCover(response.data.link, type);
       closeModal();
@@ -711,7 +710,7 @@ const usePage = () => {
         headers: { Authorization: `Bearer ${getToken()}` },
         data: { pageId },
       });
-      console.log(response);
+     
       toast.success(response.data.message, { id: toastId });
 
       navigate("/");

@@ -60,7 +60,7 @@ export const LoginForm = () => {
         password: passwordValue,
       });
 
-      console.log(response);
+  
       toast.success("done", { id: toastId });
 
       const token = response.data.token;
@@ -77,7 +77,7 @@ export const LoginForm = () => {
       const hours = String(date.getHours()).padStart(2, '0');
       const minutes = String(date.getMinutes()).padStart(2, '0');
     const expireDate =`${year}-${month}-${day} ${hours}:${minutes}`
-    console.log(expireDate)
+
       // Get the current date
       let currentDate = new Date();
       // Add 30 days to the current date
@@ -100,7 +100,7 @@ export const LoginForm = () => {
 
       navigate("/", { replace: true });
     } catch (error) {
-      console.log(error.response.data);
+   
       toast.error(error.response.data.message || "Something went wrong", {
         id: toastId,
       });

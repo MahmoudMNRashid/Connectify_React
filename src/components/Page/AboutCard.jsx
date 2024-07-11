@@ -90,7 +90,7 @@ const AboutCard = ({ info }) => {
     desc === "Date of birth"
       ? !valueIsValid
       : !valueIsValid && !valueIsValid2;
-  console.log(disableButton);
+  
 
   const handleCLickAdd = () => {
     setModes((prev) => {

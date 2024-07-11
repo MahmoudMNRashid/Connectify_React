@@ -1,7 +1,7 @@
 import style from "./Loader2.module.css";
 
 const Loader2 = () => {
-  console.log("loadddder 2");
+
   return (
     <div className={style.container}>
       <div className={style.loader}></div>

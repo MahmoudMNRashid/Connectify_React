@@ -18,7 +18,7 @@ const Add_Edit_Bio_PageCard = () => {
 
   const formAdd_Edit_BioIsValid =
     bioInformation.valueIsValid
-  console.log(contentModal) 
+
   const handleAdd_Edit_Bio = () => {
     if (contentModal === content.ADD_BIO_PAGE) {
       addBio(bioInformation.value);

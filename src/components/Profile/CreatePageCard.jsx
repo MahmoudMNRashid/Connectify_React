@@ -24,7 +24,7 @@ const CreatePageCard = () => {
       setError(null);
     }
   };
-  console.log(selected)
+  
   const formIsValid =
     nameInformation.valueIsValid && selected.length < 4 && selected.length > 0;
   const handleCreatePage = () => {

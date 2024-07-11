@@ -6,7 +6,7 @@ import useGroup from "../../hooks/UseGroup";
 const PinnedPostCard = ({ data, your }) => {
   const { groupInformation } = useContext(GroupContext);
   const { acceptPinnedPost, rejectPinnedPost } = useGroup();
-  console.log(data);
+
   const post = {
     postContent: data.post,
     permission: { postType: "group", fromAll: true },

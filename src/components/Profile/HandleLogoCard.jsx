@@ -14,7 +14,7 @@ const HandleLogoCard = () => {
   profilePhotos.forEach((element, index) => {
     element.current = index === 0;
   });
-  console.log(profilePhotos);
+
   const [selectedAssets, setSelectedAssets] = useState([]);
   const [error, setError] = useState("");
   const handleRemoveAsset = (index) => {

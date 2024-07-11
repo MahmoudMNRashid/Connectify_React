@@ -194,7 +194,7 @@ export default function PostContextProvider({ children }) {
           info.role === "admin"
         ) {
           setPosts((prev) => {
-            console.log(newPost);
+        
             const posts = [...prev.posts];
             const post = {
               owner: {
@@ -231,7 +231,7 @@ export default function PostContextProvider({ children }) {
               canBlock: false,
             };
             posts.unshift(post);
-            console.log(posts);
+       
             return {
               posts,
               total: prev.total + 1,
@@ -242,7 +242,7 @@ export default function PostContextProvider({ children }) {
         }
       } else if (place === "page") {
         setPosts((prev) => {
-          console.log(newPost);
+       
           const posts = [...prev.posts];
           const post = {
             owner: {
@@ -274,7 +274,7 @@ export default function PostContextProvider({ children }) {
             canDelete: true,
           };
           posts.unshift(post);
-          console.log(posts);
+       
           return {
             posts,
             total: prev.total + 1,
@@ -284,7 +284,7 @@ export default function PostContextProvider({ children }) {
         });
       } else {
         setPosts((prev) => {
-          console.log(newPost);
+         
           const posts = [...prev.posts];
           const post = {
             owner: {
@@ -311,7 +311,7 @@ export default function PostContextProvider({ children }) {
             canDelete: true,
           };
           posts.unshift(post);
-          console.log(posts);
+       
           return {
             posts,
             total: prev.total + 1,
@@ -411,11 +411,11 @@ export default function PostContextProvider({ children }) {
   const handleUpdateComment = (newComment) => {
     setComments((prev) => {
       const allComments = [...prev];
-      console.log("all", allComments);
+     
       const oldComment = allComments.find((c) => {
         return c.comment.commentId === newComment._id;
       });
-      console.log(oldComment);
+
       oldComment.comment.assets = [...newComment.assets];
       oldComment.comment.description = newComment.description;
 
@@ -426,7 +426,7 @@ export default function PostContextProvider({ children }) {
     setComments((prev) => {
       const fullName = getFullName();
       const isFoundlogo = getLogo();
-      console.log(isFoundlogo);
+
       const logo =
         isFoundlogo !== "undefined" ? { logo: isFoundlogo } : undefined;
       const comment = {
@@ -446,7 +446,7 @@ export default function PostContextProvider({ children }) {
           userId: newComment.userId,
         },
       };
-      console.log(comment);
+ 
       const allComments = [...prev];
 
       return [comment, ...allComments];

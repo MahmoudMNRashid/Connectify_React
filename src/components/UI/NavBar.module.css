@@ -26,6 +26,7 @@
   padding: 0.5rem 2.5rem;
   border: none;
   color: #a5aebf;
+
 }
 .container--search input:focus {
   outline: none;

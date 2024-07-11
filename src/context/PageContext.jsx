@@ -197,7 +197,7 @@ export default function PageContextProvider({ children }) {
     if (firstTime && !hasMore) {
       setPageFollowers((prev) => {
         const data = { ...prev };
-        console.log(data.followers);
+
         data.followers.push({
           userId: getUserId(),
           firstName: getFullName().split("   ")[0],
@@ -291,7 +291,7 @@ export default function PageContextProvider({ children }) {
     if (firstTime && !hasMore) {
       setPageBlockedUsers((prev) => {
         const data = { ...prev };
-        console.log(data.followers);
+     
         data.blockedUsers.push({ ...user, data: new Date() });
 
         return {
@@ -319,30 +319,7 @@ export default function PageContextProvider({ children }) {
       };
     });
 
-    // //For Followers State
-    // let firstTime = pageFollowers.firstTime;
-    // let hasMore = pageFollowers.hasMore;
-    // let length = pageFollowers.followers.length;
-
-    // if (firstTime && !hasMore) {
-    //   setPageFollowers((prev) => {
-    //     const data = { ...prev };
-    //     console.log(data.followers);
-    //     data.followers.push({
-    //       userId: user.userId,
-    //       firstName: user.firstName,
-    //       lastName: user.lastName,
-    //       logo: user.logo,
-    //     });
-
-    //     return {
-    //       followers: data.followers,
-    //       firstTime: firstTime,
-    //       hasMore: hasMore,
-    //       total: length + 1,
-    //     };
-    //   });
-    // }
+  
   };
 
   const handleAbout = (type, desc, data) => {
@@ -358,7 +335,7 @@ export default function PageContextProvider({ children }) {
         case "Date of birth":
           setPageInformation((prev) => {
             const newInfo = { ...prev };
-            console.log(data);
+       
             newInfo.birthDay = data.birthday;
             return newInfo;
           });
@@ -467,7 +444,7 @@ export default function PageContextProvider({ children }) {
           setPageInformation((prev) => {
             const newInfo = { ...prev };
 
-            console.log(data);
+          
             newInfo.education.college[0] = data;
             return newInfo;
           });
@@ -557,7 +534,7 @@ export default function PageContextProvider({ children }) {
       const newRates = rates.filter((rate) => {
         return rate.infoRate.ratingId !== ratingId;
       });
-      console.log(prev.avgRate, prev.total, value);
+      
       const newAvg = +prev.avgRate * +prev.total - +value;
       return {
         rates: newRates,
@@ -589,10 +566,7 @@ export default function PageContextProvider({ children }) {
       };
 
       const newRates = [rate, ...rates];
-      console.log(prev);
-      console.log(prev.avgRate);
-      console.log(newRate.value);
-      console.log(prev.avgRate + newRate.value);
+     
       const newAvg = (prev.avgRate + newRate.value) / (prev.total + 1);
       return {
         rates: newRates,
@@ -709,7 +683,7 @@ export default function PageContextProvider({ children }) {
         };
 
         posts.unshift(post);
-        console.log(posts);
+  
         return {
           posts,
           total: prev.total + 1,

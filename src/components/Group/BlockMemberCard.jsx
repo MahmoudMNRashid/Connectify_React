@@ -9,7 +9,7 @@ const BlockMemberCard = () => {
   const { blockMemberOrAdmin } = useGroup();
   const { deletePost } = usePost();
   const { postInformation } = useContext(PostContext);
-  console.log(postInformation);
+
   const userId = postInformation.owner.userId;
   const userRole = postInformation.postContent.userRole;
   const postId = postInformation.postContent._idPost;

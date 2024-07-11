@@ -15,7 +15,7 @@ const AddReportCard = () => {
   const descriptionInfo = useInput("", (value) => !validator.isEmpty(value));
 
   const formIsValid = descriptionInfo.valueIsValid;
-console.log(postInformation)
+
   const handleAddReport = () => {
     addReport(groupId, postId, descriptionInfo.value);
   };

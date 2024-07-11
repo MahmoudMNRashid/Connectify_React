@@ -37,7 +37,7 @@ const usePost = () => {
   }, [stopTheDisable]);
 
   const deletePost = async (type, postId, pageId, groupId, place) => {
-    console.log("fff");
+  
     const data =
       type === "group"
         ? { groupId, postId }
@@ -149,7 +149,7 @@ const usePost = () => {
       });
 
       toast.success(response.data.message, { id: toastId });
-      console.log(place);
+ 
       closeModal();
       if (place === "group") {
         updatePost__(response.data.post);
@@ -220,8 +220,7 @@ const usePost = () => {
       });
 
       toast.success(response.data.message, { id: toastId });
-      console.log(response);
-      console.log(response.data.post);
+ 
       closeModal();
       if (place === "group") {
         createPost__(JSON.parse(response.data.post));
@@ -250,69 +249,7 @@ const usePost = () => {
       stopLoadingAndDisable();
     }
   };
-//   const searchInPost = async (
-//  word
-//   ) => {
-//     const place = postInformation.place;
 
-
-
-//     if (place === "group") {
-//       formData.append("groupId", groupId);
-//     } else if (place === "page") {
-//       formData.append("pageId", pageId);
-//     }
-
-//     if (place === "page" || place === "profile" || place === "home") {
-//       formData.append("whoCanSee", whoCanSee);
-//       formData.append("whoCanComment", whoCanComment);
-//     }
-
-//     let url = localHost + "/post";
-//     place === "group"
-//       ? (url = url + "/group/createPost")
-//       : place === "page"
-//       ? (url = url + "/page/createPost")
-//       : (url = url + "/profile/createPost");
-
-//     startLoadingAndDisable();
-//     var toastId = toast.loading("Wait...");
-//     try {
-//       const response = await axios.post(url, formData, {
-//         headers: { Authorization: `Bearer ${getToken()}` },
-//       });
-
-//       toast.success(response.data.message, { id: toastId });
-//       console.log(response);
-//       console.log(response.data.post);
-//       closeModal();
-//       if (place === "group") {
-//         createPost__(JSON.parse(response.data.post));
-//         createPost_(JSON.parse(response.data.post), place, groupInformation);
-//       } else if (place === "page") {
-//         createPost___(JSON.parse(response.data.post));
-//         createPost_(JSON.parse(response.data.post), place, pageInformation);
-//       } else if (place === "profile" || place === "home") {
-//         createPost____(JSON.parse(response.data.post));
-//         createPost_(JSON.parse(response.data.post), place);
-//       }
-//     } catch (error) {
-//       if (error.response?.status === 403 || error.response?.status === 401) {
-//         navigate("/error", {
-//           state: {
-//             status: error.response.status,
-//             message: error.response.data.message,
-//           },
-//           replace: true,
-//         });
-//       }
-//       toast.error(error.response?.data.message || "Something went wrong", {
-//         id: toastId,
-//       });
-//     } finally {
-//       stopLoadingAndDisable();
-//     }
-//   };
 
   return {
     isLoading,

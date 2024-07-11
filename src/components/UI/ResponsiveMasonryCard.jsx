@@ -8,7 +8,7 @@ const ResponsiveMasonryCard = ({
   videoConfig,
   children
 }) => {
-console.log(assets)
+
   return (
     <ResponsiveMasonry columnsCountBreakPoints={columnsCountBreakPoints}>
       <Masonry gutter="8px">

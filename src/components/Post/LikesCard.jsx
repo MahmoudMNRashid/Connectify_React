@@ -7,7 +7,7 @@ import useFetchedLikes from "../../hooks/UseFetchedLikes";
 import LikeCard from "./LikeCard";
 const LikesCard = () => {
   const { postInformation } = useContext(PostContext);
-  console.log(postInformation);
+  
   const { likes, resetLikes } = useContext(PostContext);
   let url = `${host}/post/`;
   if (postInformation.groupContent) {

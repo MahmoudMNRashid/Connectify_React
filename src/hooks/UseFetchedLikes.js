@@ -59,7 +59,7 @@ const useFetchedLikes = (url) => {
         const response = await axios.get(url + `&page=${page}`, {
           headers: { Authorization: "Bearer " + getToken() },
         });
-        console.log(response);
+    
         addLikes(
           response.data.likes,
           response.data.extraInfo.totalItems,

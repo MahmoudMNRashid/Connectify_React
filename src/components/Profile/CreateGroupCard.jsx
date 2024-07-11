@@ -25,11 +25,10 @@ const CreateGroupCard = () => {
     { label: "hidden", value: "hidden" },
     { label: "visible", value: "visible" },
   ];
-  console.log(selectedPrivacy);
-  console.log(selectedVisibility);
+
   const handleSelectPrivacyChange = (selectedOption) => {
     setSelectedPrivacy(selectedOption.value);
-    console.log(selectedOption);
+  
     if (selectedOption.value === "public" && selectedVisibility === "hidden") {
       setError("you cannot select public because the visibility is hidden");
     } else {
@@ -38,7 +37,7 @@ const CreateGroupCard = () => {
   };
   const handleSelectVisibilityChange = (selectedOption) => {
     setSelectedVisibility(selectedOption.value);
-    console.log(selectedOption);
+   
     if (selectedOption.value === "hidden" && selectedPrivacy === "public") {
       setError("you cannot select hidden because the privacy is public");
     } else {

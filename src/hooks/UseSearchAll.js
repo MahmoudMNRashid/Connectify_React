@@ -23,7 +23,7 @@ const useSearchAll = (url, type, startSearch) => {
         headers: { Authorization: "Bearer " + getToken() },
       });
 
-      console.log(response);
+     
       if (response.data.pages && type === "PAGE") {
         addPagesResult(
           response.data.pages,
@@ -95,7 +95,7 @@ const useSearchAll = (url, type, startSearch) => {
         const response = await axios.get(url + `&page=${page}`, {
           headers: { Authorization: "Bearer " + getToken() },
         });
-        console.log(response);
+       
         if (response.data.pages && type === "PAGE") {
           addPagesResult(
             response.data.pages,

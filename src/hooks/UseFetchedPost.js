@@ -77,7 +77,7 @@ const useFetchedPost = (url, type) => {
         headers: { Authorization: "Bearer " + getToken() },
       });
 
-      console.log(response);
+     
       if (response.data.posts && url.includes("/search")) {
         setResult(() => {
           return {
@@ -121,7 +121,7 @@ const useFetchedPost = (url, type) => {
         response.data.Invites &&
         url.includes("getInvitationsSentToMeFromGroups")
       ) {
-        console.log("dasdasdasda");
+     
         AddGroupInvites(
           response.data.Invites,
           response.data.extraInfo.totalItems
@@ -505,7 +505,7 @@ const useFetchedPost = (url, type) => {
           response.data.Invites &&
           url.includes("getInvitationsSentToMeFromGroups")
         ) {
-          console.log("dasddadads");
+          
           AddGroupInvites(
             response.data.Invites,
             response.data.extraInfo.totalItems

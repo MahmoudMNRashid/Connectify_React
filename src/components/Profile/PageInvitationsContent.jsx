@@ -14,7 +14,7 @@ const PageInvitationsContent = () => {
   );
 
   const { pageInvites } = useContext(ProfileContext);
-  console.log(pageInvites);
+ 
   return (
     <div className="container__profile">
       <header className={classes.header}>

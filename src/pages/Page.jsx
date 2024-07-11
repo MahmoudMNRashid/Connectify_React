@@ -40,7 +40,7 @@ const Page = () => {
     getPageInformation();
   }, [getPageInformation]);
   const { pageInformation } = useContext(PageContext);
-  console.log(pageInformation);
+
   const role = pageInformation.role;
   const [activeTab, setActiveTab] = useState(0);
   const allTabs = [

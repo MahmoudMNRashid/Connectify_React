@@ -30,14 +30,14 @@ const AddRateCard = () => {
       return rate.from.userId === getUserId();
     })[0];
 
-    console.log(rate);
+  
   }
 
   const [star, setStar] = useState(
     contentModal === content.EDIT_RATE ? rate.infoRate.value : 0
   );
   const handleAddStar = (index) => {
-    console.log(index);
+ 
     setStar(index);
   };
 

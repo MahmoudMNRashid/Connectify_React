@@ -28,7 +28,7 @@ const useComments = (
 
   const handleApiCreateComment = async (event) => {
     event.preventDefault();
-    console.log(selectedAssets);
+ 
 
     const formData = new FormData();
 
@@ -68,7 +68,7 @@ const useComments = (
       const miniPost = document.getElementById("miniPost");
       const allCommentsDiv = document.getElementById("allComments");
       allCommentsDiv.scrollTop = miniPost.offsetHeight;
-      console.log(response);
+    
     } catch (error) {
       console.log(error);
 
@@ -194,7 +194,7 @@ const useComments = (
       addActiveupdatedComment({});
 
       toast.success(response.data.message);
-      console.log(response);
+  
       updateComment(response.data.comment);
     } catch (error) {
       console.log(error);

@@ -125,7 +125,7 @@ export default function MainContextProvider({ children }) {
   const [activeFn, setActiveFn] = useState(null);
 
   const handleOpenconfirmModal = (fn) => {
-    console.log("first");
+ 
     setConfirmModalIsOpen(true);
     setActiveFn(() => fn);
   };
