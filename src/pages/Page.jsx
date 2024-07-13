@@ -29,50 +29,61 @@ import MainModalInstance from "../components/UI/Modals/MainModal";
 import { MainContext } from "../context/MainContext";
 import Content__About from "../components/Page/Content__About";
 import ConfirmModalInstance from "../components/UI/Modals/ConfirmModal";
+import SkeletonLoadersMainPage from "../components/UI/SkeletonLoadersMainPage";
+import SkeletonLoadersTabsPage from "../components/UI/SkeletonLoadersTabsPage";
+import AuthGuard from "./AuthGuard";
 
 const Page = () => {
   const { modalEditNameIsOpen, confirmModalIsOpen } = useContext(MainContext);
 
-  const { getPageInformation } = usePage();
+  const { getPageInformation, isLoading } = usePage();
   const { modalIsOpen, commentsModalIsOpen } = useContext(PostContext);
 
   useEffect(() => {
     getPageInformation();
   }, [getPageInformation]);
-  const { pageInformation } = useContext(PageContext);
+  const { pageInformation,resetPageStates } = useContext(PageContext);
+
+  useEffect(() => {
+    
+  
+    return () => {
+      resetPageStates()
+    }
+  }, [resetPageStates])
 
   const role = pageInformation.role;
   const [activeTab, setActiveTab] = useState(0);
   const allTabs = [
-    { icon: FaHome, tooltip: "Home", content: <div>home</div> },
-    { icon: FaFileAlt, tooltip: "Posts", content: <Content__Posts /> },
-    { icon: FaUserCog, tooltip: "Moderator", content: <Content__Moderator /> },
-    { icon: FaUsers, tooltip: "Followers", content: <Content__Followers /> },
+    { icon: FaHome, tooltip: "Home", content:   <AuthGuard><div>home</div> </AuthGuard>},
+    { icon: FaFileAlt, tooltip: "Posts", content:   <AuthGuard><Content__Posts /></AuthGuard> },
+    { icon: FaUserCog, tooltip: "Moderator", content:   <AuthGuard><Content__Moderator /></AuthGuard> },
+    { icon: FaUsers, tooltip: "Followers", content:   <AuthGuard><Content__Followers /> </AuthGuard>},
     {
       icon: FaUsersSlash,
       tooltip: "Blocked Users",
-      content: <Content__BlockedUsers />,
+      content:   <AuthGuard><Content__BlockedUsers /></AuthGuard>,
     },
 
     {
       icon: IoSettingsSharp,
       tooltip: "Settings",
-      content: <Content__Settings />,
+      content:  <AuthGuard> <Content__Settings /></AuthGuard>,
     },
     {
       icon: FaUserPlus,
       tooltip: "Invite Friend",
-      content: <Content__InviteFriend />,
+      content:  <AuthGuard> <Content__InviteFriend /></AuthGuard>,
     },
     {
       icon: GiStarsStack,
       tooltip: "Rates",
-      content: <Content__Rates />,
+      content:  <AuthGuard> <Content__Rates /></AuthGuard>,
     },
     {
       icon: FaCircleInfo,
       tooltip: "About",
-      content: <Content__About />,
+      content:  <AuthGuard> <Content__About /></AuthGuard>,
     },
   ];
 
@@ -115,18 +126,26 @@ const Page = () => {
       {confirmModalIsOpen && <ConfirmModalInstance />}
       <Toaster />
       <div className="left">
-        <Tabs
-          tabs={tabsToDisplay}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-        />
+        {!isLoading && (
+          <Tabs
+            tabs={tabsToDisplay}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
+        )}
+        {isLoading && <SkeletonLoadersTabsPage />}
       </div>
       <div className="right">
         <div className="top">
-          <PageMainInfoCard />
+          {!isLoading && <PageMainInfoCard />}
+          {isLoading && <SkeletonLoadersMainPage />}
         </div>
         <div className="bottom">
-          <div className="tab-content">{tabsToDisplay[activeTab]?.content}</div>
+          {!isLoading && (
+            <div className="tab-content">
+              {tabsToDisplay[activeTab]?.content}
+            </div>
+          )}{" "}
         </div>
       </div>
     </div>

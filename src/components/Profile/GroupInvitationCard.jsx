@@ -9,7 +9,6 @@ import { useContext } from "react";
 import useProfile from "../../hooks/UseProfile";
 import Loader2 from "../UI/Loader2";
 export const GroupInvitationCard = ({ invite }) => {
- 
   const { deleteGroupInvite, isLoading } = useProfile();
   const { selectTap } = useContext(ProfileContext);
   const senderName = invite.sender.firstName + "  " + invite.sender.lastName;
@@ -34,6 +33,7 @@ export const GroupInvitationCard = ({ invite }) => {
   const groupId = invite.group.groupId;
   const userId = invite.sender.userId;
   const idInvite = invite.idInvite;
+
   return (
     <div className={classes.container}>
       <div className={classes.background__logo}>

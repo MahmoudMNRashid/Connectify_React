@@ -62,7 +62,7 @@ position: relative;
 .main__content {
   /* height: 45vh; */
   min-height: 45vh;
-  padding-bottom: 2rem;
+  /* padding-bottom: 2rem; */
   overflow: auto;
   
 }

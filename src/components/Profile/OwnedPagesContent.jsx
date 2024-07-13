@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import useFetchedPost from "../../hooks/UseFetchedPost";
 import { host } from "../../util/help";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ProfileContext } from "../../context/ProfileContext";
 import SkeletonLoader2 from "../UI/SkeletonLoader2";
 import { MdOutlineContactPage } from "react-icons/md";
@@ -9,15 +9,13 @@ import classes from "./FriendsContent.module.css";
 import PageInfoCard from "./PageInfoCard";
 const OwnedPagesContent = () => {
     const { userId } = useParams();
-    const { loading } = useFetchedPost(`${host}/profile/getPagesIOwned/${userId}`);
-    const { ownedPages, setOwnedPages } = useContext(ProfileContext);
+    const { loading } = useFetchedPost(`${host}/profile/getPagesIOwned/${userId}`,'OWNED_PAGES');
+    const { ownedPages } = useContext(ProfileContext);
   
     const totalPages = ownedPages?.total || 0;
     const pages = ownedPages?.pages || [];
 
-    useEffect(() => {
-        setOwnedPages({ pages: [], total: 0 });
-    }, [setOwnedPages]);
+
     const skeletonLoaders = Array.from({ length: 20 }).map((_, index) => (
       <SkeletonLoader2 key={index} />
     ));

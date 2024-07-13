@@ -19,7 +19,6 @@ import usePost from "../../hooks/UsePost.js";
 import { MainContext, content } from "../../context/MainContext.jsx";
 
 const Post = ({ data, place }) => {
-
   //Hooks
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -48,6 +47,9 @@ const Post = ({ data, place }) => {
   const handleMoveToPage = () => {
     navigate(`/page/${pageContent.pageId}`);
   };
+  const handleMoveToProfile = () => {
+    navigate(`/profile/${owner.userId}`);
+  };
   const handleToggleText = () => {
     setIsExpanded(!isExpanded);
   };
@@ -65,6 +67,7 @@ const Post = ({ data, place }) => {
           src={groupContent.cover ? groupContent.cover.link : defaultImageGroup}
         />
         <img
+          onClick={handleMoveToProfile}
           src={
             data.owner.logo ? data.owner.logo.asset.link : defaultImageProfile
           }
@@ -77,7 +80,10 @@ const Post = ({ data, place }) => {
     );
   } else if (permission.postType === "profile") {
     contentImage = (
-      <img src={owner.logo ? owner.logo.asset.link : defaultImageProfile} />
+      <img
+        onClick={handleMoveToProfile}
+        src={owner.logo ? owner.logo.asset.link : defaultImageProfile}
+      />
     );
   } else {
     contentImage = (
@@ -90,9 +96,11 @@ const Post = ({ data, place }) => {
 
   const contentName =
     permission.postType === "group" || permission.postType === "profile" ? (
-      <p>{owner.firstName + "   " + owner.lastName}</p>
+      <p onClick={handleMoveToProfile}>
+        {owner.firstName + "   " + owner.lastName}
+      </p>
     ) : (
-      <p>{pageContent.name}</p>
+      <p onClick={handleMoveToPage}>{pageContent.name}</p>
     );
 
   let contentDate;

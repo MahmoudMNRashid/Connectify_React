@@ -7,7 +7,7 @@ import { PostContext } from "../context/PostContext";
 const useFetchedComments = () => {
   const [page, setPage] = useState(2);
   const [loading, setLoading] = useState(false);
-  const { postInformation, getComments } = useContext(PostContext);
+  const { postInformation, getComments, comments } = useContext(PostContext);
 
   const navigate = useNavigate();
   let url = host + "/post";
@@ -22,46 +22,57 @@ const useFetchedComments = () => {
     : (url =
         url +
         `/profile/comments/${postInformation.owner.userId}/${postInformation.postContent._idPost}`);
-  useEffect(() => {
-    const getCommentsFromFirstPage = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(url + "?page=1", {
-          headers: { Authorization: "Bearer " + getToken() },
-        });
-        getComments(response.data.comments);
-      } catch (error) {
-        console.log(error);
-        // navigate("/error", {
-        //   state: {
-        //     status: error.response.status,
-        //     message: error.response.data.message,
-        //   },
-        // });
-      } finally {
-        setLoading(false);
-      }
-    };
+  const getCommentsFromFirstPage = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(url + "?page=1", {
+        headers: { Authorization: "Bearer " + getToken() },
+      });
 
+      getComments(
+        response.data.comments,
+        response.data.extraInfo.totalItems,
+        response.data.extraInfo.hasNextPage,
+        true
+      );
+    } catch (error) {
+      console.log(error);
+      // navigate("/error", {
+      //   state: {
+      //     status: error.response.status,
+      //     message: error.response.data.message,
+      //   },
+      // });
+    } finally {
+      setLoading(false);
+    }
+  }, [url, getComments]);
+  useEffect(() => {
+    if (comments.firstTime === true) {
+      return;
+    }
     getCommentsFromFirstPage();
-  }, [navigate, url, getComments]);
+  }, [getCommentsFromFirstPage, comments]);
 
   const handleScroll = useCallback(async () => {
-    const target =document.getElementById("allComments");
+    const target = document.getElementById("allComments");
     const scrollTop = target.scrollTop;
     const scrollHeight = target.scrollHeight;
     const clientHeight = target.clientHeight;
-    const scrolledToBottom =
-      Math.ceil(scrollTop + clientHeight) >= scrollHeight;
 
-    if (scrolledToBottom && !loading) {
+    if (scrollTop + clientHeight >= scrollHeight - 20 && !loading) {
       setLoading(true);
       try {
         const response = await axios.get(`${url}?page=${page}`, {
           headers: { Authorization: "Bearer " + getToken() },
         });
-       
-        getComments(response.data.comments);
+
+        getComments(
+          response.data.comments,
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
+        );
         setPage((prevPage) => prevPage + 1);
       } catch (error) {
         navigate("/error", {
@@ -74,15 +85,17 @@ const useFetchedComments = () => {
         setLoading(false);
       }
     }
-  }, [navigate,loading, page, url,getComments]);
+  }, [navigate, loading, page, url, getComments]);
   useEffect(() => {
+    if (!comments.hasMore) {
+      return;
+    }
     const mainContent = document.getElementById("allComments");
-
     mainContent.addEventListener("scroll", handleScroll);
-    return () =>  mainContent.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+    return () => mainContent.removeEventListener("scroll", handleScroll);
+  }, [handleScroll, comments]);
 
-  return {  loading };
+  return { loading };
 };
 
 export default useFetchedComments;

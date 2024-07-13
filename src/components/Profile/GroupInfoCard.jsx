@@ -15,17 +15,17 @@ const GroupInfoCard = ({ group }) => {
   return (
     <div className={classes.container}>
       <div className={classes.left}>
-        <div onClick={handleMoveToGroup} className={classes.img}>
+        <div className={classes.img}>
           <img src={groupCover} />
         </div>
         <div className={classes.info}>
-          <p onClick={handleMoveToGroup}> {name}</p>
+          <p> {name}</p>
           <p> {description}</p>
         </div>
       </div>
 
       <div className={classes.right}>
-        <button>Visit</button>
+        <button onClick={handleMoveToGroup}>Visit</button>
       </div>
     </div>
   );

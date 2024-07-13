@@ -1,14 +1,17 @@
 import classes from "./PageInfoCard.module.css";
 import defaultPage from "../../assets/post/page_default.svg";
+import { useNavigate } from "react-router-dom";
 
 const PageInfoCard = ({ page }) => {
   console.log(page);
-  const logoPage =
-    page.logo && page.logo.link
-      ? page.logo.link
-      : defaultPage;
+  const logoPage = page.logo && page.logo.link ? page.logo.link : defaultPage;
 
   const name = page.name;
+  const pageId = page.pageId;
+  const navigate = useNavigate();
+  const handleNavigateToPage = () => {
+    navigate(`/page/${pageId}`);
+  };
   return (
     <div className={classes.container}>
       <div className={classes.left}>
@@ -19,7 +22,7 @@ const PageInfoCard = ({ page }) => {
       </div>
 
       <div className={classes.right}>
-        <button>Visit</button>
+        <button onClick={handleNavigateToPage}>Visit</button>
       </div>
     </div>
   );

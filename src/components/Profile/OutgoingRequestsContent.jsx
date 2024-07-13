@@ -10,21 +10,28 @@ import { LuGitPullRequestClosed } from "react-icons/lu";
 const OutgoingRequestsContent = () => {
   const { userId } = useParams();
   const { loading } = useFetchedPost(
-    `${host}/profile/friendsRequestSentByMe/${userId}`
+    `${host}/profile/friendsRequestSentByMe/${userId}`,
+    "OUTGOING_REQUESTS"
   );
-  const { friendsRequestSend, setFriendsRequestSend } =
+  const { friendsRequestSend } =
     useContext(ProfileContext);
   const totalRequests = friendsRequestSend?.total || 0;
   const requests = friendsRequestSend?.requests || [];
 
-  useEffect(() => {
-    setFriendsRequestSend({ requests: [], total: 0 });
-  }, [setFriendsRequestSend]);
+
 
   const skeletonLoaders = Array.from({ length: 20 }).map((_, index) => (
     <SkeletonLoader2 key={index} />
   ));
 
+  useEffect(() => {
+    console.log('start')
+  
+    return () => {
+    console.log('finish')  
+    }
+  },[])
+  
   return (
     <div className="container__profile">
       <header className={classes.header}>

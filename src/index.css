@@ -13,10 +13,19 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: lightslategray;
+  border-radius: 12px;
 }
 
 

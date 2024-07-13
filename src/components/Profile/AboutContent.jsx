@@ -7,6 +7,7 @@ import useProfile from "../../hooks/UseProfile";
 
 const AboutContent = () => {
   const { mainInformation } = useContext(ProfileContext);
+  const isHeOwner = mainInformation.isHeOwner;
   const { deleteAccount } = useProfile();
   const convertedInformation = extractAndConvertDataProfile(mainInformation);
   const { openConfirmModal } = useContext(MainContext);
@@ -35,9 +36,11 @@ const AboutContent = () => {
             return <InfoCard key={info.icon} info={info} />;
           }
         })}
-        <div className="delete__page">
-          <button onClick={handleDeletePage}>Delete My account</button>
-        </div>
+        {isHeOwner && (
+          <div className="delete__page">
+            <button onClick={handleDeletePage}>Delete My account</button>
+          </div>
+        )}
       </div>
     </div>
   );

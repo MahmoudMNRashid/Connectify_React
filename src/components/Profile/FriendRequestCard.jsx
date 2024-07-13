@@ -5,6 +5,9 @@ import { extractDate } from "../../util/help";
 import defaultProfile from "../../assets/post/profile_default.svg";
 import useProfile from "../../hooks/UseProfile";
 import Loader2 from "../UI/Loader2";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { ProfileContext } from "../../context/ProfileContext";
 const FriendRequestCard = ({ request, out, me }) => {
   const name = request.firstName + "  " + request.lastName;
   const sendDate = extractDate(request.sendingDate);
@@ -28,17 +31,23 @@ const FriendRequestCard = ({ request, out, me }) => {
   const handleAcceptRequest = () => {
     acceptfriendApi(userId, "INCOMING REQUESTS");
   };
+  const navigate = useNavigate();
+  const { resetAllStates } = useContext(ProfileContext);
+  const handleNavigateToProfile = () => {
+    navigate(`/profile/${userId}`);
+    resetAllStates();
+  };
   return (
     <div className={classes.container}>
       <div className={classes.info}>
         <div className={classes.img}>
-          <img src={logo} />
+          <img src={logo} onClick={handleNavigateToProfile} />
         </div>
 
         <div className={classes.texts}>
           <div className={classes.text}>
             <IoPersonCircle fontSize={"1.7rem"} />
-            <p>{name}</p>
+            <p onClick={handleNavigateToProfile}>{name}</p>
           </div>
           <div className={classes.text}>
             <IoIosTime fontSize={"1.7rem"} />

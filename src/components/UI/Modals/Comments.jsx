@@ -10,6 +10,7 @@ import useFetchedComments from "../../../hooks/UseFetechedComments";
 import Loader2 from "../Loader2";
 import { MainContext } from "../../../context/MainContext";
 const CommentsModal = () => {
+  const { loading } = useFetchedComments();
   const { closeModal, comments, addActiveupdatedComment, changeModeToCreate } =
     useContext(PostContext);
 
@@ -20,10 +21,8 @@ const CommentsModal = () => {
     document.body.classList.remove("hide__scroll");
   };
 
-  const { loading } = useFetchedComments();
-
   const { disableIsActive } = useContext(MainContext);
-
+const commentsa = comments?.comments
   return (
     <>
       <button
@@ -46,7 +45,7 @@ const CommentsModal = () => {
             <MiniPost />
           </section>
           <section>
-            {comments.map((comment) => {
+            {commentsa?.map((comment) => {
               return (
                 <CommentCard
                   key={comment.comment.commentId}
@@ -54,6 +53,20 @@ const CommentsModal = () => {
                 />
               );
             })}
+            {!loading &&commentsa?.length === 0 && (
+              <p
+                style={{
+                  fontSize: "1rem",
+                  padding: "2rem",
+                  boxShadow:
+                    "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+                display:'flex',
+                justifyContent:'center'
+                }}
+              >
+                No Comments
+              </p>
+            )}
             {loading && <Loader2 />}
           </section>
         </div>

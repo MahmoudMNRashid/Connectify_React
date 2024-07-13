@@ -13,6 +13,7 @@ import { Tooltip } from "react-tooltip";
 import { MainContext, content } from "../../context/MainContext";
 import { MdAdd, MdOutlineModeEdit } from "react-icons/md";
 import { PostContext } from "../../context/PostContext";
+
 const PageMainInfoCard = () => {
   const { openModal } = useContext(MainContext);
   const { addAssets, openModal: openAssetsModal } = useContext(PostContext);
@@ -27,6 +28,7 @@ const PageMainInfoCard = () => {
 
   //   const isHeOwner = pageInformation.isHeOwner;
   const isHeFollowers = pageInformation.isHeFollowers;
+  const isHeOwner = pageInformation.isHeOwner;
   const bio = pageInformation.bio;
   const categories = pageInformation.categories;
   const finalCategories = categories?.join(",");
@@ -70,9 +72,10 @@ const PageMainInfoCard = () => {
     document.body.classList.add("hide__scroll");
   };
   return (
+    <>
     <div className={styles.container}>
       <div className={styles.cover__logo__section}>
-        {pageInformation.cover && (
+        {pageInformation.cover && isHeOwner && (
           <button
             className={styles.cover__edit__button}
             onClick={openEditCoverModal}
@@ -80,7 +83,7 @@ const PageMainInfoCard = () => {
             <MdOutlineModeEdit />
           </button>
         )}
-        {!pageInformation.cover && (
+        {!pageInformation.cover && isHeOwner && (
           <button
             className={styles.cover__edit__button}
             onClick={openAddCoverModal}
@@ -96,7 +99,7 @@ const PageMainInfoCard = () => {
 
         <div className={styles.logo}>
           <img src={logo} onClick={handleAddLogoToContextAndOpenTheModal} />
-          {pageInformation.logo && (
+          {pageInformation.logo && isHeOwner && (
             <button
               className={styles.logo__edit__button}
               onClick={openEditLogoModal}
@@ -124,8 +127,8 @@ const PageMainInfoCard = () => {
             <div>
               <BsCardHeading fontSize={"2rem"} color="#76aaad" />
               {bio && <p>{bio}</p>}
-              {bio && <FaEdit onClick={openEditBioModal} />}
-              {!bio && (
+              {bio && isHeOwner && <FaEdit onClick={openEditBioModal} />}
+              {!bio && isHeOwner && (
                 <span>
                   <IoMdAdd
                     data-tooltip-id="tttt"
@@ -140,13 +143,15 @@ const PageMainInfoCard = () => {
             <div>
               <BiCategory fontSize={"2rem"} color="#76aaad" />
               <p>{finalCategories}</p>
-              <FaEdit
-                className={styles.categories__edit}
-                data-tooltip-id="ttttt"
-                data-tooltip-content={"Edit Categories"}
-                data-tooltip-place="right"
-                onClick={openEdit_CategoriesModal}
-              />
+              {isHeOwner && (
+                <FaEdit
+                  className={styles.categories__edit}
+                  data-tooltip-id="ttttt"
+                  data-tooltip-content={"Edit Categories"}
+                  data-tooltip-place="right"
+                  onClick={openEdit_CategoriesModal}
+                />
+              )}
               <Tooltip id="ttttt" effect="solid" variant="light" />
             </div>
           </div>
@@ -189,7 +194,8 @@ const PageMainInfoCard = () => {
         )}
       </div>
     </div>
-  );
+
+</>  );
 };
 
 export default PageMainInfoCard;

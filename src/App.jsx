@@ -17,14 +17,19 @@ import PostContextProvider from "./context/PostContext";
 import Test from "./pages/Test";
 import MainContextProvider from "./context/MainContext";
 import AuthGuard from "./pages/AuthGuard";
-import ProfileContextProvider from "./context/ProfileContext";
+import ProfileContextProvider, {
+  ProfileContext,
+} from "./context/ProfileContext";
 import Group from "./pages/Group";
 import GroupContextProvider from "./context/GroupContext";
 import Page from "./pages/Page";
-import PageContextProvider from "./context/PageContext";
+import PageContextProvider, { PageContext } from "./context/PageContext";
 import Search from "./pages/Search";
 import { clearCookies } from "./util/help";
+import { useContext } from "react";
 function App() {
+  const { resetAllStates } = useContext(ProfileContext);
+  const { resetPageStates } = useContext(PageContext);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -65,7 +70,10 @@ function App() {
           path: "/logout",
           loader: () => {
             clearCookies();
+            resetAllStates();
+            resetPageStates();
             return redirect("/auth?mode=login");
+            
           },
         },
         {

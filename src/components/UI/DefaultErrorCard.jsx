@@ -13,12 +13,12 @@ const DefaultErrorCard = ({ status,message }) => {
     error = _404;
   } else if (status === 401) {
     error = _401;
-  } else if (status === _500) {
+  } else if (status === 500) {
     error = _500;
   } else {
     error = _403;
   }
-
+console.log(status)
   return (
     <div className={classes.container}>
       <section className={classes["section--left"]}>
@@ -37,7 +37,7 @@ const DefaultErrorCard = ({ status,message }) => {
           <>
             <h2> We are sorry</h2>
             <p>{message}</p>
-            <Link to={"/auth"} replace>
+            <Link to={"/"} replace>
               Go to the main page
             </Link>
           </>

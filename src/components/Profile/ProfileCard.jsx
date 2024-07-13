@@ -20,7 +20,7 @@ import { TfiClose } from "react-icons/tfi";
 import { FcAddImage } from "react-icons/fc";
 import { FcEditImage } from "react-icons/fc";
 import { FcRemoveImage } from "react-icons/fc";
-import { FcImageFile } from "react-icons/fc";
+
 import { TbEditCircle } from "react-icons/tb";
 import { PostContext } from "../../context/PostContext";
 const ProfileCard = () => {
@@ -107,28 +107,30 @@ const ProfileCard = () => {
       {!isLoading && (
         <div className={style["profile-header"]}>
           <div className={style["profile-header-cover"]}>
-            <img src={backgroundImage} />
+            <img
+              src={backgroundImage}
+              onClick={handleAddAssetsToContextAndOpenTheModal}
+            />
 
-            {showAddBackground && (
-              <button onClick={handleOpenModalADDBackground}>
-                <FcAddImage />
-              </button>
-            )}
+            {isHeOwner && (
+              <div className={style.buttons__container}>
+                {showAddBackground && (
+                  <button onClick={handleOpenModalADDBackground}>
+                    <FcAddImage />
+                  </button>
+                )}
 
-            {!showAddBackground && (
-              <button onClick={handleOpenModalEditBackground}>
-                <FcEditImage />
-              </button>
-            )}
-            {!showAddBackground && (
-              <button onClick={handleDeleteBackground}>
-                <FcRemoveImage />
-              </button>
-            )}
-            {!showAddBackground && (
-              <button onClick={handleAddAssetsToContextAndOpenTheModal}>
-                <FcImageFile />
-              </button>
+                {!showAddBackground && (
+                  <button onClick={handleOpenModalEditBackground}>
+                    <FcEditImage />
+                  </button>
+                )}
+                {!showAddBackground && (
+                  <button onClick={handleDeleteBackground}>
+                    <FcRemoveImage />
+                  </button>
+                )}
+              </div>
             )}
           </div>
 

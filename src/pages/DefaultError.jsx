@@ -3,9 +3,9 @@ import DefaultErrorCard from "../components/UI/DefaultErrorCard";
 
 const ErrorPage = () => {
   const error = useRouteError();
-
+  console.log(error);
   let status = error.response?.status || 500;
-let message = error.response?.message ||'Something went wrong'
+  let message = error.response?.message || "Something went wrong";
   if (
     error.toString().includes("Invalid token") ||
     error.toString().includes("invalid token") ||
@@ -13,7 +13,7 @@ let message = error.response?.message ||'Something went wrong'
   ) {
     status = 401;
   }
- 
+
   return (
     <div className="center_In_Page">
       <DefaultErrorCard status={status} message={message} />

@@ -13,6 +13,7 @@ const Content__About = () => {
   const handleDeletePage = () => {
     openConfirmModal(deletePage);
   };
+  const isHeOwner = pageInformation.isHeOwner;
   return (
     <>
       <div className="M_A_M__Content__Container">
@@ -28,9 +29,11 @@ const Content__About = () => {
           {convertedInformation.map((info) => {
             return <AboutCard key={info.icon} info={info} />;
           })}
-          <div className="delete__page">
-            <button onClick={handleDeletePage}>Delete the page</button>
-          </div>
+          {isHeOwner && (
+            <div className="delete__page">
+              <button onClick={handleDeletePage}>Delete the page</button>
+            </div>
+          )}
         </div>
       </div>
     </>

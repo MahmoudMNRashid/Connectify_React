@@ -17,7 +17,7 @@ export const PostContext = createContext({
   },
   addPostInformation: () => {},
   commentsModalIsOpen: false,
-  comments: [],
+  comments: { comments: [], total: 0, hasMore: true, firstTime: false },
   getComments: () => {},
   clearComments: () => {},
   updateComment: () => {},
@@ -47,12 +47,18 @@ export const PostContext = createContext({
 export default function PostContextProvider({ children }) {
   const [assets, setAssets] = useState([]);
   const [postInformation, setPostInformation] = useState({});
-  const [comments, setComments] = useState([]);
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [commentsModalIsOpen, setCommentsModalIsOpen] = useState(false);
   const [isUpdateMode, setIsUpdateMode] = useState(false); //for comment (create or update)
   const [activeUpdatedComment, setActiveUpdatedComment] = useState({});
 
+  const [comments, setComments] = useState({
+    comments: [],
+    total: 0,
+    hasMore: true,
+    firstTime: false,
+  });
   const [posts, setPosts] = useState({
     posts: [],
     total: 0,
@@ -95,31 +101,22 @@ export default function PostContextProvider({ children }) {
     },
     []
   );
-  const handleResetResultSearch = useCallback(
-    ( ) => {
-      setResultSearch({ posts: [], total: 0, hasMore: true, firstTime: false });
-    },
-    []
-  );
-  const handleAddLikes = useCallback(
-    (newLikes, total, hasMore, firstTime) => {
-      setLikes((prev) => {
-        return {
-          likes: [...prev.likes, ...newLikes],
-          total,
-          hasMore,
-          firstTime,
-        };
-      });
-    },
-    []
-  );
-  const handleResetLikes = useCallback(
-    ( ) => {
-      setLikes({ likes: [], total: 0, hasMore: true, firstTime: false });
-    },
-    []
-  );
+  const handleResetResultSearch = useCallback(() => {
+    setResultSearch({ posts: [], total: 0, hasMore: true, firstTime: false });
+  }, []);
+  const handleAddLikes = useCallback((newLikes, total, hasMore, firstTime) => {
+    setLikes((prev) => {
+      return {
+        likes: [...prev.likes, ...newLikes],
+        total,
+        hasMore,
+        firstTime,
+      };
+    });
+  }, []);
+  const handleResetLikes = useCallback(() => {
+    setLikes({ likes: [], total: 0, hasMore: true, firstTime: false });
+  }, []);
 
   const handleDeletePost = (postId) => {
     if (posts.firstTime) {
@@ -194,7 +191,6 @@ export default function PostContextProvider({ children }) {
           info.role === "admin"
         ) {
           setPosts((prev) => {
-        
             const posts = [...prev.posts];
             const post = {
               owner: {
@@ -231,7 +227,7 @@ export default function PostContextProvider({ children }) {
               canBlock: false,
             };
             posts.unshift(post);
-       
+
             return {
               posts,
               total: prev.total + 1,
@@ -242,7 +238,6 @@ export default function PostContextProvider({ children }) {
         }
       } else if (place === "page") {
         setPosts((prev) => {
-       
           const posts = [...prev.posts];
           const post = {
             owner: {
@@ -274,7 +269,7 @@ export default function PostContextProvider({ children }) {
             canDelete: true,
           };
           posts.unshift(post);
-       
+
           return {
             posts,
             total: prev.total + 1,
@@ -284,7 +279,6 @@ export default function PostContextProvider({ children }) {
         });
       } else {
         setPosts((prev) => {
-         
           const posts = [...prev.posts];
           const post = {
             owner: {
@@ -311,7 +305,7 @@ export default function PostContextProvider({ children }) {
             canDelete: true,
           };
           posts.unshift(post);
-       
+
           return {
             posts,
             total: prev.total + 1,
@@ -384,21 +378,42 @@ export default function PostContextProvider({ children }) {
   };
 
   const handleClearComments = () => {
-    setComments([]);
+    setComments({
+      comments: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
   };
-  const handleGetComments = useCallback((comments) => {
-    setComments((prevData) => [...prevData, ...comments]);
-  }, []);
 
+  const handleGetComments = useCallback(
+    (newComments, total, hasMore, firstTime) => {
+      setComments((prev) => {
+      
+        return {
+          comments: [...prev.comments, ...newComments],
+          total,
+          hasMore,
+          firstTime,
+        };
+      });
+    },
+    []
+  );
   const handleDeleteComment = (commentId) => {
-    setComments((prevComment) => {
-      const oldComments = [...prevComment];
+    setComments((prev) => {
+      const oldComments = [...prev.comments];
 
       const newComments = oldComments.filter((comment) => {
         return comment.comment.commentId !== commentId;
       });
 
-      return newComments;
+      return {
+        comments: newComments,
+        total: prev.total - 1,
+        firstTime: prev.firstTime,
+        hasMore: prev.hasMore,
+      };
     });
 
     setPostInformation((prevPost) => {
@@ -410,8 +425,8 @@ export default function PostContextProvider({ children }) {
   };
   const handleUpdateComment = (newComment) => {
     setComments((prev) => {
-      const allComments = [...prev];
-     
+      const allComments = [...prev.comments];
+
       const oldComment = allComments.find((c) => {
         return c.comment.commentId === newComment._id;
       });
@@ -419,12 +434,17 @@ export default function PostContextProvider({ children }) {
       oldComment.comment.assets = [...newComment.assets];
       oldComment.comment.description = newComment.description;
 
-      return allComments;
+      return {
+        comments: allComments,
+        total: prev.total,
+        firstTime: prev.firstTime,
+        hasMore: prev.hasMore,
+      };
     });
   };
   const handleAddComment = (newComment) => {
+  
     setComments((prev) => {
-      const fullName = getFullName();
       const isFoundlogo = getLogo();
 
       const logo =
@@ -434,22 +454,33 @@ export default function PostContextProvider({ children }) {
           description: newComment.description,
           assets: newComment.assets,
           createdAt: newComment.createdAt,
-          commentId: crypto.randomUUID(),
+          commentId: newComment._id,
         },
         areYouOwnerOfComment: true,
         canUpdate: true,
         canDelete: true,
         owner: {
-          firstName: fullName.firstName,
-          lastName: fullName.lastName,
+          firstName: getFullName().split("   ")[0],
+          lastName: getFullName().split("   ")[1],
           ...logo,
           userId: newComment.userId,
         },
       };
- 
-      const allComments = [...prev];
 
-      return [comment, ...allComments];
+      const allComments = [...prev.comments];
+      allComments.unshift(comment);
+      return {
+        comments: allComments,
+        total: prev.total + 1,
+        firstTime: prev.firstTime,
+        hasMore: prev.hasMore,
+      };
+    });
+    setPostInformation((prevPost) => {
+      const newPost = { ...prevPost };
+
+      newPost.postContent.numberOfComments += 1;
+      return newPost;
     });
   };
 

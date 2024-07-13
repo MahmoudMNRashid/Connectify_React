@@ -49,7 +49,8 @@ export const PageContext = createContext({
   createPost___: (newPost) => {},
   add_Edit_Bio: (bio) => {},
   editCategories_: (categories) => {},
-  editLogoCover:(assets)=>{}
+  editLogoCover: (assets) => {},
+  resetPageStates: () => {},
 });
 
 export default function PageContextProvider({ children }) {
@@ -291,7 +292,7 @@ export default function PageContextProvider({ children }) {
     if (firstTime && !hasMore) {
       setPageBlockedUsers((prev) => {
         const data = { ...prev };
-     
+
         data.blockedUsers.push({ ...user, data: new Date() });
 
         return {
@@ -318,8 +319,6 @@ export default function PageContextProvider({ children }) {
         total: data.total - 1,
       };
     });
-
-  
   };
 
   const handleAbout = (type, desc, data) => {
@@ -335,7 +334,7 @@ export default function PageContextProvider({ children }) {
         case "Date of birth":
           setPageInformation((prev) => {
             const newInfo = { ...prev };
-       
+
             newInfo.birthDay = data.birthday;
             return newInfo;
           });
@@ -444,7 +443,6 @@ export default function PageContextProvider({ children }) {
           setPageInformation((prev) => {
             const newInfo = { ...prev };
 
-          
             newInfo.education.college[0] = data;
             return newInfo;
           });
@@ -534,7 +532,7 @@ export default function PageContextProvider({ children }) {
       const newRates = rates.filter((rate) => {
         return rate.infoRate.ratingId !== ratingId;
       });
-      
+
       const newAvg = +prev.avgRate * +prev.total - +value;
       return {
         rates: newRates,
@@ -566,7 +564,7 @@ export default function PageContextProvider({ children }) {
       };
 
       const newRates = [rate, ...rates];
-     
+
       const newAvg = (prev.avgRate + newRate.value) / (prev.total + 1);
       return {
         rates: newRates,
@@ -683,7 +681,7 @@ export default function PageContextProvider({ children }) {
         };
 
         posts.unshift(post);
-  
+
         return {
           posts,
           total: prev.total + 1,
@@ -716,13 +714,54 @@ export default function PageContextProvider({ children }) {
       if (type === content.ADD_LOGO_PAGE || type === content.EDIT_LOGO_PAGE) {
         info.logo = assets;
         return info;
-      }else{
+      } else {
         info.cover = assets;
         return info;
       }
-  
     });
   };
+
+  const handleResetPageStates = useCallback(() => {
+    setPageInformation({});
+    setPagePosts({
+      posts: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setPageFollowers({
+      followers: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setPageBlockedUsers({
+      blockedUsers: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setPageFriendsNotJoin({
+      friends: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setPageModerator({
+      moderator: {},
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setPageRates({
+      rates: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+      avgRate: 0,
+    });
+  }, []);
+
   const ctxValue = {
     pageInformation,
     pagePosts,
@@ -751,7 +790,8 @@ export default function PageContextProvider({ children }) {
     createPost___: handleCreatePost,
     add_Edit_Bio: handleAdd_Edit_Bio,
     editCategories_: handleEditCategories,
-    editLogoCover:handleAdd_EDIT_Logo_Cover
+    editLogoCover: handleAdd_EDIT_Logo_Cover,
+    resetPageStates: handleResetPageStates,
   };
   return (
     <PageContext.Provider value={ctxValue}>{children}</PageContext.Provider>

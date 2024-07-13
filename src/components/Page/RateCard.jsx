@@ -7,8 +7,10 @@ import usePage from "../../hooks/UsePage";
 import { MainContext, content } from "../../context/MainContext";
 import { useContext } from "react";
 import MainModalInstance from "../UI/Modals/MainModal";
+import { useNavigate } from "react-router-dom";
 
 const RateCard = ({ data: rate }) => {
+  console.log(rate);
   const valueRate = rate.infoRate.value;
   const dateRate = convertDateFormat(rate.infoRate.ratingDate);
   const commentRate = rate.infoRate.comment;
@@ -16,6 +18,7 @@ const RateCard = ({ data: rate }) => {
   const canDelete = rate.canDelete;
   const rateId = rate.infoRate.ratingId;
   const name = rate.from.firstName + "    " + rate.from.lastName;
+  const userId = rate.from.userId;
   const logo = rate.from.logo ? rate.from.logo.asset.link : defaultLogo;
   const stars = [
     [0, 0, 0, 0, 0],
@@ -35,12 +38,15 @@ const RateCard = ({ data: rate }) => {
   const handleDeleteRate = () => {
     deleteRate(rateId, valueRate);
   };
-
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate(`/profile/${userId}`);
+  };
   return (
     <div className={classes.container}>
       {modalEditNameIsOpen && <MainModalInstance />}
       <header className={classes.header}>
-        <img src={logo} />
+        <img src={logo} onClick={handleNavigate} />
         <p>{name}</p>
       </header>
 

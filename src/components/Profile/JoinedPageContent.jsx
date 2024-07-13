@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import PageInfoCard from "./PageInfoCard";
 import useFetchedPost from "../../hooks/UseFetchedPost";
 import { host } from "../../util/help";
@@ -10,15 +10,12 @@ import classes from "./FriendsContent.module.css";
 
 const JoinedPageContent = () => {
   const { userId } = useParams();
-  const { loading } = useFetchedPost(`${host}/profile/getPagesLiked/${userId}`);
-  const { joinedPages, setJoinedPages } = useContext(ProfileContext);
+  const { loading } = useFetchedPost(`${host}/profile/getPagesLiked/${userId}`,'JOINED_PAGES');
+  const { joinedPages } = useContext(ProfileContext);
 
   const totalPages = joinedPages?.total || 0;
   const pages = joinedPages?.pages || [];
-//   Make sure that JoinedPageContent resets the joinedPages state when it mounts:
-  useEffect(() => {
-    setJoinedPages({ pages: [], total: 0 });
-  }, [setJoinedPages]);
+
   const skeletonLoaders = Array.from({ length: 20 }).map((_, index) => (
     <SkeletonLoader2 key={index} />
   ));

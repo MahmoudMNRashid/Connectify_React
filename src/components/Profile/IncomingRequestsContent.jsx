@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import useFetchedPost from "../../hooks/UseFetchedPost";
 import { host } from "../../util/help";
 import { ProfileContext } from "../../context/ProfileContext";
@@ -11,16 +11,14 @@ import FriendRequestCard from "./FriendRequestCard";
 const IncomingRequestsContent = () => {
   const { userId } = useParams();
   const { loading } = useFetchedPost(
-    `${host}/profile/friendsRequestSentToMe/${userId}`
+    `${host}/profile/friendsRequestSentToMe/${userId}`,'INCOMING_REQUESTS'
   );
-  const { friendsRequestRecieve, setFriendsRequestRecieve } =
+  const { friendsRequestRecieve } =
     useContext(ProfileContext);
   const totalRequests = friendsRequestRecieve?.total || 0;
   const requests = friendsRequestRecieve?.requests || [];
 
-  useEffect(() => {
-    setFriendsRequestRecieve({ requests: [], total: 0 });
-  }, [setFriendsRequestRecieve]);
+
 
   const skeletonLoaders = Array.from({ length: 20 }).map((_, index) => (
     <SkeletonLoader2 key={index} />

@@ -11,13 +11,9 @@ const useFetchedPost = (url, type) => {
   const [page, setPage] = useState(2);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [result, setResult] = useState({
-    posts: [],
-    total: 0,
-    firstTime: false,
-    hasMore: true,
-  });
+
   const {
+    addFriends,
     AddGroupInvites,
     AddPageInvites,
     addJoinedPages,
@@ -27,6 +23,14 @@ const useFetchedPost = (url, type) => {
     addFriendsRequestRecieve,
     addPosts: addProfilePosts,
     posts: profilePosts,
+    friendsRequestSend,
+    friendsRequestRecieve,
+    joinedGroups,
+    joinedPages,
+    ownedPages,
+    groupInvites,
+    pageInvites,
+    friends,
   } = useContext(ProfileContext);
 
   const {
@@ -76,18 +80,7 @@ const useFetchedPost = (url, type) => {
       const response = await axios.get(`${url + "?page=1"}`, {
         headers: { Authorization: "Bearer " + getToken() },
       });
-
-     
-      if (response.data.posts && url.includes("/search")) {
-        setResult(() => {
-          return {
-            posts: response.data.posts,
-            firstTime: true,
-            hasMore: response.data.extraInfo.hasNextPage,
-            total: response.data.extraInfo.totalItems,
-          };
-        });
-      }
+      console.log(response);
       if (response.data.homePosts) {
         addPosts(
           response.data.homePosts,
@@ -106,25 +99,22 @@ const useFetchedPost = (url, type) => {
         );
       }
       if (response.data.followers) {
-        setFriends((prev) => {
-          const oldFriends = { ...prev };
-
-          const newFriends = {
-            friends: [...oldFriends.friends, ...response.data.followers],
-            total: response.data.extraInfo.totalItems,
-          };
-
-          return newFriends;
-        });
+        addFriends(
+          response.data.followers,
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
+        );
       }
       if (
         response.data.Invites &&
         url.includes("getInvitationsSentToMeFromGroups")
       ) {
-     
         AddGroupInvites(
           response.data.Invites,
-          response.data.extraInfo.totalItems
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
         );
       }
       if (
@@ -133,36 +123,54 @@ const useFetchedPost = (url, type) => {
       ) {
         AddPageInvites(
           response.data.Invites,
-          response.data.extraInfo.totalItems
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
         );
       }
 
       if (response.data.pages && url.includes("getPagesLiked")) {
-        addJoinedPages(response.data.pages, response.data.extraInfo.totalItems);
+        addJoinedPages(
+          response.data.pages,
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
+        );
       }
       if (response.data.pages && url.includes("getPagesIOwned")) {
-        addOwnedPages(response.data.pages, response.data.extraInfo.totalItems);
+        addOwnedPages(
+          response.data.pages,
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
+        );
       }
 
       if (response.data.groups) {
         addJoinedGroups(
           response.data.groups,
-          response.data.extraInfo.totalItems
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
         );
       }
       if (response.data.friendsRequestSend) {
         addFriendsRequestSend(
           response.data.friendsRequestSend,
-          response.data.extraInfo.totalItems
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
         );
       }
       if (response.data.friendsRequestRecieve) {
         addFriendsRequestRecieve(
           response.data.friendsRequestRecieve,
-          response.data.extraInfo.totalItems
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
         );
       }
-
+      /////////////////////////////////////////
       if (response.data.posts && url.includes("/group/posts/")) {
         addGroupPosts(
           response.data.posts,
@@ -337,12 +345,37 @@ const useFetchedPost = (url, type) => {
     addPageRates,
     addPosts,
     addProfilePosts,
+    addFriends,
   ]);
   useEffect(() => {
-    if (result.firstTime === true && type === "SEARCH_RESULTS") {
+    if (profilePosts.firstTime === true && type === "PROFILE_POSTS") {
       return;
     }
-    if (profilePosts.firstTime === true && type === "PROFILE_POSTS") {
+    if (friends.firstTime === true && type === "FRIENDS") {
+      return;
+    }
+    if (pageInvites.firstTime === true && type === "PAGE_INVITATIONS") {
+      return;
+    }
+    if (groupInvites.firstTime === true && type === "GROUP_INVITATIONS") {
+      return;
+    }
+    if (ownedPages.firstTime === true && type === "OWNED_PAGES") {
+      return;
+    }
+    if (joinedPages.firstTime === true && type === "JOINED_PAGES") {
+      return;
+    }
+    if (joinedGroups.firstTime === true && type === "JOINED_GROUPS") {
+      return;
+    }
+    if (
+      friendsRequestRecieve.firstTime === true &&
+      type === "INCOMING_REQUESTS"
+    ) {
+      return;
+    }
+    if (friendsRequestSend.firstTime === true && type === "OUTGOING_REQUESTS") {
       return;
     }
     if (posts.firstTime === true && type === "HOME_POSTS") {
@@ -437,23 +470,17 @@ const useFetchedPost = (url, type) => {
     pageRates,
     posts,
     profilePosts,
-    result,
+    friendsRequestRecieve,
+    friendsRequestSend,
+    ownedPages,
+    joinedPages,
+    joinedGroups,
+    friends,
+    groupInvites,
+    pageInvites,
   ]);
 
   const handleScroll = useCallback(async () => {
-    // const scrollTop =
-    //   (document.documentElement && document.documentElement.scrollTop) ||
-    //   document.body.scrollTop;
-
-    // const scrollHeight =
-    //   (document.documentElement && document.documentElement.scrollHeight) ||
-    //   document.body.scrollHeight;
-
-    // const clientHeight =
-    //   document.documentElement.clientHeight || window.innerHeight;
-
-    // const scrolledToBottom =
-    //   Math.ceil(scrollTop + clientHeight) >= scrollHeight;
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
     if (scrollTop + clientHeight >= scrollHeight - 20 && !loading) {
       setLoading(true);
@@ -461,17 +488,7 @@ const useFetchedPost = (url, type) => {
         const response = await axios.get(url + `?page=${page}`, {
           headers: { Authorization: "Bearer " + getToken() },
         });
-        if (response.data.posts && url.includes("/search")) {
-          setResult((prev) => {
-            const old = { ...prev };
-            return {
-              posts: [...old.posts, ...response.data.posts],
-              firstTime: true,
-              hasMore: response.data.extraInfo.hasNextPage,
-              total: response.data.extraInfo.totalItems,
-            };
-          });
-        }
+
         if (response.data.posts && url.includes("/profile/posts")) {
           addProfilePosts(
             response.data.posts,
@@ -490,25 +507,22 @@ const useFetchedPost = (url, type) => {
         }
 
         if (response.data.followers) {
-          setFriends((prev) => {
-            const oldFriends = { ...prev };
-
-            const newFriends = {
-              friends: [...oldFriends.friends, ...response.data.followers],
-              total: response.data.extraInfo.totalItems,
-            };
-
-            return newFriends;
-          });
+          addFriends(
+            response.data.followers,
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
+          );
         }
         if (
           response.data.Invites &&
           url.includes("getInvitationsSentToMeFromGroups")
         ) {
-          
           AddGroupInvites(
             response.data.Invites,
-            response.data.extraInfo.totalItems
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
           );
         }
         if (
@@ -517,41 +531,57 @@ const useFetchedPost = (url, type) => {
         ) {
           AddPageInvites(
             response.data.Invites,
-            response.data.extraInfo.totalItems
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
           );
         }
+
         if (response.data.pages && url.includes("getPagesLiked")) {
           addJoinedPages(
             response.data.pages,
-            response.data.extraInfo.totalItems
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
           );
         }
         if (response.data.pages && url.includes("getPagesIOwned")) {
           addOwnedPages(
             response.data.pages,
-            response.data.extraInfo.totalItems
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
           );
         }
 
         if (response.data.groups) {
           addJoinedGroups(
             response.data.groups,
-            response.data.extraInfo.totalItems
+            response.data.extraInfo.totalItems,
+
+            response.data.extraInfo.hasNextPage,
+            true
           );
         }
 
         if (response.data.friendsRequestSend) {
           addFriendsRequestSend(
             response.data.friendsRequestSend,
-            response.data.extraInfo.totalItems
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
           );
         }
         if (response.data.friendsRequestRecieve) {
           addFriendsRequestRecieve(
             response.data.friendsRequestRecieve,
-            response.data.extraInfo.totalItems
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
           );
         }
+
+        /////////////////////////
         if (response.data.posts && url.includes("/group/posts/")) {
           addGroupPosts(
             response.data.posts,
@@ -727,10 +757,32 @@ const useFetchedPost = (url, type) => {
     addPageRates,
     addPosts,
     addProfilePosts,
+    addFriends,
   ]);
 
   useEffect(() => {
-    if (!result.hasMore && type === "SEARCH_RESULTS") {
+    if (!friends.hasMore && type === "FRIENDS") {
+      return;
+    }
+    if (!groupInvites.hasMore && type === "GROUP_INVITATIONS") {
+      return;
+    }
+    if (!pageInvites.hasMore && type === "PAGE_INVITATIONS") {
+      return;
+    }
+    if (!ownedPages.hasMore && type === "OWNED_PAGES") {
+      return;
+    }
+    if (!joinedPages.hasMore && type === "JOINED_PAGES") {
+      return;
+    }
+    if (!joinedGroups.hasMore && type === "JOINED_GROUPS") {
+      return;
+    }
+    if (!friendsRequestRecieve.hasMore && type === "INCOMING_REQUESTS") {
+      return;
+    }
+    if (!friendsRequestSend.hasMore && type === "OUTGOING_REQUESTS") {
       return;
     }
     if (!profilePosts.hasMore && type === "PROFILE_POSTS") {
@@ -815,10 +867,17 @@ const useFetchedPost = (url, type) => {
     pageModerator,
     pageRates,
     profilePosts,
-    result,
+    friendsRequestRecieve,
+    friendsRequestSend,
+    ownedPages,
+    joinedGroups,
+    joinedPages,
+    friends,
+    groupInvites,
+    pageInvites,
   ]);
 
-  return { loading, result };
+  return { loading };
 };
 
 export default useFetchedPost;

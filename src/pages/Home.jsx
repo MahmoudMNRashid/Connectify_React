@@ -71,7 +71,20 @@ const Home = () => {
             />
           );
         })}
-        {loading && <Loader />}
+        {loading && <Loader />}{" "}
+        {!loading && posts.length === 0 && (
+          <p
+            style={{
+              fontSize: "1rem",
+              padding: "2rem",
+              boxShadow:
+                "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+              margin: "1rem",
+            }}
+          >
+            No post. Create your first post
+          </p>
+        )}
       </div>
       <CreateButton
         style={{ bottom: "130px", right: "10px", backgroundColor: "#5A639C" }}

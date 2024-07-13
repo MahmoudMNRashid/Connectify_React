@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 import NavBar from "../components/UI/NavBar";
 import ProfileCard from "../components/Profile/ProfileCard";
 import { ProfileContext } from "../context/ProfileContext";
@@ -19,34 +19,76 @@ import OutgoingRequestsContent from "../components/Profile/OutgoingRequestsConte
 import IncomingRequestsContent from "../components/Profile/IncomingRequestsContent";
 import ConfirmModalInstance from "../components/UI/Modals/ConfirmModal";
 import { MainContext } from "../context/MainContext";
+import { useLocation } from "react-router-dom";
+import AuthGuard from "./AuthGuard";
 
 const Profile = () => {
-  const { selectedTap } = useContext(ProfileContext);
-  const {  confirmModalIsOpen } = useContext(MainContext);
+  const { selectedTap, resetAllStates } = useContext(ProfileContext);
+  const { confirmModalIsOpen } = useContext(MainContext);
 
   const { modalIsOpen, commentsModalIsOpen } = useContext(PostContext);
   const renderContent = () => {
     switch (selectedTap) {
       case "About":
-        return <AboutContent />;
+        return (
+          <AuthGuard>
+            <AboutContent />
+          </AuthGuard>
+        );
       case "Friends":
-        return <FriendsContent />;
+        return (
+          <AuthGuard>
+            <FriendsContent />
+          </AuthGuard>
+        );
       case "Posts":
-        return <PostsContent />;
+        return (
+          <AuthGuard>
+            <PostsContent />
+          </AuthGuard>
+        );
       case "Group Invites":
-        return <GroupInvitationsContent />;
+        return (
+          <AuthGuard>
+            <GroupInvitationsContent />
+          </AuthGuard>
+        );
       case "Page Invites":
-        return <PageInvitationsContent />;
+        return (
+          <AuthGuard>
+            <PageInvitationsContent />
+          </AuthGuard>
+        );
       case "Joined Pages":
-        return <JoinedPageContent />;
+        return (
+          <AuthGuard>
+            <JoinedPageContent />
+          </AuthGuard>
+        );
       case "Joined Groups":
-        return <JoinedGroupContent />;
+        return (
+          <AuthGuard>
+            <JoinedGroupContent />
+          </AuthGuard>
+        );
       case "Owned Pages":
-        return <OwnedPagesContent />;
+        return (
+          <AuthGuard>
+            <OwnedPagesContent />
+          </AuthGuard>
+        );
       case "Outgoing Requests":
-        return <OutgoingRequestsContent />;
+        return (
+          <AuthGuard>
+            <OutgoingRequestsContent />
+          </AuthGuard>
+        );
       case "Incoming Requests":
-        return <IncomingRequestsContent />;
+        return (
+          <AuthGuard>
+            <IncomingRequestsContent />
+          </AuthGuard>
+        );
       default:
         return (
           <img
@@ -57,6 +99,35 @@ const Profile = () => {
         );
     }
   };
+
+  useEffect(() => {
+    return () => {
+      resetAllStates();
+    };
+  }, [resetAllStates]);
+  const location = useLocation();
+  const lastLocation = useRef(location);
+  useEffect(() => {
+    const handle = () => {
+      if (location.pathname.includes("/profile")) {
+        console.log("aaasssdddfffggghhh");
+        resetAllStates();
+      }
+    };
+    window.addEventListener("popstate", () => {
+      console.log("qqqqqqqqqqqqqqq");
+      handle();
+    });
+    return () => {
+      window.removeEventListener("popstate", () => {
+        "qqqqqqqqqqqqq";
+      });
+    };
+  }, [location, resetAllStates]);
+  useEffect(() => {
+    // Update the lastLocation ref on every location change
+    lastLocation.current = location;
+  }, [location]);
   return (
     <div>
       {modalIsOpen && <ModalInstance />}

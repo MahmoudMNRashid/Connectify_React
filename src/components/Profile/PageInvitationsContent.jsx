@@ -10,11 +10,12 @@ import SkeletonLoader2 from "../UI/SkeletonLoader2";
 const PageInvitationsContent = () => {
   let { userId } = useParams();
   const { loading } = useFetchedPost(
-    `${host}/profile/getInvitationsSentToMeFromPages/${userId}`
+    `${host}/profile/getInvitationsSentToMeFromPages/${userId}`,
+    "PAGE_INVITATIONS"
   );
 
   const { pageInvites } = useContext(ProfileContext);
- 
+
   return (
     <div className="container__profile">
       <header className={classes.header}>
@@ -29,26 +30,25 @@ const PageInvitationsContent = () => {
           margin: "1rem",
         }}
       >
-       
         {!loading &&
-            pageInvites.invites.length > 0 &&
-            pageInvites.invites.map((invite) => {
-          return (
-            < PageInvitationCard  key={invite.sender.userId} invite={invite} />
-          );
-        })}
+          pageInvites.invites.length > 0 &&
+          pageInvites.invites.map((invite) => {
+            return (
+              <PageInvitationCard key={invite.sender.userId} invite={invite} />
+            );
+          })}
 
         {!loading && pageInvites.invites.length === 0 && (
-        <p>There Are No Invites Yet</p>
-      )}
+          <p>There Are No Invites Yet</p>
+        )}
 
         {loading && (
-        <>
-          {Array.from({ length: 20 }).map((_, index) => (
-            <SkeletonLoader2 key={index} />
-          ))}
-        </>
-      )}
+          <>
+            {Array.from({ length: 20 }).map((_, index) => (
+              <SkeletonLoader2 key={index} />
+            ))}
+          </>
+        )}
       </div>
     </div>
   );
