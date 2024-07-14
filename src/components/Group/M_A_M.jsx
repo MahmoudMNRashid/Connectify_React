@@ -12,6 +12,7 @@ import Loader2 from "../UI/Loader2";
 import { FaUnlock } from "react-icons/fa";
 import { useInput } from "../../hooks/UseInput";
 import { MdOutlineClose } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 const M_A_M = ({ data: member, isMember, isBlocked, isFriendNotJoin }) => {
   const { groupInformation } = useContext(GroupContext);
   const { blockMemberOrAdmin, isLoading } = useGroup();
@@ -30,6 +31,10 @@ const M_A_M = ({ data: member, isMember, isBlocked, isFriendNotJoin }) => {
       ? member.logo.asset.link
       : defaultLogo;
 
+  const navigate = useNavigate();
+  const handleNavigateToProfile = () => {
+    navigate(`/profile/${userId}`);
+  };
   const [openSelectKeepPost, setOpenSelectKeepPost] = useState(false);
   let {
     value,
@@ -67,7 +72,7 @@ const M_A_M = ({ data: member, isMember, isBlocked, isFriendNotJoin }) => {
           </div>
         </div>
         <div className={classes.buttons}>
-          <button>
+          <button onClick={handleNavigateToProfile}>
             <FaEye fontSize={"1.3rem"} /> Visit
           </button>
           {isFriendNotJoin && (
@@ -89,18 +94,22 @@ const M_A_M = ({ data: member, isMember, isBlocked, isFriendNotJoin }) => {
               {!isLoading1 ? "Upgrade" : <Loader2 />}
             </button>
           )}
-          {role === "moderator" && !isMember && !isBlocked && (
-            <button
-              onClick={() => {
-                downgradeAdminToMember(userId);
-              }}
-            >
-              <BsPersonDown fontSize={"1.3rem"} />
-              {!isLoading2 ? "Downgrade" : <Loader2 />}
-            </button>
-          )}
+          {role === "moderator" &&
+            !isMember &&
+            !isBlocked &&
+            !isFriendNotJoin && (
+              <button
+                onClick={() => {
+                  downgradeAdminToMember(userId);
+                }}
+              >
+                <BsPersonDown fontSize={"1.3rem"} />
+                {!isLoading2 ? "Downgrade" : <Loader2 />}
+              </button>
+            )}
           {((role === "admin" && isMember) || role === "moderator") &&
-            !isBlocked && (
+            !isBlocked &&
+            !isFriendNotJoin && (
               <button
                 onClick={() => {
                   setOpenSelectKeepPost(true);

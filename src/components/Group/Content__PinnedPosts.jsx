@@ -20,20 +20,11 @@ const Content__PinnedPosts = () => {
     <>
       <div className="M_A_M__Content__Container">
         {posts.map((post) => {
-          return <PinnedPostCard key={post.post._idPost} data={post} your={false}  />;
+          return (
+            <PinnedPostCard key={post.post._idPost} data={post} your={false} />
+          );
         })}
-        {!loading && posts.length === 0 && (
-          <p
-            style={{
-              fontSize: "2rem",
-              padding: "2.5rem",
-              boxShadow:
-                "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-            }}
-          >
-            There are no posts
-          </p>
-        )}
+        {!loading && posts.length === 0 && <p className="no">No posts</p>}
         {loading && <Loader />}
       </div>
     </>

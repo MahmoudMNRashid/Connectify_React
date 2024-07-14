@@ -26,11 +26,11 @@ const PageMainInfoCard = () => {
     ? pageInformation.logo.link
     : page__logo_default;
 
-  //   const isHeOwner = pageInformation.isHeOwner;
   const isHeFollowers = pageInformation.isHeFollowers;
   const isHeOwner = pageInformation.isHeOwner;
   const bio = pageInformation.bio;
   const categories = pageInformation.categories;
+  console.log(pageInformation)
   const finalCategories = categories?.join(",");
   const showButtonFollow = !isHeFollowers;
   const showButtonFollowing = isHeFollowers;
@@ -73,129 +73,129 @@ const PageMainInfoCard = () => {
   };
   return (
     <>
-    <div className={styles.container}>
-      <div className={styles.cover__logo__section}>
-        {pageInformation.cover && isHeOwner && (
-          <button
-            className={styles.cover__edit__button}
-            onClick={openEditCoverModal}
-          >
-            <MdOutlineModeEdit />
-          </button>
-        )}
-        {!pageInformation.cover && isHeOwner && (
-          <button
-            className={styles.cover__edit__button}
-            onClick={openAddCoverModal}
-          >
-            <MdAdd />
-          </button>
-        )}
-        <img
-          className={styles.cover}
-          src={cover}
-          onClick={handleAddCoverToContextAndOpenTheModal}
-        />
-
-        <div className={styles.logo}>
-          <img src={logo} onClick={handleAddLogoToContextAndOpenTheModal} />
-          {pageInformation.logo && isHeOwner && (
+      <div className={styles.container}>
+        <div className={styles.cover__logo__section}>
+          {pageInformation.cover && isHeOwner && (
             <button
-              className={styles.logo__edit__button}
-              onClick={openEditLogoModal}
+              className={styles.cover__edit__button}
+              onClick={openEditCoverModal}
             >
               <MdOutlineModeEdit />
             </button>
           )}
-          {!pageInformation.logo && (
+          {!pageInformation.cover && isHeOwner && (
             <button
-              className={styles.logo__edit__button}
-              onClick={openAddLogoModal}
+              className={styles.cover__edit__button}
+              onClick={openAddCoverModal}
             >
               <MdAdd />
             </button>
           )}
-        </div>
-      </div>
-      <div className={styles.data__section}>
-        <div className={styles.data__button__container}>
-          <div className={styles.data__container}>
-            <div>
-              <FaRegIdBadge fontSize={"2rem"} color="#76aaad" />
-              <p>{name}</p>
-            </div>
-            <div>
-              <BsCardHeading fontSize={"2rem"} color="#76aaad" />
-              {bio && <p>{bio}</p>}
-              {bio && isHeOwner && <FaEdit onClick={openEditBioModal} />}
-              {!bio && isHeOwner && (
-                <span>
-                  <IoMdAdd
-                    data-tooltip-id="tttt"
-                    data-tooltip-content={"Add bio"}
-                    data-tooltip-place="right"
-                    onClick={openAddBioModal}
-                  />{" "}
-                  <Tooltip id="tttt" effect="solid" variant="light" />
-                </span>
-              )}
-            </div>
-            <div>
-              <BiCategory fontSize={"2rem"} color="#76aaad" />
-              <p>{finalCategories}</p>
-              {isHeOwner && (
-                <FaEdit
-                  className={styles.categories__edit}
-                  data-tooltip-id="ttttt"
-                  data-tooltip-content={"Edit Categories"}
-                  data-tooltip-place="right"
-                  onClick={openEdit_CategoriesModal}
-                />
-              )}
-              <Tooltip id="ttttt" effect="solid" variant="light" />
-            </div>
-          </div>
-          {showButtonFollow && (
-            <button onClick={followPage} className={styles.button}>
-              Follow
-            </button>
-          )}
-          {showButtonFollowing && (
-            <button
-              onClick={() => {
-                setShowMenu(true);
-              }}
-              className={styles.button}
-            >
-              Following
-            </button>
-          )}
-        </div>
-        {showMenu && (
-          <div className={styles.menu}>
-            <div
-              onClick={() => {
-                setShowMenu(false);
-              }}
-            >
-              <IoMdClose fontSize={"1.7rem"} />
-              <p>Close</p>
-            </div>
-            <div
-              onClick={async () => {
-                await unfollowPage();
-                setShowMenu(false);
-              }}
-            >
-              <LuShieldClose fontSize={"1.7rem"} />
-              <p>Unfollow</p>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
+          <img
+            className={styles.cover}
+            src={cover}
+            onClick={handleAddCoverToContextAndOpenTheModal}
+          />
 
-</>  );
+          <div className={styles.logo}>
+            <img src={logo} onClick={handleAddLogoToContextAndOpenTheModal} />
+            {pageInformation.logo && isHeOwner && (
+              <button
+                className={styles.logo__edit__button}
+                onClick={openEditLogoModal}
+              >
+                <MdOutlineModeEdit />
+              </button>
+            )}
+            {!pageInformation.logo && (
+              <button
+                className={styles.logo__edit__button}
+                onClick={openAddLogoModal}
+              >
+                <MdAdd />
+              </button>
+            )}
+          </div>
+        </div>
+        <div className={styles.data__section}>
+          <div className={styles.data__button__container}>
+            <div className={styles.data__container}>
+              <div>
+                <FaRegIdBadge fontSize={"2rem"} color="#76aaad" />
+                <p>{name}</p>
+              </div>
+              <div>
+                <BsCardHeading fontSize={"2rem"} color="#76aaad" />
+                {bio && <p>{bio}</p>}
+                {bio && isHeOwner && <FaEdit onClick={openEditBioModal} />}
+                {!bio && isHeOwner && (
+                  <span>
+                    <IoMdAdd
+                      data-tooltip-id="tttt"
+                      data-tooltip-content={"Add bio"}
+                      data-tooltip-place="right"
+                      onClick={openAddBioModal}
+                    />{" "}
+                    <Tooltip id="tttt" effect="solid" variant="light" />
+                  </span>
+                )}
+              </div>
+              <div>
+                <BiCategory fontSize={"2rem"} color="#76aaad" />
+                <p>{finalCategories}</p>
+                {isHeOwner && (
+                  <FaEdit
+                    className={styles.categories__edit}
+                    data-tooltip-id="ttttt"
+                    data-tooltip-content={"Edit Categories"}
+                    data-tooltip-place="right"
+                    onClick={openEdit_CategoriesModal}
+                  />
+                )}
+                <Tooltip id="ttttt" effect="solid" variant="light" />
+              </div>
+            </div>
+            {showButtonFollow && (
+              <button onClick={followPage} className={styles.button}>
+                Follow
+              </button>
+            )}
+            {showButtonFollowing && (
+              <button
+                onClick={() => {
+                  setShowMenu(true);
+                }}
+                className={styles.button}
+              >
+                Following
+              </button>
+            )}
+          </div>
+          {showMenu && (
+            <div className={styles.menu}>
+              <div
+                onClick={() => {
+                  setShowMenu(false);
+                }}
+              >
+                <IoMdClose fontSize={"1.7rem"} />
+                <p>Close</p>
+              </div>
+              <div
+                onClick={async () => {
+                  await unfollowPage();
+                  setShowMenu(false);
+                }}
+              >
+                <LuShieldClose fontSize={"1.7rem"} />
+                <p>Unfollow</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default PageMainInfoCard;

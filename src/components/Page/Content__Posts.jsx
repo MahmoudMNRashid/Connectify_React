@@ -40,18 +40,7 @@ const Content__Posts = () => {
         post = { ...post, postType: "page", page };
         return <Post key={post.post._idPost} data={post} place="page" />;
       })}
-      {!loading && posts.length === 0 && (
-        <p
-          style={{
-            fontSize: "2rem",
-            padding: "2.5rem",
-            boxShadow:
-              "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-          }}
-        >
-          There Are No Post Yet
-        </p>
-      )}
+      {!loading && posts.length === 0 && <p className="no">No posts</p>}
       {loading && <Loader />}
 
       {pageInformation.isHeOwner && (
@@ -63,10 +52,10 @@ const Content__Posts = () => {
         />
       )}
       <CreateButton
-              fn={openSearchInPostModal}
-          style={{ bottom: "70px", right: "10px", backgroundColor: "#5A639C" }}
-          tooltip="Search in posts..."
-          icon={IoSearchOutline}
+        fn={openSearchInPostModal}
+        style={{ bottom: "70px", right: "10px", backgroundColor: "#5A639C" }}
+        tooltip="Search in posts..."
+        icon={IoSearchOutline}
       />
     </div>
   );

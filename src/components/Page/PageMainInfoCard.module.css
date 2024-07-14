@@ -3,12 +3,15 @@
   flex-direction: column;
   align-items: center;
   /* background-color: lightblue; */
-  margin: 1rem;
+  margin: 0.5rem;
+  position: relative;
+  z-index: 1;
 }
 .cover__logo__section {
-  width: 700px;
+  width: 100%;
   height: 250px;
   position: relative;
+
   /* overflow: hidden; */
 }
 
@@ -19,7 +22,7 @@
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
 }
-.cover__edit__button{
+.cover__edit__button {
   position: absolute;
   width: fit-content;
   font-size: 1.6rem;
@@ -62,7 +65,7 @@
 }
 .data__section {
   background-color: #212832;
-  width: 700px;
+  width: 100%;
   padding: 1.9rem 1rem;
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
@@ -73,6 +76,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
 }
 
 .data__container {
@@ -88,12 +92,12 @@
   color: white;
 }
 
-.data__container > div:nth-of-type(2) > p {
-  width: 170px;
+.data__container > div > p {
+  width: 90%;
   height: 48px;
   overflow: auto;
 }
-.data__container > div:nth-of-type(2) > p::-webkit-scrollbar {
+.data__container > div > p::-webkit-scrollbar {
   display: none;
 }
 
@@ -143,21 +147,7 @@
   cursor: pointer;
 }
 
-@media (max-width: 840px) {
-  .cover__logo__section {
-    width: 400px;
-  }
-  .data__section {
-    width: 400px;
-  }
-}
-@media (max-width: 540px) {
-  .cover__logo__section {
-    width: 225px;
-  }
-  .data__section {
-    width: 225px;
-  }
+@media (max-width: 595px) {
   .data__button__container {
     margin-top: 1rem;
     flex-direction: column;

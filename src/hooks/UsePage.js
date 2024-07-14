@@ -86,9 +86,11 @@ const usePage = () => {
         }
       );
 
+      console.log(response)
       followPage_();
       toast.success(response.data.message, { id: toastId });
     } catch (error) {
+    console.log(error)
       if (error.response?.status === 403 || error.response?.status === 401) {
         navigate("/error", {
           state: {

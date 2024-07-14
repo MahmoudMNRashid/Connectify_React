@@ -25,14 +25,9 @@ const Content__Admins = () => {
         })}
         {!loading && admins.length === 0 && (
           <p
-            style={{
-              fontSize: "2rem",
-              padding: "2.5rem",
-              boxShadow:
-                "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-            }}
+          className="no"
           >
-            There are no admins
+            No admins
           </p>
         )}
         {loading && <Loader />}

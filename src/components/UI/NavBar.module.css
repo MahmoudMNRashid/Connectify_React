@@ -2,17 +2,17 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  /* gap: 1.6rem; */
-  /* justify-content: space-around; */
+  width: 100%;
   background-color: white;
   border-top: 1px solid #c9cfd8;
   border-bottom: 1px solid #c9cfd8;
-  padding: 0.7rem 1rem;
+  padding: 0.7rem ;
 }
 
 .container--logo-search {
   display: flex;
   align-items: center;
+
 }
 .container--search {
   position: relative;
@@ -26,7 +26,6 @@
   padding: 0.5rem 2.5rem;
   border: none;
   color: #a5aebf;
-
 }
 .container--search input:focus {
   outline: none;
@@ -46,7 +45,7 @@
 }
 
 .container--img img {
-  width: 90%;
+  width: 100%;
   /* background-color: #008080; */
 }
 
@@ -91,9 +90,11 @@
   .header {
     row-gap: 1.6rem;
     justify-content: center;
+  
   }
   .container--img {
-    width: 15rem;
+    width: 12rem;
+
   }
   .active--link::before {
     bottom: -12px;

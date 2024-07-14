@@ -32,9 +32,18 @@ import ConfirmModalInstance from "../components/UI/Modals/ConfirmModal";
 import SkeletonLoadersMainPage from "../components/UI/SkeletonLoadersMainPage";
 import SkeletonLoadersTabsPage from "../components/UI/SkeletonLoadersTabsPage";
 import AuthGuard from "./AuthGuard";
+import NavBar from "../components/UI/NavBar";
+import { RiMenu2Fill } from "react-icons/ri";
+import TabsMobile from "../components/UI/TabsMobile";
 
 const Page = () => {
-  const { modalEditNameIsOpen, confirmModalIsOpen } = useContext(MainContext);
+  const {
+    modalEditNameIsOpen,
+    confirmModalIsOpen,
+    showTabsMobile,
+    openCloseTabsMobile,
+    disableIsActive,
+  } = useContext(MainContext);
 
   const { getPageInformation, isLoading } = usePage();
   const { modalIsOpen, commentsModalIsOpen } = useContext(PostContext);
@@ -42,48 +51,102 @@ const Page = () => {
   useEffect(() => {
     getPageInformation();
   }, [getPageInformation]);
-  const { pageInformation,resetPageStates } = useContext(PageContext);
+  const { pageInformation, resetPageStates } = useContext(PageContext);
 
   useEffect(() => {
-    
-  
     return () => {
-      resetPageStates()
-    }
-  }, [resetPageStates])
+      resetPageStates();
+    };
+  }, [resetPageStates]);
 
   const role = pageInformation.role;
   const [activeTab, setActiveTab] = useState(0);
   const allTabs = [
-    { icon: FaHome, tooltip: "Home", content:   <AuthGuard><div>home</div> </AuthGuard>},
-    { icon: FaFileAlt, tooltip: "Posts", content:   <AuthGuard><Content__Posts /></AuthGuard> },
-    { icon: FaUserCog, tooltip: "Moderator", content:   <AuthGuard><Content__Moderator /></AuthGuard> },
-    { icon: FaUsers, tooltip: "Followers", content:   <AuthGuard><Content__Followers /> </AuthGuard>},
+    {
+      icon: FaHome,
+      tooltip: "Home",
+      content: (
+        <AuthGuard>
+          <div>home</div>{" "}
+        </AuthGuard>
+      ),
+    },
+    {
+      icon: FaFileAlt,
+      tooltip: "Posts",
+      content: (
+        <AuthGuard>
+          <Content__Posts />
+        </AuthGuard>
+      ),
+    },
+    {
+      icon: FaUserCog,
+      tooltip: "Moderator",
+      content: (
+        <AuthGuard>
+          <Content__Moderator />
+        </AuthGuard>
+      ),
+    },
+    {
+      icon: FaUsers,
+      tooltip: "Followers",
+      content: (
+        <AuthGuard>
+          <Content__Followers />{" "}
+        </AuthGuard>
+      ),
+    },
     {
       icon: FaUsersSlash,
       tooltip: "Blocked Users",
-      content:   <AuthGuard><Content__BlockedUsers /></AuthGuard>,
+      content: (
+        <AuthGuard>
+          <Content__BlockedUsers />
+        </AuthGuard>
+      ),
     },
 
     {
       icon: IoSettingsSharp,
       tooltip: "Settings",
-      content:  <AuthGuard> <Content__Settings /></AuthGuard>,
+      content: (
+        <AuthGuard>
+          {" "}
+          <Content__Settings />
+        </AuthGuard>
+      ),
     },
     {
       icon: FaUserPlus,
       tooltip: "Invite Friend",
-      content:  <AuthGuard> <Content__InviteFriend /></AuthGuard>,
+      content: (
+        <AuthGuard>
+          {" "}
+          <Content__InviteFriend />
+        </AuthGuard>
+      ),
     },
     {
       icon: GiStarsStack,
       tooltip: "Rates",
-      content:  <AuthGuard> <Content__Rates /></AuthGuard>,
+      content: (
+        <AuthGuard>
+          {" "}
+          <Content__Rates />
+        </AuthGuard>
+      ),
     },
     {
       icon: FaCircleInfo,
       tooltip: "About",
-      content:  <AuthGuard> <Content__About /></AuthGuard>,
+      content: (
+        <AuthGuard>
+          {" "}
+          <Content__About />
+        </AuthGuard>
+      ),
     },
   ];
 
@@ -119,33 +182,48 @@ const Page = () => {
   };
   const tabsToDisplay = roleBasedTabs[role] || [];
   return (
-    <div className="all">
+    <div>
       {modalIsOpen && <ModalInstance />}
       {commentsModalIsOpen && <CommentsModalInstance />}
       {modalEditNameIsOpen && <MainModalInstance />}{" "}
       {confirmModalIsOpen && <ConfirmModalInstance />}
-      <Toaster />
-      <div className="left">
-        {!isLoading && (
-          <Tabs
+      <NavBar/>
+      <div className="navbar__mobile">
+        <button disabled={disableIsActive}>
+          <RiMenu2Fill onClick={openCloseTabsMobile} />
+        </button>
+        {showTabsMobile && (
+          <TabsMobile
             tabs={tabsToDisplay}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
           />
         )}
-        {isLoading && <SkeletonLoadersTabsPage />}
       </div>
-      <div className="right">
-        <div className="top">
-          {!isLoading && <PageMainInfoCard />}
-          {isLoading && <SkeletonLoadersMainPage />}
-        </div>
-        <div className="bottom">
+      <div className="all">
+        <Toaster />
+        <div className="left">
           {!isLoading && (
-            <div className="tab-content">
-              {tabsToDisplay[activeTab]?.content}
-            </div>
-          )}{" "}
+            <Tabs
+              tabs={tabsToDisplay}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
+          )}
+          {isLoading && <SkeletonLoadersTabsPage />}
+        </div>
+        <div className="right">
+          <div className="top">
+            {!isLoading && <PageMainInfoCard />}
+            {isLoading && <SkeletonLoadersMainPage />}
+          </div>
+          <div className="bottom">
+            {!isLoading && (
+              <div className="tab-content">
+                {tabsToDisplay[activeTab]?.content}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

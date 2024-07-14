@@ -11,13 +11,19 @@ const Tabs = ({ tabs, activeTab, setActiveTab }) => {
             activeTab === index ? classes.active : ""
           }`}
           onClick={() => setActiveTab(index)}
-          data-tooltip-id="tt"
+          data-tooltip-id="tabss"
           data-tooltip-content={tab.tooltip}
           data-tooltip-place="right"
         >
-          
           <tab.icon />
-          <Tooltip id="tt" effect="solid" variant="light" className={classes.tooltip}  />
+          <Tooltip
+            id="tabss"
+            effect="solid"
+            variant="light"
+            className={classes.tooltip}
+            positionStrategy="absolute"
+            style={{ position: "absolute", zIndex: 1000 }}
+          />
         </div>
       ))}
     </div>

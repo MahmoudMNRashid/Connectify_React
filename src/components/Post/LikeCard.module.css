@@ -6,7 +6,8 @@
   padding: 1rem;
   border-radius: 1rem;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
   position: relative;
 }
 .img {
@@ -38,11 +39,11 @@
   font-weight: 900;
 }
 
-.you{
-    font-size: 0.8rem;
-    color: #a5aebf;
-    font-weight: 900;
-    position: absolute;
-    top: 5%;
-    right: 5%;
+.you {
+  font-size: 0.8rem;
+  color: #a5aebf;
+  font-weight: 900;
+  position: absolute;
+  top: 5%;
+  right: 5%;
 }

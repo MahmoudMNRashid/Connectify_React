@@ -50,6 +50,10 @@ export const MainContext = createContext({
   resetPagesResultSearch: () => {},
   resetGroupsResultSearch: () => {},
   resetUsersResultSearch: () => {},
+  ////////////////////////
+  showTabsMobile: false,
+  openTabsMobile: () => {},
+  closeTabsMobile: () => {},
 });
 
 export default function MainContextProvider({ children }) {
@@ -125,7 +129,6 @@ export default function MainContextProvider({ children }) {
   const [activeFn, setActiveFn] = useState(null);
 
   const handleOpenconfirmModal = (fn) => {
- 
     setConfirmModalIsOpen(true);
     setActiveFn(() => fn);
   };
@@ -204,6 +207,17 @@ export default function MainContextProvider({ children }) {
     setUsersResult({ users: [], total: 0, hasMore: true, firstTime: false });
   }, []);
 
+  const [showTabsMobile, setShowTabsMobile] = useState(false);
+  const handleOpenTabsMobile = () => {
+    setShowTabsMobile(true);
+  };
+  const handleCloseTabsMobile = () => {
+    setShowTabsMobile(false);
+  };
+  const handleOpenCloseTabsMobile = () => {
+    setShowTabsMobile((prev) => !prev);
+  };
+
   const ctxValue = {
     disableIsActive,
     startTheDisable: handleStartTheDisable,
@@ -228,6 +242,11 @@ export default function MainContextProvider({ children }) {
     resetPagesResultSearch: handleResetPagesResultSearch,
     resetGroupsResultSearch: handleResetGroupsResultSearch,
     resetUsersResultSearch: handleResetUsersResultSearch,
+    ///////
+    showTabsMobile,
+    openTabsMobile: handleOpenTabsMobile,
+    closeTabsMobile: handleCloseTabsMobile,
+    openCloseTabsMobile: handleOpenCloseTabsMobile,
   };
   return (
     <MainContext.Provider value={ctxValue}>{children}</MainContext.Provider>

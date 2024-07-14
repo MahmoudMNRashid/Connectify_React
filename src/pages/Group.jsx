@@ -37,10 +37,20 @@ import Content__LeaveGroup from "../components/Group/Content__LeaveGroup";
 import { GroupContext } from "../context/GroupContext";
 import { MainContext } from "../context/MainContext";
 import MainModalInstance from "../components/UI/Modals/MainModal";
+import SkeletonLoadersTabsPage from "../components/UI/SkeletonLoadersTabsPage";
+import SkeletonLoadersMainGroup from "../components/UI/SkeletonLoadersMainGroup";
+import NavBar from "../components/UI/NavBar";
+import { RiMenu2Fill } from "react-icons/ri";
+import TabsMobile from "../components/UI/TabsMobile";
 const Group = () => {
-  const { getgroupInformation } = useGroup();
+  const { getgroupInformation, isLoading } = useGroup();
   const { modalIsOpen, commentsModalIsOpen } = useContext(PostContext);
-  const { modalEditNameIsOpen } = useContext(MainContext);
+  const {
+    modalEditNameIsOpen,
+    showTabsMobile,
+    openCloseTabsMobile,
+    disableIsActive,
+  } = useContext(MainContext);
 
   useEffect(() => {
     getgroupInformation();
@@ -185,27 +195,50 @@ const Group = () => {
   };
   const tabsToDisplay = roleBasedTabs[role] || [];
   return (
-    <div className="all">
+    <>
       {modalIsOpen && <ModalInstance />}{" "}
       {modalEditNameIsOpen && <MainModalInstance />}
       {commentsModalIsOpen && <CommentsModalInstance />}
       <Toaster />
-      <div className="left">
-        <Tabs
-          tabs={tabsToDisplay}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-        />
+      <NavBar />{" "}
+      <div style={{ position: "relative" }} className="navbar__mobile">
+        <button disabled={disableIsActive}>
+          <RiMenu2Fill onClick={openCloseTabsMobile} />
+        </button>
+        {showTabsMobile && (
+          <TabsMobile
+            tabs={tabsToDisplay}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
+        )}
       </div>
-      <div className="right">
-        <div className="top">
-          <GroupMainInfoCard />
+      <div className="all">
+        <div className="left">
+          {!isLoading && (
+            <Tabs
+              tabs={tabsToDisplay}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
+          )}
+          {isLoading && <SkeletonLoadersTabsPage />}
         </div>
-        <div className="bottom">
-          <div className="tab-content">{tabsToDisplay[activeTab]?.content}</div>
+        <div className="right">
+          <div className="top">
+            {!isLoading && <GroupMainInfoCard />}
+            {isLoading && <SkeletonLoadersMainGroup />}
+          </div>
+          <div className="bottom">
+            {!isLoading && (
+              <div className="tab-content">
+                {tabsToDisplay[activeTab]?.content}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

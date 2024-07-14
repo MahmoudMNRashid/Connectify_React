@@ -44,14 +44,9 @@ const Content__Posts = () => {
       })}
       {!loading && posts.length === 0 && (
         <p
-          style={{
-            fontSize: "2rem",
-            padding: "2.5rem",
-            boxShadow:
-              "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-          }}
+        className="no"
         >
-          There Are No Post Yet
+           No post
         </p>
       )}
       {loading && <Loader />}
