@@ -15,7 +15,7 @@ const Content__Posts = () => {
   let { groupId } = useParams();
   const { loading } = useFetchedPost(`${host}/group/posts/${groupId}`, "POSTS");
   const { groupInformation, groupPosts } = useContext(GroupContext);
- 
+  console.log(groupInformation);
   const posts = groupPosts.posts;
   const { openModal } = useContext(MainContext);
   const { addPostInformation } = useContext(PostContext);
@@ -55,14 +55,14 @@ const Content__Posts = () => {
           style={{
             bottom: "10px",
             right: "10px",
-            backgroundColor: "#9B86BD",
+            backgroundColor: "#003C43",
           }}
         />
       )}
-      {groupInformation.role !== "not member" && (
+      {groupInformation.canSearch && (
         <CreateButton
           fn={openSearchInPostModal}
-          style={{ bottom: "70px", right: "10px", backgroundColor: "#5A639C" }}
+          style={{ bottom: "70px", right: "10px", backgroundColor: "#135D66" }}
           tooltip="Search in posts..."
           icon={IoSearchOutline}
         />

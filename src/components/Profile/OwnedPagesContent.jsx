@@ -39,7 +39,7 @@ const OwnedPagesContent = () => {
             pages.length > 0 &&
             pages.map((page) => <PageInfoCard key={page.pageId} page={page} />)}
   
-          {!loading && pages.length === 0 && <p>There are no pages.</p>}
+          {!loading && pages.length === 0 && <p className="no">No pages.</p>}
   
           {loading && skeletonLoaders}
         </div>

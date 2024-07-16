@@ -10,7 +10,7 @@ import { PostContext } from "../context/PostContext";
 
 const useGroup = () => {
   //context
-  const { startTheDisable, stopTheDisable } = useContext(MainContext);
+  const { startTheDisable, stopTheDisable,closeModal } = useContext(MainContext);
   const {
     addGroupInformation,
     handleRequestJoin,
@@ -743,7 +743,7 @@ const useGroup = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-
+closeModal()
       toast.success(response.data.message, { id: toastId });
     } catch (error) {
       if (error.response?.status === 403 || error.response?.status === 401) {

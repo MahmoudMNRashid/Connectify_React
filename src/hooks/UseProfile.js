@@ -747,7 +747,7 @@ const useProfile = () => {
 
       toast.success(response.data.message, { id: toastId });
 
-      navigate("/");
+      navigate("/logout", { replace: true });
       closeConfirmModal();
     } catch (error) {
       if (error.response?.status === 403 || error.response?.status === 401) {

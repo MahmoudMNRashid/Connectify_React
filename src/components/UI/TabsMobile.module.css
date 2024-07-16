@@ -9,7 +9,7 @@
   border-right: 1px solid #eeeeee;
 
   position: absolute;
-  bottom: -1444%;
+  top:56px;
   left: 8px;
   z-index: 1000;
   height: fit-content;

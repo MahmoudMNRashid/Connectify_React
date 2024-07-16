@@ -53,7 +53,7 @@ const OutgoingRequestsContent = () => {
             <FriendRequestCard key={request.userId} request={request} out me />
           ))}
 
-        {!loading && requests.length === 0 && <p>There are no requests sent</p>}
+        {!loading && requests.length === 0 && <p>No requests sent.</p>}
 
         {loading && skeletonLoaders}
       </div>

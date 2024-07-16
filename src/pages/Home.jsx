@@ -26,12 +26,8 @@ const Home = () => {
     addPostInformation({}, {}, {}, {}, {}, "home");
     openModal("post", content.CREATE_POST);
   };
-  const openCreatePageModal = () => {
-    openModal("page", content.CREATE_PAGE);
-  };
-  const openCreateGroupModal = () => {
-    openModal("group", content.CREATE_GROUP);
-  };
+  console.log(posts)
+
   return (
     <div>
       <Toaster />
@@ -86,20 +82,9 @@ const Home = () => {
           </p>
         )}
       </div>
+    
       <CreateButton
-        style={{ bottom: "130px", right: "10px", backgroundColor: "#5A639C" }}
-        fn={openCreateGroupModal}
-        tooltip="Create Group"
-        icon={FaPlus}
-      />
-      <CreateButton
-        style={{ bottom: "70px", right: "10px", backgroundColor: "#7776B3" }}
-        fn={openCreatePageModal}
-        tooltip="Create Page"
-        icon={FaPlus}
-      />
-      <CreateButton
-        style={{ bottom: "10px", right: "10px", backgroundColor: "#9B86BD" }}
+        style={{ bottom: "10px", right: "10px", backgroundColor: "#003C43" }}
         fn={openCreatePostModal}
         tooltip="Create Post"
         icon={FaPlus}

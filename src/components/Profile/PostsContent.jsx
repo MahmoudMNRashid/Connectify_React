@@ -21,6 +21,7 @@ const PostsContent = () => {
     "PROFILE_POSTS"
   );
   const { posts, mainInformation } = useContext(ProfileContext);
+  console.log(posts)
   const openCreatePostModal = () => {
     addPostInformation({}, {}, {}, {}, {}, "profile");
     openModal("post", content.CREATE_POST);
@@ -63,21 +64,16 @@ const PostsContent = () => {
       })}
       {!loading && posts.length === 0 && (
         <p
-          style={{
-            fontSize: "2rem",
-            padding: "2.5rem",
-            boxShadow:
-              "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-          }}
+          className="no"
         >
-          There Are No Post Yet
+          No post
         </p>
       )}
       {loading && <Loader />}
       {mainInformation.isHeOwner && (
         <CreateButton
           fn={openCreatePostModal}
-          style={{ bottom: "10px", right: "10px", backgroundColor: "#5A639C" }}
+          style={{ bottom: "10px", right: "10px", backgroundColor: "#003C43" }}
           tooltip="Create Post"
           icon={FaPlus}
         />
@@ -85,7 +81,7 @@ const PostsContent = () => {
       {mainInformation.isHeOwner && (
         <CreateButton
           fn={openSearchInPostModal}
-          style={{ bottom: "10px", left: "10px", backgroundColor: "#5A639C" }}
+          style={{ bottom: "10px", left: "10px", backgroundColor: "#135D66" }}
           tooltip="Search in posts..."
           icon={IoSearchOutline}
         />

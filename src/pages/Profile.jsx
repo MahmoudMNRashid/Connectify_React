@@ -5,7 +5,7 @@ import { ProfileContext } from "../context/ProfileContext";
 import AboutContent from "../components/Profile/AboutContent";
 import FriendsContent from "../components/Profile/FriendsContent";
 import PostsContent from "../components/Profile/PostsContent";
-import welcome from "../assets/profile/welcome.svg";
+// import welcome from "../assets/profile/welcome.svg";
 import { Toaster } from "react-hot-toast";
 import { PostContext } from "../context/PostContext";
 import ModalInstance from "../components/UI/Modals/Assets";
@@ -21,6 +21,7 @@ import ConfirmModalInstance from "../components/UI/Modals/ConfirmModal";
 import { MainContext } from "../context/MainContext";
 import { useLocation } from "react-router-dom";
 import AuthGuard from "./AuthGuard";
+import SettingsContent from "../components/Profile/SettingsContent";
 
 const Profile = () => {
   const { selectedTap, resetAllStates } = useContext(ProfileContext);
@@ -33,6 +34,12 @@ const Profile = () => {
         return (
           <AuthGuard>
             <AboutContent />
+          </AuthGuard>
+        );
+      case "Settings":
+        return (
+          <AuthGuard>
+            <SettingsContent />
           </AuthGuard>
         );
       case "Friends":
@@ -91,11 +98,9 @@ const Profile = () => {
         );
       default:
         return (
-          <img
-            style={{ width: "372px", overflow: "hidden" }}
-            src={welcome}
-            alt="Welcome"
-          />
+          <AuthGuard>
+            <AboutContent />
+          </AuthGuard>
         );
     }
   };

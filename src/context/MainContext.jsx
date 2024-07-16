@@ -118,11 +118,13 @@ export default function MainContextProvider({ children }) {
     if (contentMap[key] && contentMap[key][contentM]) {
       setModalEditNameIsOpen(true);
       setContentModal(contentMap[key][contentM]);
+      document.body.classList.add("hide__scroll");
     }
   };
 
   const handleCloseModal = () => {
     setModalEditNameIsOpen(false);
+    document.body.classList.remove("hide__scroll");
   };
   ////////////////////////////////////
   const [confirmModalIsOpen, setConfirmModalIsOpen] = useState(false);
@@ -214,9 +216,9 @@ export default function MainContextProvider({ children }) {
   const handleCloseTabsMobile = () => {
     setShowTabsMobile(false);
   };
-  const handleOpenCloseTabsMobile = () => {
+  const handleOpenCloseTabsMobile = useCallback(() => {
     setShowTabsMobile((prev) => !prev);
-  };
+  }, []);
 
   const ctxValue = {
     disableIsActive,

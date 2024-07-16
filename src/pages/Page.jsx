@@ -56,6 +56,7 @@ const Page = () => {
   useEffect(() => {
     return () => {
       resetPageStates();
+      
     };
   }, [resetPageStates]);
 
@@ -67,7 +68,10 @@ const Page = () => {
       tooltip: "Home",
       content: (
         <AuthGuard>
-          <div>home</div>{" "}
+          <div className="top">
+            {!isLoading && <PageMainInfoCard />}
+            {isLoading && <SkeletonLoadersMainPage />}
+          </div>
         </AuthGuard>
       ),
     },
@@ -187,7 +191,7 @@ const Page = () => {
       {commentsModalIsOpen && <CommentsModalInstance />}
       {modalEditNameIsOpen && <MainModalInstance />}{" "}
       {confirmModalIsOpen && <ConfirmModalInstance />}
-      <NavBar/>
+      <NavBar />
       <div className="navbar__mobile">
         <button disabled={disableIsActive}>
           <RiMenu2Fill onClick={openCloseTabsMobile} />
@@ -213,10 +217,6 @@ const Page = () => {
           {isLoading && <SkeletonLoadersTabsPage />}
         </div>
         <div className="right">
-          <div className="top">
-            {!isLoading && <PageMainInfoCard />}
-            {isLoading && <SkeletonLoadersMainPage />}
-          </div>
           <div className="bottom">
             {!isLoading && (
               <div className="tab-content">

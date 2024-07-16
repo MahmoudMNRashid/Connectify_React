@@ -10,8 +10,8 @@ const HandleLogoCard = () => {
   const { disableIsActive } = useContext(MainContext);
   const { mainInformation } = useContext(ProfileContext);
   const { addNewProfilePhotoAndSet } = useProfile();
-  const profilePhotos = mainInformation.profilePhotos.slice().reverse();
-  profilePhotos.forEach((element, index) => {
+  const profilePhotos = mainInformation.profilePhotos?.slice().reverse();
+  profilePhotos?.forEach((element, index) => {
     element.current = index === 0;
   });
 
@@ -80,7 +80,9 @@ const HandleLogoCard = () => {
   };
   return (
     <>
-      <CustomSlider assets={profilePhotos} />
+      {mainInformation.profilePhotos?.length > 0 && (
+        <CustomSlider assets={profilePhotos} />
+      )}
 
       <div className={classes.container__newphoto}>
         <p className={classes.intro}>upload a new photo</p>

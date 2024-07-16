@@ -56,7 +56,7 @@ const ProfileCard = () => {
 
   const logo =
     mainInformation.profilePhotos?.length > 0
-      ? mainInformation.profilePhotos[mainInformation.profilePhotos.length - 1]
+      ? mainInformation.profilePhotos[mainInformation.profilePhotos?.length - 1]
           .asset.link
       : defaultLogo;
 
@@ -77,7 +77,9 @@ const ProfileCard = () => {
   };
 
   const handleDeleteBackground = () => {
-    openConfirmModal(deleteBackgroundApi);
+    openConfirmModal(() => {
+      deleteBackgroundApi(mainInformation.backgroundPhotos.public_id);
+    });
   };
   const { addAssets, openModal: openAssetsModal } = useContext(PostContext);
 
@@ -97,6 +99,17 @@ const ProfileCard = () => {
 
   const openModalForHandleTheLogo = () => {
     openModal("profile", content.HANDLE_LOGO);
+  };
+
+  const handleAddLogoToContextAndOpenTheModal = () => {
+    if (mainInformation.profilePhotos?.length > 0) {
+      addAssets([
+        mainInformation.profilePhotos[mainInformation.profilePhotos?.length - 1]
+          .asset,
+      ]);
+      openAssetsModal("a");
+      document.body.classList.add("hide__scroll");
+    }
   };
   return (
     <>
@@ -136,7 +149,11 @@ const ProfileCard = () => {
 
           <div className={style["profile-header-content"]}>
             <div className={style["profile-header-img"]}>
-              <img src={logo} alt="" />
+              <img
+                src={logo}
+                alt=""
+                onClick={handleAddLogoToContextAndOpenTheModal}
+              />
               <button
                 className={style.edit__logo}
                 onClick={openModalForHandleTheLogo}

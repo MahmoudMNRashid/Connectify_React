@@ -34,7 +34,7 @@ const FriendsContent = () => {
         </div>
 
         {!loading && friends.friends.length === 0 && (
-          <p>There Are No Friends Yet</p>
+          <p className="no"> No friends</p>
         )}
 
         {loading && (

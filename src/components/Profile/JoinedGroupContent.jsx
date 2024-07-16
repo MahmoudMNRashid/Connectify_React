@@ -44,7 +44,7 @@ const JoinedGroupContent = () => {
             <GroupInfoCard key={group._id} group={group} />
           ))}
 
-        {!loading && groups.length === 0 && <p>There are no groups</p>}
+        {!loading && groups.length === 0 && <p className="no">No groups</p>}
 
         {loading && skeletonLoaders}
       </div>

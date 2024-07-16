@@ -56,7 +56,7 @@ const Post = ({ data, place, hideMenu }) => {
 
   const displayedText = isExpanded
     ? postContent.description
-    : postContent.description.substring(0, textLimit);
+    : postContent.description?.substring(0, textLimit);
 
   let contentImage = <div> error post</div>;
   if (permission.postType === "group" && permission.fromAll) {
@@ -219,6 +219,7 @@ const Post = ({ data, place, hideMenu }) => {
       place
     );
     openMainModal("post", content.LIKES);
+   
   };
 
   const canShowMenuButton =

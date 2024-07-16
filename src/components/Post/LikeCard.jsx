@@ -21,11 +21,11 @@ const LikeCard = ({ like }) => {
       <div className={classes.img}>
         <img src={logo} onClick={handleNavigate} />
       </div>
-      <div>
+     
         <p className={classes.name} onClick={handleNavigate}>
           {name}
         </p>
-      </div>
+      
 
       {areYou && <p className={classes.you}>you</p>}
     </div>

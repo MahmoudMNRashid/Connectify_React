@@ -38,7 +38,7 @@ const GroupInvitationsContent = () => {
           })}
 
         {!loading && groupInvites.invites.length === 0 && (
-          <p>There Are No Invites Yet</p>
+          <p >No invites yet</p>
         )}
 
         {loading && (

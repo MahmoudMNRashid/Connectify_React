@@ -11,14 +11,12 @@ import FriendRequestCard from "./FriendRequestCard";
 const IncomingRequestsContent = () => {
   const { userId } = useParams();
   const { loading } = useFetchedPost(
-    `${host}/profile/friendsRequestSentToMe/${userId}`,'INCOMING_REQUESTS'
+    `${host}/profile/friendsRequestSentToMe/${userId}`,
+    "INCOMING_REQUESTS"
   );
-  const { friendsRequestRecieve } =
-    useContext(ProfileContext);
+  const { friendsRequestRecieve } = useContext(ProfileContext);
   const totalRequests = friendsRequestRecieve?.total || 0;
   const requests = friendsRequestRecieve?.requests || [];
-
-
 
   const skeletonLoaders = Array.from({ length: 20 }).map((_, index) => (
     <SkeletonLoader2 key={index} />
@@ -50,7 +48,9 @@ const IncomingRequestsContent = () => {
             />
           ))}
 
-        {!loading && requests.length === 0 && <p>There are no requests sent</p>}
+        {!loading && requests.length === 0 && (
+          <p className="no">No requests recieve</p>
+        )}
 
         {loading && skeletonLoaders}
       </div>

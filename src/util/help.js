@@ -2,8 +2,8 @@
 import Cookies from "js-cookie";
 import validator from "validator";
 
-export const localHost = "https://connectify-eosin.vercel.app";
-export const host = "http://localhost:8080";
+export const host = "https://connectify-eosin.vercel.app";
+export const localHost = "http://localhost:8080";
 
 export const getToken = () => {
   return Cookies.get("Jto__Uid")?.split("__&")[0];

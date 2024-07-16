@@ -48,7 +48,7 @@ const usePage = () => {
       const response = await axios.get(`${host}/page/MainInfo/${pageId}`, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
-   
+
       addPageInformation(response.data.mainInfo[0]);
     } catch (error) {
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -86,11 +86,11 @@ const usePage = () => {
         }
       );
 
-      console.log(response)
+      console.log(response);
       followPage_();
       toast.success(response.data.message, { id: toastId });
     } catch (error) {
-    console.log(error)
+      console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
         navigate("/error", {
           state: {
@@ -243,7 +243,7 @@ const usePage = () => {
     startTheDisable();
     const toastId = toast.loading("wait...");
     let url = `${host}/page/`;
-  
+
     switch (desc) {
       case "Gender":
         url = url + "updateGender";
@@ -290,7 +290,6 @@ const usePage = () => {
       // deleteBackgroundImage();
       changeAbout("UPDATE", desc, data);
       fn();
-    
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -317,7 +316,7 @@ const usePage = () => {
     startTheDisable();
     const toastId = toast.loading("wait...");
     let url = `${host}/page/`;
-    
+
     switch (desc) {
       case "Gender":
         url = url + "deleteGender";
@@ -360,7 +359,6 @@ const usePage = () => {
       });
       toast.success(response.data.message, { id: toastId });
       closeConfirmModal();
-     
 
       changeAbout("DELETE", desc);
       fn();
@@ -433,7 +431,7 @@ const usePage = () => {
       if (desc === "University") {
         data = response.data.college;
       }
-    
+
       changeAbout("ADD", desc, data);
       fn();
     } catch (error) {
@@ -682,7 +680,7 @@ const usePage = () => {
       const response = await axios.post(url, formData, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
-  
+
       toast.success(response.data.message, { id: toastId });
       editLogoCover(response.data.link, type);
       closeModal();
@@ -712,10 +710,10 @@ const usePage = () => {
         headers: { Authorization: `Bearer ${getToken()}` },
         data: { pageId },
       });
-     
+
       toast.success(response.data.message, { id: toastId });
 
-      navigate("/");
+      navigate("/", { replace: true });
       closeConfirmModal();
     } catch (error) {
       if (error.response?.status === 403 || error.response?.status === 401) {

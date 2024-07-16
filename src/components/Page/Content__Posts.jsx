@@ -45,7 +45,7 @@ const Content__Posts = () => {
 
       {pageInformation.isHeOwner && (
         <CreateButton
-          style={{ bottom: "10px", right: "10px", backgroundColor: "#9B86BD" }}
+          style={{ bottom: "10px", right: "10px", backgroundColor: "#003C43" }}
           fn={openCreatePostModal}
           tooltip="Create Post"
           icon={FaPlus}
@@ -53,7 +53,7 @@ const Content__Posts = () => {
       )}
       <CreateButton
         fn={openSearchInPostModal}
-        style={{ bottom: "70px", right: "10px", backgroundColor: "#5A639C" }}
+        style={{ bottom: "70px", right: "10px", backgroundColor: "#135D66" }}
         tooltip="Search in posts..."
         icon={IoSearchOutline}
       />

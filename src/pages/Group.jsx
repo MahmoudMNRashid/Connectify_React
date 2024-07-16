@@ -61,7 +61,16 @@ const Group = () => {
   const privacy = groupInformation.privacy;
   const [activeTab, setActiveTab] = useState(0);
   const allTabs = [
-    { icon: FaHome, tooltip: "Home", content: <div>home</div> },
+    {
+      icon: FaHome,
+      tooltip: "Home",
+      content: (
+        <div className="top">
+          {!isLoading && <GroupMainInfoCard />}
+          {isLoading && <SkeletonLoadersMainGroup />}
+        </div>
+      ),
+    },
     { icon: FaFileAlt, tooltip: "Posts", content: <Content__Posts /> },
     { icon: FaUserCog, tooltip: "Moderator", content: <Content__Moderator /> },
     { icon: FaUserShield, tooltip: "Admins", content: <Content__Admins /> },
@@ -225,17 +234,11 @@ const Group = () => {
           {isLoading && <SkeletonLoadersTabsPage />}
         </div>
         <div className="right">
-          <div className="top">
-            {!isLoading && <GroupMainInfoCard />}
-            {isLoading && <SkeletonLoadersMainGroup />}
-          </div>
-          <div className="bottom">
-            {!isLoading && (
-              <div className="tab-content">
-                {tabsToDisplay[activeTab]?.content}
-              </div>
-            )}
-          </div>
+          {!isLoading && (
+            <div className="tab-content">
+              {tabsToDisplay[activeTab]?.content}
+            </div>
+          )}
         </div>
       </div>
     </>

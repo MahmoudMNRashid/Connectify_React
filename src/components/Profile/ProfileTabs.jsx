@@ -15,6 +15,7 @@ const ProfileTabs = () => {
   const allTabs = [
     "Posts",
     "About",
+    "Settings",
     "Friends",
     "Group Invites",
     "Page Invites",
@@ -31,6 +32,7 @@ const ProfileTabs = () => {
     "Owned Pages",
     "Incoming Requests",
     "Outgoing Requests",
+    "Settings",
   ];
 
   const filteredTabs = allTabs.filter(

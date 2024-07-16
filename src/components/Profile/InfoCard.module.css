@@ -18,6 +18,7 @@
 .main {
   display: flex;
   align-items: center;
+
 }
 
 .main i {
@@ -37,11 +38,12 @@
 
 .info {
   width: 85%;
+ flex: 1;
   /* margin-right: 2rem; */
 }
 .info .Ps p:nth-of-type(1) {
   font-weight: bold;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 .info .Ps p:nth-of-type(2) {
   color: #adadad;
@@ -102,6 +104,8 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
+
+
 }
 .cancel {
   color: #ff3333;
@@ -146,7 +150,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  margin-left: 1rem;
+  margin-left: .5rem;
 }
 .buttons button {
   border: none;
