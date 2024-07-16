@@ -11,13 +11,16 @@ import { MdOutlineClose } from "react-icons/md";
 import useGroup from "../../hooks/UseGroup";
 import Loader2 from "../UI/Loader2";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import usePost from "../../hooks/UsePost";
 const ReportCard = ({ data, isAdmin }) => {
   const { groupInformation } = useContext(GroupContext);
   const { deleteReport, isLoading } = useGroup();
-  const { deletePost } = useGroup();
+  const { deletePost } = usePost();
   const { blockMemberOrAdmin } = useGroup();
   const { deleteAdminReport } = useGroup();
   const { downgradeAdminToMember } = useGroup();
+  const navigate = useNavigate();
 
   const group = {
     name: groupInformation.name,
@@ -53,7 +56,7 @@ const ReportCard = ({ data, isAdmin }) => {
   const reportDescription = data.description;
 
   const reportDate = convertDateFormat(data.reportDate);
-  const reportId = data.reportId || crypto.randomUUID();
+  const reportId = data.reportId;
   const [openSelectKeepPost, setOpenSelectKeepPost] = useState(false);
   const { value, handleInputBlur, handleInputChange, hasError, valueIsValid } =
     useInput(`keep post?`, (value) => value === "Yes" || value === "No");
@@ -67,30 +70,37 @@ const ReportCard = ({ data, isAdmin }) => {
   };
   const handleDeletePostAndReport = async () => {
     try {
-      var toastId = toast.loading("Wait...");
-
       if (isAdmin) {
         await Promise.all([
-          deletePost(post.post.postId),
-          deleteReport(reportId),
+          deletePost(
+            "group",
+            post.post.postId,
+            undefined,
+            group.groupId,
+            "group"
+          ),
+          deleteAdminReport(reportId),
         ]);
       } else {
         await Promise.all([
-          deletePost(post.post.postId),
-          deleteAdminReport(reportId),
+          deletePost(
+            "group",
+            post.post.postId,
+            undefined,
+            group.groupId,
+            "group"
+          ),
+          deleteReport(reportId),
         ]);
       }
-
-      toast.success("done", { id: toastId });
     } catch (error) {
-      toast.error(error, {
-        id: toastId,
-      });
+      console.log("error", error);
+      toast.error(error);
     }
   };
   const handleDeletePostAndReportAndBlockMember = async () => {
     try {
-      var toastId = toast.loading("Wait...");
+      
       if (isAdmin) {
         await Promise.all([
           deletePost(post.post.postId),
@@ -112,35 +122,37 @@ const ReportCard = ({ data, isAdmin }) => {
           ),
         ]);
       }
-      toast.success("done", { id: toastId });
+      toast.success("done");
     } catch (error) {
-      toast.error(error, {
-        id: toastId,
-      });
+      toast.error(error);
     }
   };
   const handleDeletePostAndReportAndDowngradeAdmin = async () => {
     try {
-      var toastId = toast.loading("Wait...");
-
       await Promise.all([
-        deletePost(post.post.postId),
         deleteAdminReport(reportId),
         downgradeAdminToMember(post.owner.userId),
       ]);
-
-      toast.success("done", { id: toastId });
+      await deletePost(
+        "group",
+        post.post.postId,
+        undefined,
+        group.groupId,
+        "group"
+      );
     } catch (error) {
-      toast.error(error, {
-        id: toastId,
-      });
+      toast.error(error);
     }
+  };
+
+  const handleNavigatToProfile = () => {
+    navigate(`/profile/${from.userId}`);
   };
   return (
     <div className={classes.container}>
       <div className={classes.post}>
         <h2>The post complained about</h2>
-        <Post data={post} />
+        <Post data={post} hideMenu={true} />
       </div>
 
       <div className={classes.from}>
@@ -155,7 +167,7 @@ const ReportCard = ({ data, isAdmin }) => {
               {from.firstName} {from.lastName}
             </p>
           </div>
-          <button>Visit</button>
+          <button onClick={handleNavigatToProfile}>Visit</button>
         </div>
       </div>
 

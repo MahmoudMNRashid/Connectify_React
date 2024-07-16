@@ -34,12 +34,7 @@ export const LoginForm = () => {
     handleInputChange: handlePasswordChange,
     hasError: passwordHasError,
     valueIsValid: passwordIsValid,
-  } = useInput("", (value) =>
-    validator.matches(
-      value,
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/
-    )
-  );
+  } = useInput("", (value) => validator.isLength(value, { min: 6 }));
 
   //check validation of form for disable the button
   const formIsValid = emailIsValid && passwordIsValid;
@@ -60,7 +55,6 @@ export const LoginForm = () => {
         password: passwordValue,
       });
 
-  
       toast.success("done", { id: toastId });
 
       const token = response.data.token;
@@ -69,14 +63,14 @@ export const LoginForm = () => {
       const lastName = response.data.lastName;
       const logo = response.data.logo;
       const experation = response.data.experation;
-//this for save expire in cookies and after that to compare with expire come from jwt decode 
+      //this for save expire in cookies and after that to compare with expire come from jwt decode
       const date = new Date(experation);
       const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
-      const day = String(date.getDate()).padStart(2, '0');
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-    const expireDate =`${year}-${month}-${day} ${hours}:${minutes}`
+      const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+      const day = String(date.getDate()).padStart(2, "0");
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      const expireDate = `${year}-${month}-${day} ${hours}:${minutes}`;
 
       // Get the current date
       let currentDate = new Date();
@@ -84,7 +78,6 @@ export const LoginForm = () => {
       currentDate.setDate(currentDate.getDate() + 30);
       // Format the date as required
       let formattedDate = currentDate.toISOString();
-     
 
       Cookies.set(
         "Jto__Uid",
@@ -100,7 +93,6 @@ export const LoginForm = () => {
 
       navigate("/", { replace: true });
     } catch (error) {
-   
       toast.error(error.response.data.message || "Something went wrong", {
         id: toastId,
       });
@@ -137,7 +129,7 @@ export const LoginForm = () => {
           <Input
             placeholder="Password"
             name="password"
-            textError="password should be alphanumeric special character and capital letter"
+            textError="Password: min. 6 characters"
             type="password"
             value={passwordValue}
             onChange={(event) => handlePasswordChange(event)}

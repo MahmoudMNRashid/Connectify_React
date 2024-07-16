@@ -14,10 +14,7 @@ const Reset_Password = () => {
   const navigate = useNavigate();
 
   const passwordInformation = useInput("", (value) =>
-    validator.matches(
-      value,
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d!@#$%^&|*-_]{6,}$/
-    )
+    validator.isLength(value, { min: 6 })
   );
 
   const confirmPasswordInformation = useInput("", (value) =>
@@ -44,8 +41,6 @@ const Reset_Password = () => {
       navigate(`/auth?mode=login`, { replace: true });
       toast.success(response.data.message, { id: toastId });
     } catch (error) {
-    
-
       toast.error(error.response.data.message || "Something went wrong", {
         id: toastId,
       });
@@ -66,7 +61,7 @@ const Reset_Password = () => {
         <div className={classes["container--inputs"]}>
           <Input
             placeholder="Password"
-            textError="Password: min. 6 characters with 1 letter, 1 number, 1 special character"
+            textError="Password: min. 6 characters"
             type="password"
             value={passwordInformation.value}
             onChange={(event) => passwordInformation.handleInputChange(event)}

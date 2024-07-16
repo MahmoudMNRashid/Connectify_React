@@ -34,9 +34,9 @@ const Signup = () => {
   const emailInformation = useInput("", (value) => validator.isEmail(value));
 
   const passwordInformation = useInput("", (value) =>
-    validator.matches(
+    validator.isLength(
       value,
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d!@#$%^&|*-_]{6,}$/
+      { min:6 }
     )
   );
 
@@ -172,7 +172,7 @@ const Signup = () => {
             <div className={style.container__inputs}>
               <Input
                 placeholder="Password"
-                textError="Password: min. 6 characters with 1 letter, 1 number, 1 special character"
+                textError="Password: min. 6 characters "
                 type="password"
                 value={passwordInformation.value}
                 onChange={(event) =>

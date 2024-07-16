@@ -37,7 +37,6 @@ const usePost = () => {
   }, [stopTheDisable]);
 
   const deletePost = async (type, postId, pageId, groupId, place) => {
-  
     const data =
       type === "group"
         ? { groupId, postId }
@@ -149,7 +148,7 @@ const usePost = () => {
       });
 
       toast.success(response.data.message, { id: toastId });
- 
+
       closeModal();
       if (place === "group") {
         updatePost__(response.data.post);
@@ -219,10 +218,17 @@ const usePost = () => {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
 
+      console.log(response);
       toast.success(response.data.message, { id: toastId });
- 
+
       closeModal();
-      if (place === "group") {
+      if (
+        place === "group" &&
+        ((groupInformation.immediatePost === "anyoneInGroup" &&
+          groupInformation.role === "member") ||
+          groupInformation.role === "moderator" ||
+          groupInformation.role === "admin")
+      ) {
         createPost__(JSON.parse(response.data.post));
         createPost_(JSON.parse(response.data.post), place, groupInformation);
       } else if (place === "page") {
@@ -233,6 +239,7 @@ const usePost = () => {
         createPost_(JSON.parse(response.data.post), place);
       }
     } catch (error) {
+      console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
         navigate("/error", {
           state: {
@@ -242,14 +249,13 @@ const usePost = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong", {
+      toast.error(error.response?.data.message || "Something went wrong.", {
         id: toastId,
       });
     } finally {
       stopLoadingAndDisable();
     }
   };
-
 
   return {
     isLoading,

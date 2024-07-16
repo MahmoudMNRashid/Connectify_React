@@ -18,7 +18,7 @@ import { MdBlockFlipped, MdDelete, MdEdit, MdReport } from "react-icons/md";
 import usePost from "../../hooks/UsePost.js";
 import { MainContext, content } from "../../context/MainContext.jsx";
 
-const Post = ({ data, place }) => {
+const Post = ({ data, place, hideMenu }) => {
   //Hooks
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -237,42 +237,43 @@ const Post = ({ data, place }) => {
           </div>
         </div>
 
-        {canShowMenuButton && (
-          <div
-            className={classes.menu}
-            onClick={() => {
-              setShowMenu((prev) => !prev);
-            }}
-          >
-            <CiMenuKebab />
-            {showMenu && (
-              <ul className={classes.options}>
-                {permission.canDelete && (
-                  <li onClick={handleDeletePost}>
-                    <MdDelete /> Delete
-                  </li>
-                )}
-                {permission.canUpdate && (
-                  <li onClick={openEditPostModal}>
-                    <MdEdit /> Edit
-                  </li>
-                )}
-                {permission.canReport && (
-                  <li onClick={openAddReportModal}>
-                    <MdReport />
-                    Report
-                  </li>
-                )}
-                {permission.canBlocked && (
-                  <li onClick={openBLockMemberModal}>
-                    <MdBlockFlipped />
-                    Block
-                  </li>
-                )}
-              </ul>
-            )}
-          </div>
-        )}
+        {canShowMenuButton &&
+          !hideMenu &&(
+            <div
+              className={classes.menu}
+              onClick={() => {
+                setShowMenu((prev) => !prev);
+              }}
+            >
+              <CiMenuKebab />
+              {showMenu && (
+                <ul className={classes.options}>
+                  {permission.canDelete && (
+                    <li onClick={handleDeletePost}>
+                      <MdDelete /> Delete
+                    </li>
+                  )}
+                  {permission.canUpdate && (
+                    <li onClick={openEditPostModal}>
+                      <MdEdit /> Edit
+                    </li>
+                  )}
+                  {permission.canReport && (
+                    <li onClick={openAddReportModal}>
+                      <MdReport />
+                      Report
+                    </li>
+                  )}
+                  {permission.canBlocked && (
+                    <li onClick={openBLockMemberModal}>
+                      <MdBlockFlipped />
+                      Block
+                    </li>
+                  )}
+                </ul>
+              )}
+            </div>
+          )}
       </header>
 
       <main>

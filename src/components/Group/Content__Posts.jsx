@@ -15,7 +15,7 @@ const Content__Posts = () => {
   let { groupId } = useParams();
   const { loading } = useFetchedPost(`${host}/group/posts/${groupId}`, "POSTS");
   const { groupInformation, groupPosts } = useContext(GroupContext);
-
+ 
   const posts = groupPosts.posts;
   const { openModal } = useContext(MainContext);
   const { addPostInformation } = useContext(PostContext);
@@ -42,29 +42,23 @@ const Content__Posts = () => {
         post = { ...post, postType: "group", group };
         return <Post key={post.post._idPost} data={post} place="group" />;
       })}
-      {!loading && posts.length === 0 && (
-        <p
-        className="no"
-        >
-           No post
-        </p>
-      )}
+      {!loading && posts.length === 0 && <p className="no">No post</p>}
       {loading && <Loader />}
-      {(groupInformation.role !== "not member" &&
-        groupInformation.whoCanPost === "anyoneInGroup") ||
-        ((groupInformation.role === "admin" ||
-          groupInformation.role === "moderator") && (
-          <CreateButton
-            fn={openCreatePostModal}
-            tooltip="Create Post"
-            icon={FaPlus}
-            style={{
-              bottom: "10px",
-              right: "10px",
-              backgroundColor: "#9B86BD",
-            }}
-          />
-        ))}
+
+      {((groupInformation.role === "member" && groupInformation.canPost) ||
+        groupInformation.role === "admin" ||
+        groupInformation.role === "moderator") && (
+        <CreateButton
+          fn={openCreatePostModal}
+          tooltip="Create Post"
+          icon={FaPlus}
+          style={{
+            bottom: "10px",
+            right: "10px",
+            backgroundColor: "#9B86BD",
+          }}
+        />
+      )}
       {groupInformation.role !== "not member" && (
         <CreateButton
           fn={openSearchInPostModal}

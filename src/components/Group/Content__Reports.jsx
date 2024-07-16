@@ -23,8 +23,9 @@ const Content__Reports = () => {
         {reports.map((report) => {
           return (
             <ReportCard
-              key={report.reportId || crypto.randomUUID()}
+              key={report.reportId }
               data={report}
+              isAdmin={false}
             />
           );
         })}
