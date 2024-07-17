@@ -38,7 +38,7 @@ const CustomSlider = ({ assets }) => {
       {" "}
       <p className={classes.intro}>current photo with all previous photos</p>
       <div className={classes.cont}>
-        <button>
+        <button disabled={disableIsActive}>
           <MdOutlineArrowBackIos onClick={handleScrollLeft} />
         </button>
         <div className={classes.container} ref={containerRef}>
@@ -73,7 +73,7 @@ const CustomSlider = ({ assets }) => {
             );
           })}
         </div>
-        <button onClick={handleScrollRight}>
+        <button disabled={disableIsActive} onClick={handleScrollRight}>
           <MdArrowForwardIos />
         </button>
       </div>

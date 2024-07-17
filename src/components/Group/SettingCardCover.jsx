@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import classes from "./SettingCardCover.module.css";
 import FileInput from "../UI/FileInput";
 import toast from "react-hot-toast";
 import useGroup from "../../hooks/UseGroup";
+import { MainContext } from "../../context/MainContext";
 const SettingCardCover = ({ result }) => {
+  const { disableIsActive } = useContext(MainContext);
   const { changeSettings, addCover } = useGroup();
   const [fileInputIsOpen, setFileInputIsOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -69,7 +71,6 @@ const SettingCardCover = ({ result }) => {
     }
   };
   const handleOpenAddMode = () => {
- 
     setFileInputIsOpen(true);
     setEditMode(false);
   };
@@ -92,11 +93,20 @@ const SettingCardCover = ({ result }) => {
       {result && (
         <>
           <img src={result.link} />
-          <button onClick={handleOpenFileInputForEdit}>Edit cover</button>
+          <button
+            disabled={disableIsActive}
+            onClick={handleOpenFileInputForEdit}
+          >
+            Edit cover
+          </button>
         </>
       )}
 
-      {!result && <button onClick={handleOpenAddMode}>Add cover</button>}
+      {!result && (
+        <button disabled={disableIsActive} onClick={handleOpenAddMode}>
+          Add cover
+        </button>
+      )}
 
       {fileInputIsOpen && (
         <>
@@ -118,11 +128,16 @@ const SettingCardCover = ({ result }) => {
               <div className={classes.buttons}>
                 <button
                   onClick={handleSave}
-                  disabled={selectedCover.length === 0}
+                  disabled={selectedCover.length === 0 || disableIsActive}
                 >
                   Save
                 </button>
-                <button onClick={handleCLoseFileInput}>Cancel</button>
+                <button
+                  disabled={disableIsActive}
+                  onClick={handleCLoseFileInput}
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           )}

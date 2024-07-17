@@ -5,14 +5,18 @@ import ConfirmModalInstance from "../UI/Modals/ConfirmModal.jsx";
 
 const Content__LeaveGroup = () => {
   const { leaveGroup } = useGroup();
-  const { openConfirmModal, confirmModalIsOpen } = useContext(MainContext);
+  const { openConfirmModal, confirmModalIsOpen ,disableIsActive} = useContext(MainContext);
   const handleLeaveGroup = () => {
     openConfirmModal(leaveGroup);
   };
   return (
     <div className="M_A_M__Content__Container">
       {confirmModalIsOpen && <ConfirmModalInstance />}
-      <button onClick={handleLeaveGroup} className="leave">
+      <button
+        disabled={disableIsActive}
+        onClick={handleLeaveGroup}
+        className="leave"
+      >
         Leave The Group
       </button>
     </div>

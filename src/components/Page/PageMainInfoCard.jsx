@@ -15,7 +15,7 @@ import { MdAdd, MdOutlineModeEdit } from "react-icons/md";
 import { PostContext } from "../../context/PostContext";
 
 const PageMainInfoCard = () => {
-  const { openModal } = useContext(MainContext);
+  const { openModal, disableIsActive } = useContext(MainContext);
   const { addAssets, openModal: openAssetsModal } = useContext(PostContext);
   const { pageInformation } = useContext(PageContext);
   const { followPage } = usePage();
@@ -30,7 +30,7 @@ const PageMainInfoCard = () => {
   const isHeOwner = pageInformation.isHeOwner;
   const bio = pageInformation.bio;
   const categories = pageInformation.categories;
-  console.log(pageInformation)
+  console.log(pageInformation);
   const finalCategories = categories?.join(",");
   const showButtonFollow = !isHeFollowers;
   const showButtonFollowing = isHeFollowers;
@@ -77,6 +77,7 @@ const PageMainInfoCard = () => {
         <div className={styles.cover__logo__section}>
           {pageInformation.cover && isHeOwner && (
             <button
+              disabled={disableIsActive}
               className={styles.cover__edit__button}
               onClick={openEditCoverModal}
             >
@@ -85,6 +86,7 @@ const PageMainInfoCard = () => {
           )}
           {!pageInformation.cover && isHeOwner && (
             <button
+              disabled={disableIsActive}
               className={styles.cover__edit__button}
               onClick={openAddCoverModal}
             >
@@ -101,6 +103,7 @@ const PageMainInfoCard = () => {
             <img src={logo} onClick={handleAddLogoToContextAndOpenTheModal} />
             {pageInformation.logo && isHeOwner && (
               <button
+                disabled={disableIsActive}
                 className={styles.logo__edit__button}
                 onClick={openEditLogoModal}
               >
@@ -109,6 +112,7 @@ const PageMainInfoCard = () => {
             )}
             {!pageInformation.logo && (
               <button
+                disabled={disableIsActive}
                 className={styles.logo__edit__button}
                 onClick={openAddLogoModal}
               >
@@ -156,12 +160,17 @@ const PageMainInfoCard = () => {
               </div>
             </div>
             {showButtonFollow && (
-              <button onClick={followPage} className={styles.button}>
+              <button
+                disabled={disableIsActive}
+                onClick={followPage}
+                className={styles.button}
+              >
                 Follow
               </button>
             )}
             {showButtonFollowing && (
               <button
+                disabled={disableIsActive}
                 onClick={() => {
                   setShowMenu(true);
                 }}

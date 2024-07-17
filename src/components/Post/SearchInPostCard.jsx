@@ -10,8 +10,11 @@ import useSearch from "../../hooks/UseSearch";
 import { PostContext } from "../../context/PostContext";
 import { GroupContext } from "../../context/GroupContext";
 import { PageContext } from "../../context/PageContext";
+import { MainContext } from "../../context/MainContext";
 
 const SearchInPostCard = () => {
+  const { disableIsActive } = useContext(MainContext);
+
   const { groupInformation } = useContext(GroupContext);
   const { pageInformation } = useContext(PageContext);
   let { userId, pageId, groupId } = useParams();
@@ -33,7 +36,6 @@ const SearchInPostCard = () => {
   const posts = resultSearch.posts;
   useEffect(() => {
     return () => {
-   
       resetResultSearch();
     };
   }, [resetResultSearch]);
@@ -46,7 +48,7 @@ const SearchInPostCard = () => {
         }}
       >
         <input placeholder="Search..." ref={inputRef} />
-        <button>
+        <button disabled={disableIsActive}>
           <CiSearch />
         </button>
       </form>

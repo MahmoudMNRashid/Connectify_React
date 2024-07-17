@@ -13,7 +13,10 @@ import { FaUnlock } from "react-icons/fa";
 import { useInput } from "../../hooks/UseInput";
 import { MdOutlineClose } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { MainContext } from "../../context/MainContext";
 const M_A_M = ({ data: member, isMember, isBlocked, isFriendNotJoin }) => {
+  const { disableIsActive } = useContext(MainContext);
+
   const { groupInformation } = useContext(GroupContext);
   const { blockMemberOrAdmin, isLoading } = useGroup();
   const { upgradeMemberToAdmin, isLoading: isLoading1 } = useGroup();
@@ -72,11 +75,12 @@ const M_A_M = ({ data: member, isMember, isBlocked, isFriendNotJoin }) => {
           </div>
         </div>
         <div className={classes.buttons}>
-          <button onClick={handleNavigateToProfile}>
+          <button disabled={disableIsActive} onClick={handleNavigateToProfile}>
             <FaEye fontSize={"1.3rem"} /> Visit
           </button>
           {isFriendNotJoin && (
             <button
+              disabled={disableIsActive}
               onClick={() => {
                 inviteFriend(userId);
               }}
@@ -86,6 +90,7 @@ const M_A_M = ({ data: member, isMember, isBlocked, isFriendNotJoin }) => {
           )}
           {role === "moderator" && isMember && !isBlocked && (
             <button
+              disabled={disableIsActive}
               onClick={() => {
                 upgradeMemberToAdmin(userId);
               }}
@@ -99,6 +104,7 @@ const M_A_M = ({ data: member, isMember, isBlocked, isFriendNotJoin }) => {
             !isBlocked &&
             !isFriendNotJoin && (
               <button
+                disabled={disableIsActive}
                 onClick={() => {
                   downgradeAdminToMember(userId);
                 }}
@@ -111,6 +117,7 @@ const M_A_M = ({ data: member, isMember, isBlocked, isFriendNotJoin }) => {
             !isBlocked &&
             !isFriendNotJoin && (
               <button
+                disabled={disableIsActive}
                 onClick={() => {
                   setOpenSelectKeepPost(true);
                 }}
@@ -121,6 +128,7 @@ const M_A_M = ({ data: member, isMember, isBlocked, isFriendNotJoin }) => {
             )}
           {!isMember && isBlocked && (
             <button
+              disabled={disableIsActive}
               onClick={() => {
                 unblockAMember(userId);
               }}
@@ -164,7 +172,7 @@ const M_A_M = ({ data: member, isMember, isBlocked, isFriendNotJoin }) => {
           </div>
           <button
             onClick={handleBlockMember}
-            disabled={!valueIsValid}
+            disabled={!valueIsValid || disableIsActive}
             className={classes.confirm}
           >
             Confirm

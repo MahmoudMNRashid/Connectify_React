@@ -3,7 +3,9 @@ import MiniPostGroup from "./MiniPostGroup";
 import { GroupContext } from "../../context/GroupContext";
 import classes from "./PinnedPostCard.module.css";
 import useGroup from "../../hooks/UseGroup";
+import { MainContext } from "../../context/MainContext";
 const PinnedPostCard = ({ data, your }) => {
+  const { disableIsActive } = useContext(MainContext);
   const { groupInformation } = useContext(GroupContext);
   const { acceptPinnedPost, rejectPinnedPost } = useGroup();
 
@@ -22,6 +24,7 @@ const PinnedPostCard = ({ data, your }) => {
       <div className={classes.buttons}>
         {!your && (
           <button
+            disabled={disableIsActive}
             onClick={() => {
               rejectPinnedPost(post.postContent._idPost);
             }}
@@ -32,6 +35,7 @@ const PinnedPostCard = ({ data, your }) => {
 
         {!your && (
           <button
+            disabled={disableIsActive}
             onClick={() => {
               acceptPinnedPost(post.postContent._idPost);
             }}

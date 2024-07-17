@@ -1,7 +1,13 @@
 import classes from "./GroupInfoCard.module.css";
 import defaultGroup from "../../assets/post/group_default.jpg";
 import { useNavigate } from "react-router-dom";
+import { MainContext } from "../../context/MainContext";
+import { useContext } from "react";
 const GroupInfoCard = ({ group }) => {
+  const {    
+    disableIsActive, 
+  } = useContext(MainContext);
+
   const name = group.name;
   const description = group.description ? group.description : "No description";
   const groupId = group._id;
@@ -25,7 +31,9 @@ const GroupInfoCard = ({ group }) => {
       </div>
 
       <div className={classes.right}>
-        <button onClick={handleMoveToGroup}>Visit</button>
+        <button disabled={disableIsActive} onClick={handleMoveToGroup}>
+          Visit
+        </button>
       </div>
     </div>
   );

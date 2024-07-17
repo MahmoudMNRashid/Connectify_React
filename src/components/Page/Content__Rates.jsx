@@ -13,7 +13,7 @@ const Content__Rates = () => {
 
   const { loading } = useFetchedPost(`${host}/page/rates/${pageId}`, "RATES");
   const { pageRates, pageInformation } = useContext(PageContext);
-  const { openModal, modalEditNameIsOpen } = useContext(MainContext);
+  const { openModal, modalEditNameIsOpen,disableIsActive } = useContext(MainContext);
   const rates = pageRates.rates;
   const avgRate = pageRates.avgRate;
   const canAddRate =
@@ -26,25 +26,20 @@ const Content__Rates = () => {
   };
   return (
     <>
-
       {modalEditNameIsOpen && <EditNameModalInstance />}
       <div className="rate">
-        {avgRate!==0 && <p>{`Average :  ${avgRate}`} </p>}
+        {avgRate !== 0 && <p>{`Average :  ${avgRate}`} </p>}
         {canAddRate && (
-          <button onClick={handleOpenModalAddRate}>+ Add Rate</button>
+          <button disabled={disableIsActive} onClick={handleOpenModalAddRate}>
+            + Add Rate
+          </button>
         )}
       </div>
       <div className="M_A_M__Content__Container">
         {rates.map((rate) => {
           return <RateCard key={rate.from.userId} data={rate} />;
         })}
-        {!loading && rates.length === 0 && (
-          <p
-           className="no"
-          >
-          No rates
-          </p>
-        )}
+        {!loading && rates.length === 0 && <p className="no">No rates</p>}
         {loading && <Loader />}
       </div>
     </>

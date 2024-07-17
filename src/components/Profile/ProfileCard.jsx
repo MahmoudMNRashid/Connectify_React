@@ -25,7 +25,7 @@ import { TbEditCircle } from "react-icons/tb";
 import { PostContext } from "../../context/PostContext";
 const ProfileCard = () => {
   const { mainInformation } = useContext(ProfileContext);
-  const { openModal, modalEditNameIsOpen, openConfirmModal } =
+  const { openModal, modalEditNameIsOpen, openConfirmModal ,disableIsActive} =
     useContext(MainContext);
   const { isLoading, getMainInformation, deleteBackgroundApi } = useProfile();
 
@@ -128,18 +128,18 @@ const ProfileCard = () => {
             {isHeOwner && (
               <div className={style.buttons__container}>
                 {showAddBackground && (
-                  <button onClick={handleOpenModalADDBackground}>
+                  <button disabled={disableIsActive} onClick={handleOpenModalADDBackground}>
                     <FcAddImage />
                   </button>
                 )}
 
                 {!showAddBackground && (
-                  <button onClick={handleOpenModalEditBackground}>
+                  <button disabled={disableIsActive} onClick={handleOpenModalEditBackground}>
                     <FcEditImage />
                   </button>
                 )}
                 {!showAddBackground && (
-                  <button onClick={handleDeleteBackground}>
+                  <button disabled={disableIsActive} onClick={handleDeleteBackground}>
                     <FcRemoveImage />
                   </button>
                 )}
@@ -155,6 +155,7 @@ const ProfileCard = () => {
                 onClick={handleAddLogoToContextAndOpenTheModal}
               />
               <button
+              disabled={disableIsActive}
                 className={style.edit__logo}
                 onClick={openModalForHandleTheLogo}
               >
@@ -194,7 +195,7 @@ const ProfileCard = () => {
               )}
 
               {showAddBioButton && (
-                <button onClick={handleOpenModalAddBio}>
+                <button disabled={disableIsActive} onClick={handleOpenModalAddBio}>
                   <IoMdAdd />
                 </button>
               )}
@@ -217,6 +218,7 @@ const ButtonType = ({
   areYouSendFriendRequestToHim,
 }) => {
   const { mainInformation } = useContext(ProfileContext);
+  const { disableIsActive } = useContext(MainContext);
   const {
     cancelFriendRequestSentByMeApi,
     addFriendApi,
@@ -230,6 +232,7 @@ const ButtonType = ({
     <>
       {!isHeOwner && isHeFriend && (
         <button
+        disabled={disableIsActive}
           onClick={() => {
             setShowMenu((prev) => !prev);
           }}
@@ -239,13 +242,14 @@ const ButtonType = ({
             <div className={style.menu}>
               <main>
                 <button
+                disabled={disableIsActive}
                   onClick={() => {
                     unfriendApi(mainInformation._id);
                   }}
                 >
                   <BsFillPersonDashFill /> Unfriend
                 </button>
-                <button>
+                <button disabled={disableIsActive}>
                   <BsFillPersonDashFill /> block
                 </button>
               </main>
@@ -255,6 +259,7 @@ const ButtonType = ({
       )}
       {!isHeOwner && !isHeFriend && isHeSendFriendRequestToYou && (
         <button
+        disabled={disableIsActive}
           onClick={() => {
             setShowMenu2((prev) => !prev);
           }}
@@ -265,6 +270,7 @@ const ButtonType = ({
             <div className={style.menu}>
               <main>
                 <button
+                disabled={disableIsActive}
                   onClick={() => {
                     acceptfriendApi(mainInformation._id, "MAIN INFORMATION");
                   }}
@@ -272,6 +278,7 @@ const ButtonType = ({
                   <BsFillPersonPlusFill /> Confirm
                 </button>
                 <button
+                disabled={disableIsActive}
                   onClick={() => {
                     cancelFriendRequestSentToMeApi(
                       mainInformation._id,
@@ -288,6 +295,7 @@ const ButtonType = ({
       )}
       {!isHeOwner && !isHeFriend && areYouSendFriendRequestToHim && (
         <button
+        disabled={disableIsActive}
           onClick={() => {
             cancelFriendRequestSentByMeApi(
               mainInformation._id,
@@ -303,7 +311,8 @@ const ButtonType = ({
         !isHeFriend &&
         !areYouSendFriendRequestToHim &&
         !isHeSendFriendRequestToYou && (
-          <button
+          <button 
+          disabled={disableIsActive}
             onClick={() => {
               addFriendApi(mainInformation._id);
             }}

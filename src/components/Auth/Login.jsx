@@ -140,6 +140,7 @@ export const LoginForm = () => {
           <p className={classes.form__text}>
             Forget password!{" "}
             <button
+              disabled={isLoading}
               className={classes["button--forget-password"]}
               type="button"
             >
@@ -158,7 +159,7 @@ export const LoginForm = () => {
         <footer className={classes.footer}>
           <p className={classes.form__text}>
             Dont have an account?
-            <button className={classes["button--signup"]} type="button">
+            <button   className={classes["button--signup"]} type="button"  disabled={isLoading}>
               <Link to={`?mode=signup`}> Register Here</Link>
             </button>
           </p>

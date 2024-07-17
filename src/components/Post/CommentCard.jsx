@@ -7,9 +7,11 @@ import useComments from "../../hooks/UseComments";
 import { PostContext } from "../../context/PostContext";
 import { useContext } from "react";
 import defaultImageProfile from "../../assets/post/profile_default.svg";
+import { MainContext } from "../../context/MainContext";
 
 const CommentCard = ({ comment }) => {
- 
+  const { disableIsActive } = useContext(MainContext);
+
   const owner = comment.owner;
   const commentContent = comment.comment;
   const permission = {
@@ -52,21 +54,26 @@ const CommentCard = ({ comment }) => {
               <pre>{owner.firstName + " " + owner.lastName}</pre>
               <i>
                 {permission.canDelete && (
-                  <FaTrashAlt
-                    color="red"
-                    onClick={() => {
-                      handleDeleteComment(commentContent.commentId);
-                    }}
-                  />
+                  <button disabled={disableIsActive}>
+                    <FaTrashAlt
+                      color="red"
+                      onClick={() => {
+                        handleDeleteComment(commentContent.commentId);
+                      }}
+                    />
+                  </button>
                 )}
                 {permission.canUpdate && (
-                  <FaEdit
-                    color="#008081"
-                    widths={"10px"}
-                    onClick={() => {
-                      addActiveupdatedComment(comment);
-                    }}
-                  />
+                  <button disabled={disableIsActive}>
+                    {" "}
+                    <FaEdit
+                      color="#008081"
+                      widths={"10px"}
+                      onClick={() => {
+                        addActiveupdatedComment(comment);
+                      }}
+                    />
+                  </button>
                 )}
               </i>
             </div>

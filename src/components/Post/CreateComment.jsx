@@ -8,7 +8,9 @@ import useComments from "../../hooks/UseComments";
 import Loader2 from "../UI/Loader2";
 import { PostContext } from "../../context/PostContext";
 import { IoMdClose } from "react-icons/io";
+import { MainContext } from "../../context/MainContext";
 const CreateComment = () => {
+  const { disableIsActive } = useContext(MainContext);
   const {
     activeUpdatedComment,
     addActiveupdatedComment,
@@ -122,7 +124,7 @@ const CreateComment = () => {
   return (
     <div className={classes.container__createComment}>
       {isUpdateMode && (
-        <button disabled={isLoading}>
+        <button disabled={isLoading || disableIsActive}>
           <IoMdClose color="red" onClick={handleCloseUpdateMode} />
         </button>
       )}
@@ -159,7 +161,7 @@ const CreateComment = () => {
             }}
           />
         )}
-        <button disabled={isLoading || formIsDisabled}>
+        <button disabled={isLoading || formIsDisabled || disableIsActive}>
           {isLoading && <Loader2 />}
           {!isLoading && formIsDisabled && <MdCancelScheduleSend />}
           {!isLoading && !formIsDisabled && <IoSend />}

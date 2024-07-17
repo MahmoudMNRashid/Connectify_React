@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { PostContext } from "../context/PostContext";
 import axios from "axios";
 import { getToken, host } from "../util/help";
@@ -25,10 +25,17 @@ const useComments = (
   const { startTheDisable, stopTheDisable } = useContext(MainContext);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const startLoadingAndDisable = useCallback(() => {
+    setIsLoading(true);
+    startTheDisable();
+  }, [startTheDisable]);
 
+  const stopLoadingAndDisable = useCallback(() => {
+    setIsLoading(false);
+    stopTheDisable();
+  }, [stopTheDisable]);
   const handleApiCreateComment = async (event) => {
     event.preventDefault();
- 
 
     const formData = new FormData();
 
@@ -53,8 +60,8 @@ const useComments = (
       ? (url = url + "/page/createComment")
       : (url = url + "/profile/createComment");
 
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(url, formData, {
         headers: { Authorization: `Bearer ${getToken()}` },
@@ -64,11 +71,12 @@ const useComments = (
       clearAssets([]);
       clearDescription("");
       addComment(response.data.comment);
-      toast.success(response.data.message);
+      toast.success(response.data.message, {
+        id: toastId,
+      });
       const miniPost = document.getElementById("miniPost");
       const allCommentsDiv = document.getElementById("allComments");
       allCommentsDiv.scrollTop = miniPost.offsetHeight;
-    
     } catch (error) {
       console.log(error);
 
@@ -80,10 +88,11 @@ const useComments = (
           },
         });
       }
-      toast.error(error.response.data.message || "Something went wrong");
+      toast.error(error.response.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
 
@@ -106,8 +115,8 @@ const useComments = (
       : postInformation.permission.postType === "page"
       ? (url = url + "/page/deleteComment")
       : (url = url + "/profile/deleteComment");
-
-    setIsLoading(true);
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.delete(url, {
         data: comment,
@@ -115,22 +124,23 @@ const useComments = (
       });
       deleteComment(commentId);
 
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
     } catch (error) {
       console.log(error);
 
       if (error.response.status === 403 || error.response.status === 401) {
-        // navigate("/error", {
-        //   state: {
-        //     status: error.response.status,
-        //     message: error.response.data.message,
-        //   },
-        // });
-        toast.error(error.response.data.message || "Something went wrong");
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+        });
       }
-      toast.error(error.response.data.message || "Something went wrong");
+      toast.error(error.response.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
+      stopLoadingAndDisable();
     }
   };
 
@@ -179,9 +189,8 @@ const useComments = (
       : postInformation.permission.postType === "page"
       ? (url = url + "/page/updateComment")
       : (url = url + "/profile/updateComment");
-
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(url, formData, {
         headers: { Authorization: `Bearer ${getToken()}` },
@@ -193,8 +202,8 @@ const useComments = (
       changeModeToCreate();
       addActiveupdatedComment({});
 
-      toast.success(response.data.message);
-  
+      toast.success(response.data.message), { id: toastId };
+
       updateComment(response.data.comment);
     } catch (error) {
       console.log(error);
@@ -207,10 +216,11 @@ const useComments = (
           },
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
 

@@ -5,11 +5,10 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { PostContext } from "../../../context/PostContext";
 import { useContext } from "react";
 import { IoMdClose } from "react-icons/io";
+import { MainContext } from "../../../context/MainContext";
 const Modal = () => {
   const { assets, closeModal, addAssets } = useContext(PostContext);
-
- 
-
+  const { disableIsActive } = useContext(MainContext);
   const handleRemoveAssetsAndCLoseTheModal = () => {
     addAssets([]);
     closeModal("a");
@@ -49,11 +48,9 @@ const Modal = () => {
           })}
         </Carousel>
       </div>
-<button  className={classes.close}><IoMdClose
-        onClick={handleRemoveAssetsAndCLoseTheModal}
-       
-      /></button>
-      
+      <button disabled={disableIsActive} className={classes.close}>
+        <IoMdClose onClick={handleRemoveAssetsAndCLoseTheModal} />
+      </button>
     </>
   );
 };

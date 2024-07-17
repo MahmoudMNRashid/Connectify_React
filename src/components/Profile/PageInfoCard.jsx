@@ -1,9 +1,11 @@
 import classes from "./PageInfoCard.module.css";
 import defaultPage from "../../assets/post/page_default.svg";
 import { useNavigate } from "react-router-dom";
+import { MainContext } from "../../context/MainContext";
+import { useContext } from "react";
 
 const PageInfoCard = ({ page }) => {
-  console.log(page);
+  const { disableIsActive } = useContext(MainContext);
   const logoPage = page.logo && page.logo.link ? page.logo.link : defaultPage;
 
   const name = page.name;
@@ -22,7 +24,9 @@ const PageInfoCard = ({ page }) => {
       </div>
 
       <div className={classes.right}>
-        <button onClick={handleNavigateToPage}>Visit</button>
+        <button disabled={disableIsActive} onClick={handleNavigateToPage}>
+          Visit
+        </button>
       </div>
     </div>
   );

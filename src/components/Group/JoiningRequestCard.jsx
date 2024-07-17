@@ -4,8 +4,12 @@ import { MdOutlineBadge } from "react-icons/md";
 import { MdCalendarMonth } from "react-icons/md";
 import { extractDate } from "../../util/help";
 import useGroup from "../../hooks/UseGroup";
+import { MainContext } from "../../context/MainContext";
+import { useContext } from "react";
 const JoiningRequestCard = ({ data }) => {
   const { acceptJoiningRequest, rejectJoiningRequest } = useGroup();
+
+  const { disableIsActive } = useContext(MainContext);
 
   const logo =
     data.logo && data.logo.assets && data.logo.assets.link
@@ -34,6 +38,7 @@ const JoiningRequestCard = ({ data }) => {
       </div>
       <footer className={classes.footer}>
         <button
+          disabled={disableIsActive}
           onClick={() => {
             rejectJoiningRequest(userId, data);
           }}
@@ -41,6 +46,7 @@ const JoiningRequestCard = ({ data }) => {
           Reject
         </button>
         <button
+          disabled={disableIsActive}
           onClick={() => {
             acceptJoiningRequest(userId, data);
           }}

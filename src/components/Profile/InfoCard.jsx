@@ -69,7 +69,8 @@ const InfoCard = ({ info }) => {
           return value;
         }
   );
-  const { openConfirmModal, confirmModalIsOpen } = useContext(MainContext);
+  const { openConfirmModal, confirmModalIsOpen, disableIsActive } =
+    useContext(MainContext);
   const handleCLickEdit = () => {
     setModes((prev) => {
       const newModes = { ...prev };
@@ -389,13 +390,17 @@ const InfoCard = ({ info }) => {
 
   const buttonsJsx = (
     <div className={classes.buttons__holder}>
-      <button onClick={handleCLoseInput} className={classes.cancel}>
+      <button
+        disabled={disableIsActive}
+        onClick={handleCLoseInput}
+        className={classes.cancel}
+      >
         <MdOutlineClose />
       </button>
       <button
         className={classes.confirm}
         onClick={handleSave}
-        disabled={disableButton}
+        disabled={disableButton || disableIsActive}
       >
         <GiConfirmed />
       </button>
@@ -417,7 +422,7 @@ const InfoCard = ({ info }) => {
           )}
 
           {addStatment && (
-            <button onClick={handleCLickAdd}>
+            <button disabled={disableIsActive} onClick={handleCLickAdd}>
               <MdAdd /> {replacement}
             </button>
           )}
@@ -522,12 +527,12 @@ const InfoCard = ({ info }) => {
           {showbuttons && (
             <>
               {showEditButton && (
-                <button>
+                <button disabled={disableIsActive}>
                   <MdModeEdit onClick={handleCLickEdit} />
                 </button>
               )}
               {showDeleteButton && (
-                <button>
+                <button disabled={disableIsActive}>
                   <MdDeleteForever onClick={handleDelete} color="#ff3333" />
                 </button>
               )}

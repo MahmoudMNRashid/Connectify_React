@@ -8,6 +8,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router";
 import { convertDateFormat, getUserId } from "../../util/help";
 import usePage from "../../hooks/UsePage";
+import { MainContext } from "../../context/MainContext";
 
 const Followers_BlockedUsers_Card = ({
   data: follower,
@@ -16,6 +17,8 @@ const Followers_BlockedUsers_Card = ({
   isFriendNotJoin,
   ismoderator,
 }) => {
+  const { disableIsActive } = useContext(MainContext);
+
   const { pageInformation } = useContext(PageContext);
   const { blockFollower } = usePage();
   const { unblockUser } = usePage();
@@ -58,11 +61,11 @@ const Followers_BlockedUsers_Card = ({
           </div>
         </div>
         <div className={classes.buttons}>
-          <button onClick={handleVisit}>
+          <button disabled={disableIsActive} onClick={handleVisit}>
             <FaEye fontSize={"1.3rem"} /> Visit
           </button>
           {isFriendNotJoin && (
-            <button onClick={handleInviteFriend}>
+            <button disabled={disableIsActive} onClick={handleInviteFriend}>
               <FaUserPlus fontSize={"1.3rem"} /> Invite
             </button>
           )}
@@ -71,7 +74,7 @@ const Followers_BlockedUsers_Card = ({
             isFollower &&
             !isBlocked &&
             userId !== getUserId() && (
-              <button onClick={handleBlock}>
+              <button disabled={disableIsActive} onClick={handleBlock}>
                 <RiUserForbidFill fontSize={"1.3rem"} />
                 Block
               </button>
@@ -79,6 +82,7 @@ const Followers_BlockedUsers_Card = ({
 
           {!isFollower && isBlocked && (
             <button
+              disabled={disableIsActive}
               onClick={() => {
                 handleUnblock();
               }}

@@ -28,7 +28,7 @@ const RateCard = ({ data: rate }) => {
     [1, 1, 1, 1, 0],
     [1, 1, 1, 1, 1],
   ];
-  const { openModal, modalEditNameIsOpen } = useContext(MainContext);
+  const { openModal, modalEditNameIsOpen,disableIsActive } = useContext(MainContext);
 
   const handleOpenModalEditRate = () => {
     openModal("rate", content.EDIT_RATE);
@@ -77,8 +77,16 @@ const RateCard = ({ data: rate }) => {
       </main>
 
       <footer className={classes.footer}>
-        {canUpdate && <button onClick={handleOpenModalEditRate}>Update</button>}
-        {canDelete && <button onClick={handleDeleteRate}>Delete</button>}
+        {canUpdate && (
+          <button disabled={disableIsActive} onClick={handleOpenModalEditRate}>
+            Update
+          </button>
+        )}
+        {canDelete && (
+          <button disabled={disableIsActive} onClick={handleDeleteRate}>
+            Delete
+          </button>
+        )}
       </footer>
     </div>
   );

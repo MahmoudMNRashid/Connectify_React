@@ -8,8 +8,10 @@ import { ProfileContext } from "../../context/ProfileContext";
 import { useContext } from "react";
 import useProfile from "../../hooks/UseProfile";
 import Loader2 from "../UI/Loader2";
+import { MainContext } from "../../context/MainContext";
 
 const PageInvitationCard = ({ invite }) => {
+  const { disableIsActive } = useContext(MainContext);
   const { selectTap } = useContext(ProfileContext);
   const { deletePageInvite, isLoading } = useProfile();
   const { acceptPageInvite, isLoading1 } = useProfile();
@@ -72,6 +74,7 @@ const PageInvitationCard = ({ invite }) => {
       </div>
       <div className={classes.footer}>
         <button
+          disabled={disableIsActive}
           onClick={() => {
             deletePageInvite(idInvite);
           }}
@@ -80,6 +83,7 @@ const PageInvitationCard = ({ invite }) => {
           {isLoading ? <Loader2 /> : "Delete"}
         </button>
         <button
+          disabled={disableIsActive}
           onClick={() => {
             acceptPageInvite(idInvite, pageId);
           }}

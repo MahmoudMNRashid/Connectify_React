@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useInput } from "../../hooks/UseInput";
 import classes from "./SettingCard.module.css";
 import { Input } from "../UI/Input";
 import toast from "react-hot-toast";
+import { MainContext } from "../../context/MainContext";
 const SettingCard = ({ result, validator, title, fnEdit, fnAdd }) => {
   const [showInput, setShowInput] = useState(false);
   const [editMode, seteditMode] = useState(false);
+
+  const {    
+    disableIsActive, 
+  } = useContext(MainContext);
 
   const { value, handleInputBlur, handleInputChange, hasError, valueIsValid } =
     useInput(result, validator);
@@ -16,7 +21,6 @@ const SettingCard = ({ result, validator, title, fnEdit, fnAdd }) => {
   };
 
   const handleOpenAddMode = () => {
- 
     setShowInput(true);
     seteditMode(false);
   };
@@ -31,7 +35,6 @@ const SettingCard = ({ result, validator, title, fnEdit, fnAdd }) => {
   const handleSave = async () => {
     try {
       if (editMode) {
-      
         await fnEdit(value);
       } else {
         await fnAdd(value);
@@ -39,14 +42,17 @@ const SettingCard = ({ result, validator, title, fnEdit, fnAdd }) => {
 
       handleCLoseInput();
     } catch (error) {
-      
       toast.error(error.message || error);
     }
   };
 
   return (
     <div className={classes.dataHolder1}>
-      {!result && <button onClick={handleOpenAddMode}>Add {title}</button>}
+      {!result && (
+        <button disabled={disableIsActive} onClick={handleOpenAddMode}>
+          Add {title}
+        </button>
+      )}
 
       {result && (
         <>
@@ -54,7 +60,9 @@ const SettingCard = ({ result, validator, title, fnEdit, fnAdd }) => {
             <p>{title}:</p>
             <p>{result}</p>
           </div>
-          <button onClick={handleOpenEditMode}>Edit {title}</button>
+          <button disabled={disableIsActive} onClick={handleOpenEditMode}>
+            Edit {title}
+          </button>
         </>
       )}
       {showInput && (
@@ -69,10 +77,15 @@ const SettingCard = ({ result, validator, title, fnEdit, fnAdd }) => {
             hasError={hasError}
           />
           <div className={classes.buttons}>
-            <button onClick={handleSave} disabled={!valueIsValid}>
+            <button
+              onClick={handleSave}
+              disabled={!valueIsValid || disableIsActive}
+            >
               Save
             </button>
-            <button onClick={handleCLoseInput}>Cancel</button>
+            <button disabled={disableIsActive} onClick={handleCLoseInput}>
+              Cancel
+            </button>
           </div>
         </div>
       )}

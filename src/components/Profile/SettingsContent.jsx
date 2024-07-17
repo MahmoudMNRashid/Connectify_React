@@ -7,7 +7,8 @@ const SettingsContent = () => {
   const { mainInformation } = useContext(ProfileContext);
   const isHeOwner = mainInformation.isHeOwner;
   const { deleteAccount } = useProfile();
-  const { openConfirmModal, openModal } = useContext(MainContext);
+  const { openConfirmModal, openModal, disableIsActive } =
+    useContext(MainContext);
   const handleDeletePage = () => {
     openConfirmModal(deleteAccount);
   };
@@ -35,6 +36,7 @@ const SettingsContent = () => {
             <button
               className="delete__profile__button"
               onClick={handleDeletePage}
+              disabled={disableIsActive}
             >
               Delete My account
             </button>
@@ -45,6 +47,7 @@ const SettingsContent = () => {
             <button
               className="create__page__button"
               onClick={openCreatePageModal}
+              disabled={disableIsActive}
             >
               Create Page
             </button>
@@ -55,6 +58,7 @@ const SettingsContent = () => {
             <button
               className="create__group__button"
               onClick={openCreateGroupModal}
+              disabled={disableIsActive}
             >
               Create Group
             </button>

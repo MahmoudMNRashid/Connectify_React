@@ -1,11 +1,12 @@
 import { useContext } from "react";
 import style from "./ProfilesTabs.module.css";
 import { ProfileContext } from "../../context/ProfileContext";
+import { MainContext } from "../../context/MainContext";
 
 const ProfileTabs = () => {
   const { selectedTap, selectTap, mainInformation } =
     useContext(ProfileContext);
-
+  const { disableIsActive } = useContext(MainContext);
   const friendsNumber = mainInformation.friends;
   const incomingRequestNumber = mainInformation.incomingRequest;
   const pageInvitesNumber = mainInformation.pageInvites;
@@ -42,6 +43,7 @@ const ProfileTabs = () => {
   const TabButton = ({ tabName }) => (
     <li className={style["nav-item"]}>
       <button
+        disabled={disableIsActive}
         onClick={() => selectTap(tabName)}
         className={`${style["nav-button"]} ${
           selectedTap === tabName ? style.active : undefined

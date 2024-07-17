@@ -6,7 +6,7 @@ import { MainContext } from "../../context/MainContext";
 const Content__Settings = () => {
   const { pageInformation } = useContext(PageContext);
   const { deletePage } = usePage();
-  const { openConfirmModal } = useContext(MainContext);
+  const { openConfirmModal, disableIsActive } = useContext(MainContext);
   const handleDeletePage = () => {
     openConfirmModal(deletePage);
   };
@@ -25,6 +25,7 @@ const Content__Settings = () => {
         {isHeOwner && (
           <div className="continer__settings__profile">
             <button
+              disabled={disableIsActive}
               className="delete__profile__button"
               onClick={handleDeletePage}
             >

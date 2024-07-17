@@ -13,7 +13,9 @@ import Loader2 from "../UI/Loader2";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import usePost from "../../hooks/UsePost";
+import { MainContext } from "../../context/MainContext";
 const ReportCard = ({ data, isAdmin }) => {
+  const { disableIsActive } = useContext(MainContext);
   const { groupInformation } = useContext(GroupContext);
   const { deleteReport, isLoading } = useGroup();
   const { deletePost } = usePost();
@@ -100,7 +102,6 @@ const ReportCard = ({ data, isAdmin }) => {
   };
   const handleDeletePostAndReportAndBlockMember = async () => {
     try {
-      
       if (isAdmin) {
         await Promise.all([
           deletePost(post.post.postId),
@@ -167,7 +168,9 @@ const ReportCard = ({ data, isAdmin }) => {
               {from.firstName} {from.lastName}
             </p>
           </div>
-          <button onClick={handleNavigatToProfile}>Visit</button>
+          <button disabled={disableIsActive} onClick={handleNavigatToProfile}>
+            Visit
+          </button>
         </div>
       </div>
 
@@ -186,13 +189,17 @@ const ReportCard = ({ data, isAdmin }) => {
       <div className={classes.options}>
         <h2>Options</h2>
         <div className={classes.buttons__container}>
-          <button onClick={handleDeletePostAndReport}>
+          <button
+            disabled={disableIsActive}
+            onClick={handleDeletePostAndReport}
+          >
             Delete Post & Report
           </button>
-          <button onClick={handelDeleteReport}>
+          <button disabled={disableIsActive} onClick={handelDeleteReport}>
             {!isLoading ? "Delete Report" : <Loader2 />}
           </button>
           <button
+            disabled={disableIsActive}
             onClick={() => {
               setOpenSelectKeepPost(true);
             }}
@@ -200,7 +207,10 @@ const ReportCard = ({ data, isAdmin }) => {
             Block Member
           </button>
           {isAdmin && (
-            <button onClick={handleDeletePostAndReportAndDowngradeAdmin}>
+            <button
+              disabled={disableIsActive}
+              onClick={handleDeletePostAndReportAndDowngradeAdmin}
+            >
               Downgrade admin
             </button>
           )}
@@ -240,7 +250,7 @@ const ReportCard = ({ data, isAdmin }) => {
             </div>
             <button
               onClick={handleDeletePostAndReportAndBlockMember}
-              disabled={!valueIsValid}
+              disabled={!valueIsValid || disableIsActive}
               className={classes.confirm}
             >
               Confirm

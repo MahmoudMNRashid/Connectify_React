@@ -20,6 +20,7 @@ import { MainContext, content } from "../../context/MainContext.jsx";
 
 const Post = ({ data, place, hideMenu }) => {
   //Hooks
+
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
   //Variables
@@ -141,7 +142,7 @@ const Post = ({ data, place, hideMenu }) => {
   const { addAssets, openModal, addPostInformation, clearComments } =
     useContext(PostContext);
 
-  const { openModal: openMainModal } = useContext(MainContext);
+  const { openModal: openMainModal, disableIsActive } = useContext(MainContext);
   const handleAddAssetsToContextAndOpenTheModal = () => {
     addAssets(postContent.assets);
     openModal("a");
@@ -219,7 +220,6 @@ const Post = ({ data, place, hideMenu }) => {
       place
     );
     openMainModal("post", content.LIKES);
-   
   };
 
   const canShowMenuButton =
@@ -238,43 +238,42 @@ const Post = ({ data, place, hideMenu }) => {
           </div>
         </div>
 
-        {canShowMenuButton &&
-          !hideMenu &&(
-            <div
-              className={classes.menu}
-              onClick={() => {
-                setShowMenu((prev) => !prev);
-              }}
-            >
-              <CiMenuKebab />
-              {showMenu && (
-                <ul className={classes.options}>
-                  {permission.canDelete && (
-                    <li onClick={handleDeletePost}>
-                      <MdDelete /> Delete
-                    </li>
-                  )}
-                  {permission.canUpdate && (
-                    <li onClick={openEditPostModal}>
-                      <MdEdit /> Edit
-                    </li>
-                  )}
-                  {permission.canReport && (
-                    <li onClick={openAddReportModal}>
-                      <MdReport />
-                      Report
-                    </li>
-                  )}
-                  {permission.canBlocked && (
-                    <li onClick={openBLockMemberModal}>
-                      <MdBlockFlipped />
-                      Block
-                    </li>
-                  )}
-                </ul>
-              )}
-            </div>
-          )}
+        {canShowMenuButton && !hideMenu && (
+          <div
+            className={classes.menu}
+            onClick={() => {
+              setShowMenu((prev) => !prev);
+            }}
+          >
+            <CiMenuKebab />
+            {showMenu && (
+              <ul className={classes.options}>
+                {permission.canDelete && (
+                  <li onClick={handleDeletePost}>
+                    <MdDelete /> Delete
+                  </li>
+                )}
+                {permission.canUpdate && (
+                  <li onClick={openEditPostModal}>
+                    <MdEdit /> Edit
+                  </li>
+                )}
+                {permission.canReport && (
+                  <li onClick={openAddReportModal}>
+                    <MdReport />
+                    Report
+                  </li>
+                )}
+                {permission.canBlocked && (
+                  <li onClick={openBLockMemberModal}>
+                    <MdBlockFlipped />
+                    Block
+                  </li>
+                )}
+              </ul>
+            )}
+          </div>
+        )}
       </header>
 
       <main>
@@ -377,11 +376,15 @@ const Post = ({ data, place, hideMenu }) => {
         </div>
 
         <div className={classes.like_comment}>
-          <button disabled={loading} onClick={handleAddLikeOrRemoveLike}>
+          <button
+            disabled={loading || disableIsActive}
+            onClick={handleAddLikeOrRemoveLike}
+          >
             <img src={isHeLiked ? bigLike : noLike} />
             <p>Love</p>
           </button>
           <button
+            disabled={disableIsActive}
             onClick={handleAddInformationAboutPostForGetCommentsAndOpenTheModal}
           >
             <img src={bigComment} />

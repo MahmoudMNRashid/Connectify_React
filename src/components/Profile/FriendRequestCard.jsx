@@ -8,6 +8,7 @@ import Loader2 from "../UI/Loader2";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { ProfileContext } from "../../context/ProfileContext";
+import { MainContext } from "../../context/MainContext";
 const FriendRequestCard = ({ request, out, me }) => {
   const name = request.firstName + "  " + request.lastName;
   const sendDate = extractDate(request.sendingDate);
@@ -16,6 +17,8 @@ const FriendRequestCard = ({ request, out, me }) => {
     request.logo && request.logo.asset && request.logo.asset.link
       ? request.logo.asset.link
       : defaultProfile;
+
+  const { disableIsActive } = useContext(MainContext);
 
   const { cancelFriendRequestSentByMeApi, isLoading } = useProfile();
   const { acceptfriendApi, isLoading: isLoading1 } = useProfile();
@@ -57,11 +60,11 @@ const FriendRequestCard = ({ request, out, me }) => {
       </div>
 
       <div className={classes.buttons}>
-        <button onClick={handleCancelRequest}>
+        <button disabled={disableIsActive} onClick={handleCancelRequest}>
           {!isLoading && !isLoading2 ? "Cancel" : <Loader2 />}
         </button>
         {!out && (
-          <button onClick={handleAcceptRequest}>
+          <button disabled={disableIsActive} onClick={handleAcceptRequest}>
             {!isLoading1 ? "Accept" : <Loader2 />}
           </button>
         )}

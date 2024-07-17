@@ -6,11 +6,13 @@ import { FaCheck } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
 import { RiSendPlaneFill } from "react-icons/ri";
 import useGroup from "../../hooks/UseGroup";
+import { MainContext } from "../../context/MainContext";
 
 const GroupMainInfoCard = () => {
-  const { groupInformation: data } = useContext(GroupContext);
-  const { sendJoinRequest,cancelJoinRequest } = useGroup();
+  const { disableIsActive } = useContext(MainContext);
 
+  const { groupInformation: data } = useContext(GroupContext);
+  const { sendJoinRequest, cancelJoinRequest } = useGroup();
 
   const cover =
     data.cover && data.cover.link ? data.cover.link : defaultCoverGroup;
@@ -44,7 +46,7 @@ const GroupMainInfoCard = () => {
             <p>{description}</p>
           </div>
         </div>
-        <button onClick={handleRequestJoin}>
+        <button disabled={disableIsActive} onClick={handleRequestJoin}>
           {isHeInGroup && (
             <>
               <FaCheck /> Joined

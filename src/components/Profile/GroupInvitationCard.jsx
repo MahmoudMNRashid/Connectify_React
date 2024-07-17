@@ -8,9 +8,13 @@ import { ProfileContext } from "../../context/ProfileContext";
 import { useContext } from "react";
 import useProfile from "../../hooks/UseProfile";
 import Loader2 from "../UI/Loader2";
+import { MainContext } from "../../context/MainContext";
 export const GroupInvitationCard = ({ invite }) => {
   const { deleteGroupInvite, isLoading } = useProfile();
   const { selectTap } = useContext(ProfileContext);
+
+  const { disableIsActive } = useContext(MainContext);
+
   const senderName = invite.sender.firstName + "  " + invite.sender.lastName;
   const groupName = invite.group.name;
   const dateInvite = convertDateFormat(invite.inviteDate);
@@ -69,6 +73,7 @@ export const GroupInvitationCard = ({ invite }) => {
       </div>
       <div className={classes.footer}>
         <button
+          disabled={disableIsActive}
           onClick={() => {
             deleteGroupInvite(idInvite);
           }}

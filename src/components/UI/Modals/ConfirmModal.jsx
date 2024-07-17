@@ -19,8 +19,7 @@ const ConfirmModal = () => {
   };
 
   const handleConfirm = () => {
-
-// const arg = Array.isArray(mainInformation.backgroundPhotos)?undefined:mainInformation.backgroundPhotos.public_id
+    // const arg = Array.isArray(mainInformation.backgroundPhotos)?undefined:mainInformation.backgroundPhotos.public_id
 
     activeFn();
   };
@@ -35,18 +34,19 @@ const ConfirmModal = () => {
 
       <div className={classes.wrapper}>
         <div className={classes.header}>
-        <p>Are You Sure</p>
-          
+          <p>Are You Sure</p>
         </div>
-    
 
         <footer className={classes.footer}>
-          <button onClick={handleConfirm} disabled={isLoading}>
+          <button
+            onClick={handleConfirm}
+            disabled={isLoading || disableIsActive}
+          >
             {!isLoading && <GiConfirmed />}
             {isLoading && <Loader2 />}
           </button>
           <button disabled={disableIsActive} onClick={handleCloseTheModal}>
-          <GiCancel />
+            <GiCancel />
           </button>
         </footer>
       </div>

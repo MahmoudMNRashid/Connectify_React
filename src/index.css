@@ -369,3 +369,8 @@ li {
     display: flex;
   }
 }
+
+button:disabled {
+  opacity: 0.5;
+  
+}

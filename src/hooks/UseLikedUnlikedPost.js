@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { getToken, host } from "../util/help";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { MainContext } from "../context/MainContext";
 
 const useLikedUnLikedPost = ({
   isHeLikedInPost,
@@ -15,8 +16,21 @@ const useLikedUnLikedPost = ({
   const [isHeLiked, setIsHeLiked] = useState(isHeLikedInPost);
   const [likesNumber, setLikesNumber] = useState(numberOfLikes);
   const [loading, setloading] = useState(false);
+  const {
+    startTheDisable,
+    stopTheDisable,
+  } = useContext(MainContext);
+  const startLoadingAndDisable = useCallback(() => {
+    setloading(true);
+    startTheDisable();
+  }, [startTheDisable]);
 
+  const stopLoadingAndDisable = useCallback(() => {
+    setloading(false);
+    stopTheDisable();
+  }, [stopTheDisable]);
   const handleAddLikeOrRemoveLike = async () => {
+    startLoadingAndDisable();
     const type = isHeLiked ? "unlikePost" : "likePost";
     const dataType =
       postType === "profile"
@@ -32,12 +46,9 @@ const useLikedUnLikedPost = ({
         ? setLikesNumber((prev) => prev + 1)
         : setLikesNumber((prev) => prev - 1);
 
-     await axios.post(
-        `${host}/post/${postType}/${type}`,
-        dataType,
-        { headers: { Authorization: "Bearer " + getToken() } }
-      );
-     
+      await axios.post(`${host}/post/${postType}/${type}`, dataType, {
+        headers: { Authorization: "Bearer " + getToken() },
+      });
     } catch (error) {
       setIsHeLiked((prev) => !prev);
       type === "likePost"
@@ -45,7 +56,7 @@ const useLikedUnLikedPost = ({
         : setLikesNumber((prev) => prev - 1);
       toast.error(error.response.data.message || "Something went wrong");
     } finally {
-      setloading(false);
+      stopLoadingAndDisable();
     }
   };
 
