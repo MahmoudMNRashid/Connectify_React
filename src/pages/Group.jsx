@@ -42,6 +42,7 @@ import SkeletonLoadersMainGroup from "../components/UI/SkeletonLoadersMainGroup"
 import NavBar from "../components/UI/NavBar";
 import { RiMenu2Fill } from "react-icons/ri";
 import TabsMobile from "../components/UI/TabsMobile";
+import ErrorModalInstance from "../components/UI/Modals/Error";
 const Group = () => {
   const { getgroupInformation, isLoading } = useGroup();
   const { modalIsOpen, commentsModalIsOpen } = useContext(PostContext);
@@ -50,16 +51,23 @@ const Group = () => {
     showTabsMobile,
     openCloseTabsMobile,
     disableIsActive,
+    modalErrorIsOpen,
   } = useContext(MainContext);
 
   useEffect(() => {
     getgroupInformation();
   }, [getgroupInformation]);
-  const { groupInformation } = useContext(GroupContext);
+  const { groupInformation, resetGroupStates } = useContext(GroupContext);
   const role = groupInformation.role;
   const canApproveMemberRequest = groupInformation.CanApproveMemberRequest;
   const privacy = groupInformation.privacy;
   const [activeTab, setActiveTab] = useState(0);
+
+  useEffect(() => {
+    return () => {
+      resetGroupStates();
+    };
+  }, [resetGroupStates]);
   const allTabs = [
     {
       icon: FaHome,
@@ -208,6 +216,7 @@ const Group = () => {
       {modalIsOpen && <ModalInstance />}{" "}
       {modalEditNameIsOpen && <MainModalInstance />}
       {commentsModalIsOpen && <CommentsModalInstance />}
+      {modalErrorIsOpen && <ErrorModalInstance/>}
       <Toaster />
       <NavBar />{" "}
       <div style={{ position: "relative" }} className="navbar__mobile">

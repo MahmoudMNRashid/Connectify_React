@@ -22,10 +22,11 @@ import { MainContext } from "../context/MainContext";
 import { useLocation } from "react-router-dom";
 import AuthGuard from "./AuthGuard";
 import SettingsContent from "../components/Profile/SettingsContent";
+import ErrorModalInstance from "../components/UI/Modals/Error";
 
 const Profile = () => {
   const { selectedTap, resetAllStates } = useContext(ProfileContext);
-  const { confirmModalIsOpen } = useContext(MainContext);
+  const { confirmModalIsOpen, modalErrorIsOpen } = useContext(MainContext);
 
   const { modalIsOpen, commentsModalIsOpen } = useContext(PostContext);
   const renderContent = () => {
@@ -137,7 +138,9 @@ const Profile = () => {
     <div>
       {modalIsOpen && <ModalInstance />}
       {commentsModalIsOpen && <CommentsModalInstance />}
-      {confirmModalIsOpen && <ConfirmModalInstance />} <Toaster />
+      {confirmModalIsOpen && <ConfirmModalInstance />}{" "}
+      {modalErrorIsOpen && <ErrorModalInstance />}
+      <Toaster />
       <NavBar />
       <div className="container__profile">
         <ProfileCard />

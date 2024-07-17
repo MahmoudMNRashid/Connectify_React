@@ -1,5 +1,3 @@
-
-
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -34,4 +32,42 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.offline__container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
+
+.offline__container > div:nth-child(1) {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 1rem;
+}
+.offline__container img {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.offline__container button {
+  width: 100%;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: #20c6b9;
+  color: white;
 }

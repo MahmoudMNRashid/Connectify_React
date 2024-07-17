@@ -8,7 +8,7 @@ import { PageContext } from "../context/PageContext";
 
 const usePage = () => {
   //context
-  const { startTheDisable, stopTheDisable, closeConfirmModal, closeModal } =
+  const { startTheDisable, stopTheDisable, closeConfirmModal, closeModal,openErrorModal } =
     useContext(MainContext);
   const {
     addPageInformation,
@@ -61,6 +61,7 @@ const usePage = () => {
         });
       }
       toast.error(error.response?.data.message || "Something went wrong");
+      openErrorModal();
     } finally {
       stopLoadingAndDisable();
     }
@@ -69,7 +70,7 @@ const usePage = () => {
     stopLoadingAndDisable,
     pageId,
     navigate,
-    addPageInformation,
+    addPageInformation,openErrorModal
   ]);
 
   const followPage = async () => {

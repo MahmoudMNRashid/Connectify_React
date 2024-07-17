@@ -27,8 +27,13 @@ const useProfile = () => {
     deleteCurrentPhotoOrPrevious,
     setPreviousPhotoAsCurrentProfilePhoto_,
   } = useContext(ProfileContext);
-  const { startTheDisable, stopTheDisable, closeModal, closeConfirmModal } =
-    useContext(MainContext);
+  const {
+    startTheDisable,
+    stopTheDisable,
+    closeModal,
+    closeConfirmModal,
+    openErrorModal,
+  } = useContext(MainContext);
   const params = useParams();
 
   //Variable
@@ -44,8 +49,9 @@ const useProfile = () => {
     setIsLoading(false);
     stopTheDisable();
   }, [stopTheDisable]);
+
   const getMainInformationApi = useCallback(async () => {
-    setIsLoading(true);
+    startLoadingAndDisable();
     try {
       const response = await axios.get(`${host}/profile/mainInfo/${userId}`, {
         headers: { Authorization: `Bearer ${getToken()}` },
@@ -62,10 +68,18 @@ const useProfile = () => {
         });
       }
       toast.error(error.response?.data.message || "Something went wrong");
+      openErrorModal();
     } finally {
-      setIsLoading(false);
+      stopLoadingAndDisable();
     }
-  }, [addMainInformation, userId, navigate]);
+  }, [
+    addMainInformation,
+    userId,
+    navigate,
+    startLoadingAndDisable,
+    stopLoadingAndDisable,
+    openErrorModal,
+  ]);
 
   const editNameApi = async (newFirstName, newLastName) => {
     startLoadingAndDisable();
@@ -141,8 +155,8 @@ const useProfile = () => {
   };
 
   const cancelFriendRequestSentByMeApi = async (reciverId, from) => {
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
         `${host}/profile/cancelFriendRequestSentByMe`,
@@ -153,7 +167,7 @@ const useProfile = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
 
       if (from === "OUTGOING REQUESTS") {
         RemoveRequestFromFriendsRequestSend(reciverId);
@@ -172,15 +186,16 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
   const addFriendApi = async (reciverId) => {
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
         `${host}/profile/sendFriendRequest`,
@@ -191,7 +206,7 @@ const useProfile = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
       editFriendType("areYouSendFriendRequestToHim-true");
     } catch (error) {
       console.log(error);
@@ -204,15 +219,16 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
   const unfriendApi = async (idFriend) => {
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
         `${host}/profile/unfriend`,
@@ -223,7 +239,7 @@ const useProfile = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
       editFriendType("isHeFriend-false");
     } catch (error) {
       console.log(error);
@@ -236,15 +252,16 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
   const acceptfriendApi = async (senderId, from) => {
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
         `${host}/profile/acceptFriendrequest`,
@@ -255,7 +272,7 @@ const useProfile = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
 
       if (from === "INCOMING REQUESTS") {
         RemoveRequestFromFriendsRequestRecieve(senderId);
@@ -274,16 +291,17 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
 
   const cancelFriendRequestSentToMeApi = async (senderId, from) => {
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
         `${host}/profile/cancelFriendRequestSentToMe`,
@@ -294,7 +312,7 @@ const useProfile = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
 
       if (from === "INCOMING REQUESTS") {
         RemoveRequestFromFriendsRequestRecieve(senderId);
@@ -313,10 +331,11 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
 
@@ -360,7 +379,8 @@ const useProfile = () => {
   };
 
   const deleteBackgroundApi = async (publicId) => {
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.delete(
         `${host}/profile/deleteBackgroundPhoto`,
@@ -369,7 +389,7 @@ const useProfile = () => {
           data: { publicId },
         }
       );
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
       closeConfirmModal();
       deleteBackgroundImage();
     } catch (error) {
@@ -383,14 +403,17 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
 
   const updateAboutApi = async (desc, data, fn) => {
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     let url = `${host}/profile/`;
 
     switch (desc) {
@@ -431,7 +454,7 @@ const useProfile = () => {
       const response = await axios.put(url, data, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
 
       // deleteBackgroundImage();
       changeAbout("UPDATE", desc, data);
@@ -447,16 +470,19 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
 
   // will pass another parameter which is function sometimes will use
   // now will use for after delete
   const deleteAboutApi = async (desc, data, fn) => {
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     let url = `http://localhost:8080/profile/`;
 
     switch (desc) {
@@ -488,7 +514,7 @@ const useProfile = () => {
         headers: { Authorization: `Bearer ${getToken()}` },
         data: data ? data : undefined,
       });
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
       closeConfirmModal();
       // deleteBackgroundImage();
 
@@ -505,13 +531,16 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
   const addAboutApi = async (desc, data, fn) => {
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     let url = `${host}/profile/`;
 
     switch (desc) {
@@ -542,7 +571,7 @@ const useProfile = () => {
       const response = await axios.post(url, data, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
       if (desc === "School") {
         data = response.data.highSchool;
       }
@@ -563,15 +592,17 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
 
   const deleteGroupInvite = async (_id) => {
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
         `${host}/profile/cancelInvite`,
@@ -582,7 +613,7 @@ const useProfile = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
       DeleteGroupInvite(_id);
     } catch (error) {
       console.log(error);
@@ -595,15 +626,16 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
   const deletePageInvite = async (_InvitationId) => {
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
         `${host}/page/cancelInvite`,
@@ -614,7 +646,7 @@ const useProfile = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
       DeletePageInvite(_InvitationId);
     } catch (error) {
       console.log(error);
@@ -627,15 +659,16 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
   const acceptPageInvite = async (_InvitationId, idPage) => {
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
         `${host}/page/acceptInvite`,
@@ -646,7 +679,7 @@ const useProfile = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
       AcceptPageInvite(idPage);
     } catch (error) {
       console.log(error);
@@ -659,15 +692,16 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
   const createPage = async (name, categories) => {
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
         `${localHost}/page/createPage`,
@@ -679,7 +713,7 @@ const useProfile = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
 
       closeModal();
       navigate(`/page/${response.data.result._id}`);
@@ -694,15 +728,16 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
   const createGroup = async (name, privacy, visibility) => {
-    setIsLoading(true);
-    startTheDisable();
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
         `${localHost}/group/createGroup`,
@@ -715,7 +750,7 @@ const useProfile = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-      toast.success(response.data.message);
+      toast.success(response.data.message, { id: toastId });
 
       closeModal();
       navigate(`/group/${response.data.groupId}`);
@@ -730,10 +765,11 @@ const useProfile = () => {
           replace: true,
         });
       }
-      toast.error(error.response?.data.message || "Something went wrong");
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
     } finally {
-      setIsLoading(false);
-      stopTheDisable();
+      stopLoadingAndDisable();
     }
   };
   const deleteAccount = async () => {
@@ -803,6 +839,7 @@ const useProfile = () => {
     }
   };
   const deleteCurrentPhotoOrPreviousPhoto = async (publicId) => {
+    startLoadingAndDisable();
     var toastId = toast.loading("Wait...");
     try {
       const response = await axios.delete(

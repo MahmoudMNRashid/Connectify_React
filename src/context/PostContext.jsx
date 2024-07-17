@@ -42,6 +42,7 @@ export const PostContext = createContext({
   likes: { likes: [], total: 0, hasMore: true, firstTime: false },
   addLikes: () => {},
   resetLikes: () => {},
+  resetPostsStates: () => {},
 });
 
 export default function PostContextProvider({ children }) {
@@ -389,7 +390,6 @@ export default function PostContextProvider({ children }) {
   const handleGetComments = useCallback(
     (newComments, total, hasMore, firstTime) => {
       setComments((prev) => {
-      
         return {
           comments: [...prev.comments, ...newComments],
           total,
@@ -443,7 +443,6 @@ export default function PostContextProvider({ children }) {
     });
   };
   const handleAddComment = (newComment) => {
-  
     setComments((prev) => {
       const isFoundlogo = getLogo();
 
@@ -494,6 +493,20 @@ export default function PostContextProvider({ children }) {
   const handleChangeModeToUpdate = useCallback(() => {
     setIsUpdateMode(true);
   }, []);
+  const handleResetPostsStates = useCallback(() => {
+    setPosts({
+      posts: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setResultSearch({
+      posts: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+  }, []);
 
   const ctxValue = {
     comments,
@@ -527,6 +540,7 @@ export default function PostContextProvider({ children }) {
     likes,
     addLikes: handleAddLikes,
     resetLikes: handleResetLikes,
+    resetPostsStates: handleResetPostsStates,
   };
   return (
     <PostContext.Provider value={ctxValue}>{children}</PostContext.Provider>

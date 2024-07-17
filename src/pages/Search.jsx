@@ -45,7 +45,10 @@ const Search = () => {
           }}
         >
           <Box>
-            <SearchIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+            <SearchIcon
+              sx={{ color: "action.active", mr: 1, my: 0.5 }}
+              onClick={handleSearchClick}
+            />
             <TextField inputRef={ref} id="input-with-sx" variant="standard" />
           </Box>
         </form>

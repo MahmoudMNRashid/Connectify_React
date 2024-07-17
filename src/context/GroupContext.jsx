@@ -67,7 +67,7 @@ export const GroupContext = createContext({
   deletePost__: (postId) => {},
   updatePost__: (newPost) => {},
   createPost__: (newPost) => {},
-  //   SearchGroupMembers: (members) => {},
+  resetGroupStates: () => {},
 });
 
 export default function GroupContextProvider({ children }) {
@@ -318,11 +318,11 @@ export default function GroupContextProvider({ children }) {
       const reportsLength = prev.total;
       const hasMore = prev.hasMore;
       const firstTime = prev.firstTime;
-      
+
       const newReports = reports.filter((report) => {
         return report.reportId !== reportId;
       });
-     
+
       return {
         reports: newReports,
         total: reportsLength - 1,
@@ -337,11 +337,11 @@ export default function GroupContextProvider({ children }) {
       const reportsLength = prev.total;
       const hasMore = prev.hasMore;
       const firstTime = prev.firstTime;
-     
+
       const newReports = reports.filter((report) => {
         return report.reportId !== reportId;
       });
-   
+
       return {
         reports: newReports,
         total: reportsLength - 1,
@@ -453,11 +453,10 @@ export default function GroupContextProvider({ children }) {
       member = members.find((member) => {
         return member.userId === memberId;
       });
-   
+
       const newMembers = members.filter((member) => {
         return member.userId !== memberId;
       });
-    
 
       return { ...prev, members: newMembers, total: total - 1 };
     });
@@ -509,11 +508,10 @@ export default function GroupContextProvider({ children }) {
         return member.userId === memberId;
       });
 
-  
       const newBLockedMembers = blockedMembers.filter((member) => {
         return member.userId !== memberId;
       });
-   
+
       return { ...prev, blockedUsers: newBLockedMembers, total: total - 1 };
     });
 
@@ -580,11 +578,11 @@ export default function GroupContextProvider({ children }) {
       request = prev.requests.find((request) => {
         return request.userId === userData.userId;
       });
-   
+
       const newRequests = prev.requests.filter((request) => {
         return request.userId !== userData.userId;
       });
-  
+
       return {
         requests: newRequests,
         total: prev.total - 1,
@@ -681,7 +679,6 @@ export default function GroupContextProvider({ children }) {
         break;
       case "COVER":
         setGroupInformation((prev) => {
-         
           const info = { ...prev };
           info.cover = value;
           return info;
@@ -707,18 +704,22 @@ export default function GroupContextProvider({ children }) {
     });
   };
   const handleDeletePost = (postId) => {
-    if(groupPosts.firstTime){setGroupPosts((prev) => {
-      const posts = prev.posts;
-      const newPosts = posts.filter((post) => post.post._idPost !== postId);
+    if (groupPosts.firstTime) {
+      setGroupPosts((prev) => {
+        const posts = prev.posts;
+        const newPosts = posts.filter((post) => post.post._idPost !== postId);
 
-      return {
-        posts: newPosts,
-        total: prev.total - 1,
-        hasMore: prev.hasMore,
-        firstTime: prev.firstTime,
-      };
-    });}else{return}
-  }
+        return {
+          posts: newPosts,
+          total: prev.total - 1,
+          hasMore: prev.hasMore,
+          firstTime: prev.firstTime,
+        };
+      });
+    } else {
+      return;
+    }
+  };
   const handleUpdatePost = (newPost) => {
     if (groupPosts.firstTime) {
       setGroupPosts((prev) => {
@@ -801,7 +802,7 @@ export default function GroupContextProvider({ children }) {
         };
 
         posts.unshift(post);
-        
+
         return {
           posts,
           total: prev.total + 1,
@@ -813,11 +814,77 @@ export default function GroupContextProvider({ children }) {
       return;
     }
   };
-  //   const handleSearchGroupMembers = useCallback((newMembers, total) => {
-  //     setGroupMembers((prev) => {
-  //       return { members: [...newMembers], total: total };
-  //     });
-  //   }, []);
+
+  const handleResetGroupStates = useCallback(() => {
+    setGroupInformation({});
+    setGroupPosts({
+      posts: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setGroupMembers({
+      members: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setGroupAdmins({
+      admins: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setGroupModerator({
+      moderator: {},
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setGroupReports({
+      reports: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setGroupAdminReports({
+      reports: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setGroupBlockedUsers({
+      blockedUsers: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setGroupPinnedPosts({
+      posts: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setGroupYourPinnedPosts({
+      posts: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setGroupJoiningRequests({
+      requests: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+    setGroupFriendsNotJoin({
+      friends: [],
+      total: 0,
+      hasMore: true,
+      firstTime: false,
+    });
+  }, []);
+
   const ctxValue = {
     groupInformation,
     groupPosts,
@@ -862,7 +929,7 @@ export default function GroupContextProvider({ children }) {
     deletePost__: handleDeletePost,
     updatePost__: handleUpdatePost,
     createPost__: handleCreatePost,
-    // SearchGroupMembers: handleSearchGroupMembers,
+    resetGroupStates: handleResetGroupStates,
   };
   return (
     <GroupContext.Provider value={ctxValue}>{children}</GroupContext.Provider>

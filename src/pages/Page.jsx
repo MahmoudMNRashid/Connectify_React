@@ -35,6 +35,7 @@ import AuthGuard from "./AuthGuard";
 import NavBar from "../components/UI/NavBar";
 import { RiMenu2Fill } from "react-icons/ri";
 import TabsMobile from "../components/UI/TabsMobile";
+import ErrorModalInstance from "../components/UI/Modals/Error";
 
 const Page = () => {
   const {
@@ -43,6 +44,7 @@ const Page = () => {
     showTabsMobile,
     openCloseTabsMobile,
     disableIsActive,
+    modalErrorIsOpen,
   } = useContext(MainContext);
 
   const { getPageInformation, isLoading } = usePage();
@@ -56,7 +58,6 @@ const Page = () => {
   useEffect(() => {
     return () => {
       resetPageStates();
-      
     };
   }, [resetPageStates]);
 
@@ -190,7 +191,8 @@ const Page = () => {
       {modalIsOpen && <ModalInstance />}
       {commentsModalIsOpen && <CommentsModalInstance />}
       {modalEditNameIsOpen && <MainModalInstance />}{" "}
-      {confirmModalIsOpen && <ConfirmModalInstance />}
+      {confirmModalIsOpen && <ConfirmModalInstance />}{" "}
+      {modalErrorIsOpen && <ErrorModalInstance />}
       <NavBar />
       <div className="navbar__mobile">
         <button disabled={disableIsActive}>

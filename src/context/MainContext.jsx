@@ -54,6 +54,9 @@ export const MainContext = createContext({
   showTabsMobile: false,
   openTabsMobile: () => {},
   closeTabsMobile: () => {},
+  ///////////////////////
+  modalErrorIsOpen: false,
+  openErrorModal: () => {},
 });
 
 export default function MainContextProvider({ children }) {
@@ -208,7 +211,7 @@ export default function MainContextProvider({ children }) {
   const handleResetUsersResultSearch = useCallback(() => {
     setUsersResult({ users: [], total: 0, hasMore: true, firstTime: false });
   }, []);
-
+  ///////////////////
   const [showTabsMobile, setShowTabsMobile] = useState(false);
   const handleOpenTabsMobile = () => {
     setShowTabsMobile(true);
@@ -218,6 +221,12 @@ export default function MainContextProvider({ children }) {
   };
   const handleOpenCloseTabsMobile = useCallback(() => {
     setShowTabsMobile((prev) => !prev);
+  }, []);
+  ///////////////////
+  const [modalErrorIsOpen, setModalErrorIsOpen] = useState(false);
+
+  const handleOpenErrorModal = useCallback(() => {
+    setModalErrorIsOpen(true);
   }, []);
 
   const ctxValue = {
@@ -249,6 +258,9 @@ export default function MainContextProvider({ children }) {
     openTabsMobile: handleOpenTabsMobile,
     closeTabsMobile: handleCloseTabsMobile,
     openCloseTabsMobile: handleOpenCloseTabsMobile,
+    ///////////////
+    modalErrorIsOpen,
+    openErrorModal: handleOpenErrorModal,
   };
   return (
     <MainContext.Provider value={ctxValue}>{children}</MainContext.Provider>

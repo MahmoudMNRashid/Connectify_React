@@ -10,7 +10,13 @@ import { PostContext } from "../context/PostContext";
 
 const useGroup = () => {
   //context
-  const { startTheDisable, stopTheDisable,closeModal } = useContext(MainContext);
+  const {
+    startTheDisable,
+    stopTheDisable,
+    closeModal,
+    openErrorModal,
+    closeConfirmModal,
+  } = useContext(MainContext);
   const {
     addGroupInformation,
     handleRequestJoin,
@@ -72,6 +78,7 @@ const useGroup = () => {
         });
       }
       toast.error(error.response?.data.message || "Something went wrong");
+      openErrorModal();
     } finally {
       stopLoadingAndDisable();
     }
@@ -81,6 +88,7 @@ const useGroup = () => {
     groupId,
     navigate,
     addGroupInformation,
+    openErrorModal,
   ]);
 
   const sendJoinRequest = async (groupId) => {
@@ -319,7 +327,7 @@ const useGroup = () => {
   };
 
   const deletePost = async (postId) => {
-    console.log('aaaa')
+    console.log("aaaa");
     startLoadingAndDisable();
     try {
       const response = await axios.delete(
@@ -684,6 +692,8 @@ const useGroup = () => {
       );
 
       toast.success(response.data.message, { id: toastId });
+      closeConfirmModal();
+      navigate("/", { replace: true });
     } catch (error) {
       if (error.response?.status === 403 || error.response?.status === 401) {
         navigate("/error", {
@@ -712,6 +722,8 @@ const useGroup = () => {
       });
 
       toast.success(response.data.message, { id: toastId });
+      closeConfirmModal();
+      navigate("/", { replace: true });
     } catch (error) {
       if (error.response?.status === 403 || error.response?.status === 401) {
         navigate("/error", {
@@ -743,7 +755,7 @@ const useGroup = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-closeModal()
+      closeModal();
       toast.success(response.data.message, { id: toastId });
     } catch (error) {
       if (error.response?.status === 403 || error.response?.status === 401) {

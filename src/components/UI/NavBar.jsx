@@ -20,7 +20,7 @@ const NavBar = () => {
         </div>
         <form className={style["container--search"]}>
           <input placeholder="Search..." onClick={moveToSearch} />
-          <button>
+          <button disabled>
             <CiSearch />
           </button>
         </form>

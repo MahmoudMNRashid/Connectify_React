@@ -13,23 +13,33 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Error from "./pages/CustomError";
 import { Toaster } from "react-hot-toast";
-import PostContextProvider from "./context/PostContext";
+import PostContextProvider, { PostContext } from "./context/PostContext";
 import Test from "./pages/Test";
-import MainContextProvider from "./context/MainContext";
+import MainContextProvider, { MainContext } from "./context/MainContext";
 import AuthGuard from "./pages/AuthGuard";
 import ProfileContextProvider, {
   ProfileContext,
 } from "./context/ProfileContext";
 import Group from "./pages/Group";
-import GroupContextProvider from "./context/GroupContext";
+import GroupContextProvider, { GroupContext } from "./context/GroupContext";
 import Page from "./pages/Page";
 import PageContextProvider, { PageContext } from "./context/PageContext";
 import Search from "./pages/Search";
 import { clearCookies } from "./util/help";
 import { useContext } from "react";
+import { useNetworkStatus } from "./hooks/UseNetworkStatus";
+import Offline from "./pages/Offline";
 function App() {
+  const { isOnline } = useNetworkStatus();
   const { resetAllStates } = useContext(ProfileContext);
   const { resetPageStates } = useContext(PageContext);
+  const { resetPostsStates } = useContext(PostContext);
+  const { resetGroupStates } = useContext(GroupContext);
+  const {
+    resetGroupsResultSearch,
+    resetPagesResultSearch,
+    resetUsersResultSearch,
+  } = useContext(MainContext);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -72,8 +82,12 @@ function App() {
             clearCookies();
             resetAllStates();
             resetPageStates();
+            resetPostsStates();
+            resetGroupStates();
+            resetGroupsResultSearch(),
+              resetPagesResultSearch(),
+              resetUsersResultSearch();
             return redirect("/auth?mode=login");
-            
           },
         },
         {
@@ -107,19 +121,25 @@ function App() {
   ]);
 
   return (
-    <PageContextProvider>
-      <GroupContextProvider>
-        <ProfileContextProvider>
-          <PostContextProvider>
-            <MainContextProvider>
-              <RouterProvider router={router}>
-                <Toaster />
-              </RouterProvider>
-            </MainContextProvider>
-          </PostContextProvider>
-        </ProfileContextProvider>
-      </GroupContextProvider>
-    </PageContextProvider>
+    <>
+      {isOnline && (
+        <PageContextProvider>
+          <GroupContextProvider>
+            <ProfileContextProvider>
+              <PostContextProvider>
+                <MainContextProvider>
+                  <RouterProvider router={router}>
+                    <Toaster />
+                  </RouterProvider>
+                </MainContextProvider>
+              </PostContextProvider>
+            </ProfileContextProvider>
+          </GroupContextProvider>
+        </PageContextProvider>
+      )}
+
+      {!isOnline && <Offline />}
+    </>
   );
 }
 
