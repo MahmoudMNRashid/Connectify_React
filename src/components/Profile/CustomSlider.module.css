@@ -3,23 +3,27 @@
   align-items: center;
   justify-content: center;
   position: relative;
-margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .cont > button {
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: rgb(71, 68, 68);
+  color: rgb(0, 0, 0);
 }
 
 .cont > button:nth-child(1) {
   position: absolute;
-  left: -4%;
+  left: -20px;
+  top: 150px;
+  z-index: 1000;
 }
 .cont > button:nth-child(3) {
   position: absolute;
-  right: -4%;
+  right: -20px;
+  top: 150px;
+  z-index: 1000;
 }
 .container {
   display: flex;
@@ -74,8 +78,8 @@ margin-bottom: 1rem;
   color: #ff3333;
 }
 .intro {
-    font-size: 0.8rem;
-    color: #a5aebf;
-    font-weight: 900;
-    margin-bottom: 0.5rem;
-  }
+  font-size: 0.8rem;
+  color: #a5aebf;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+}

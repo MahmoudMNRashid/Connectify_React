@@ -121,6 +121,8 @@
   border-radius: 1rem;
   font-size: 1.1rem;
   width: 100%;
+  background-color: white;
+  color: black;
 }
 .select select.invalid {
   border: 1px solid #ff3333;

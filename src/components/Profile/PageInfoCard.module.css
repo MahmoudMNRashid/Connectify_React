@@ -11,6 +11,7 @@
   flex-wrap: wrap;
   gap: 2rem;
   justify-content: center;
+  background-color: white;
 }
 
 .left {
@@ -34,8 +35,6 @@
   object-fit: cover;
 }
 
-
-
 .right button {
   border: none;
   width: 100%;
@@ -53,18 +52,15 @@
   color: #008080;
 }
 
-
-@media (max-width:480px) {
-    .right{
-        width: 100%;
-    }
-    .img {
-        width: 70px;
-        height: 70px;
-      
-      }
-      .left p{
-        font-size: 1rem;
-      }
-    
+@media (max-width: 480px) {
+  .right {
+    width: 100%;
+  }
+  .img {
+    width: 70px;
+    height: 70px;
+  }
+  .left p {
+    font-size: 1rem;
+  }
 }

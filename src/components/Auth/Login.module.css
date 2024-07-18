@@ -61,6 +61,7 @@
 .form__text {
   font-size: 0.938rem;
   text-align: center;
+  color: black;
 }
 
 .button--forget-password {

@@ -15,6 +15,7 @@
   padding: 1rem;
   width: 100%;
   background-color: white;
+  color: black;
 }
 
 .input:focus {
@@ -45,7 +46,7 @@
   right: 12px;
   width: 24px;
   padding: 0;
-  background-color: white;
+  background:none;
   border: none;
   font-size: 24px;
   color: gray;

@@ -8,17 +8,18 @@
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
   border-radius: 1rem;
   padding: 1rem;
+  background-color: white;
 }
 
 .header {
   font-size: 1.4rem;
   font-weight: bolder;
+  color: black;
 }
 
 .main {
   display: flex;
   align-items: center;
-
 }
 
 .main i {
@@ -38,12 +39,13 @@
 
 .info {
   width: 85%;
- flex: 1;
+  flex: 1;
   /* margin-right: 2rem; */
 }
 .info .Ps p:nth-of-type(1) {
   font-weight: bold;
   font-size: 1.2rem;
+  color: black;
 }
 .info .Ps p:nth-of-type(2) {
   color: #adadad;
@@ -76,6 +78,8 @@
   border-radius: 1rem;
   font-size: 1.1rem;
   width: 100%;
+  background-color: white;
+  color: black;
 }
 .select select.invalid {
   border: 1px solid #ff3333;
@@ -99,20 +103,19 @@
   align-self: center;
 }
 
-.buttons__holder{
+.buttons__holder {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
-
-
 }
 .cancel {
   color: #ff3333;
   font-size: 2rem;
-  cursor: pointer; border: none;
+  cursor: pointer;
+  border: none;
   background: none;
- 
+
   font-size: 1.5rem;
   cursor: pointer;
 }
@@ -150,7 +153,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  margin-left: .5rem;
+  margin-left: 0.5rem;
 }
 .buttons button {
   border: none;

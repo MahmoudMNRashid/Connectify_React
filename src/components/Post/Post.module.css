@@ -74,7 +74,7 @@
 .info p:first-child {
   font-weight: 900;
   font-size: 0.9rem;
- 
+color: black; 
 }
 
 .info p:nth-child(2) {
