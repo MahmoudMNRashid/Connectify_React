@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useCallback, useContext, useState } from "react";
-import { getToken, host, localHost } from "../util/help";
+import { getToken, host } from "../util/help";
 import { useNavigate, useParams } from "react-router-dom";
 import { ProfileContext } from "../context/ProfileContext";
 import toast from "react-hot-toast";
@@ -483,7 +483,7 @@ const useProfile = () => {
   const deleteAboutApi = async (desc, data, fn) => {
     startLoadingAndDisable();
     var toastId = toast.loading("Wait...");
-    let url = `http://localhost:8080/profile/`;
+    let url = `${host}/profile/`;
 
     switch (desc) {
       case "University":
@@ -704,7 +704,7 @@ const useProfile = () => {
     var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
-        `${localHost}/page/createPage`,
+        `${host}/page/createPage`,
         {
           name,
           categories,
@@ -740,7 +740,7 @@ const useProfile = () => {
     var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
-        `${localHost}/group/createGroup`,
+        `${host}/group/createGroup`,
         {
           name,
           privacy,

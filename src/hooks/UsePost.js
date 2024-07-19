@@ -1,7 +1,7 @@
 import { useCallback, useContext, useState } from "react";
 import { MainContext } from "../context/MainContext";
 import toast from "react-hot-toast";
-import { getToken, host, localHost } from "../util/help";
+import { getToken, host } from "../util/help";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { PostContext } from "../context/PostContext";
@@ -204,7 +204,7 @@ const usePost = () => {
       formData.append("whoCanComment", whoCanComment);
     }
 
-    let url = localHost + "/post";
+    let url = host + "/post";
     place === "group"
       ? (url = url + "/group/createPost")
       : place === "page"
