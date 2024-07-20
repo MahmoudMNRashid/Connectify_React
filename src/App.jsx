@@ -79,6 +79,7 @@ function App() {
         {
           path: "/logout",
           loader: () => {
+            console.log("first");
             clearCookies();
             resetAllStates();
             resetPageStates();

@@ -28,6 +28,12 @@
   margin-top: 1rem;
   gap: 1rem;
 }
+@media (max-width:768px) {
+  .select__container{
+    flex-direction: column;
+  }
+  
+}
 .select {
   display: flex;
   flex-direction: column;
@@ -39,7 +45,7 @@
 .select select {
   padding: 0.5rem;
   border-radius: 1rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
   width: 100%;
   background-color: white;
   color: black;

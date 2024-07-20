@@ -154,14 +154,14 @@ const useProfile = () => {
     }
   };
 
-  const cancelFriendRequestSentByMeApi = async (reciverId, from) => {
+  const cancelFriendRequestSentByMeApi = async (reciver, from) => {
     startLoadingAndDisable();
     var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
         `${host}/profile/cancelFriendRequestSentByMe`,
         {
-          reciverId,
+          reciverId:reciver.userId,
         },
         {
           headers: { Authorization: `Bearer ${getToken()}` },
@@ -170,7 +170,7 @@ const useProfile = () => {
       toast.success(response.data.message, { id: toastId });
 
       if (from === "OUTGOING REQUESTS") {
-        RemoveRequestFromFriendsRequestSend(reciverId);
+        RemoveRequestFromFriendsRequestSend(reciver);
       }
       if (from === "MAIN INFORMATION") {
         editFriendType("areYouSendFriendRequestToHim-false");
@@ -259,14 +259,14 @@ const useProfile = () => {
       stopLoadingAndDisable();
     }
   };
-  const acceptfriendApi = async (senderId, from) => {
+  const acceptfriendApi = async (sender, from) => {
     startLoadingAndDisable();
     var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
         `${host}/profile/acceptFriendrequest`,
         {
-          senderId,
+          senderId:sender.userId,
         },
         {
           headers: { Authorization: `Bearer ${getToken()}` },
@@ -275,7 +275,7 @@ const useProfile = () => {
       toast.success(response.data.message, { id: toastId });
 
       if (from === "INCOMING REQUESTS") {
-        RemoveRequestFromFriendsRequestRecieve(senderId);
+        RemoveRequestFromFriendsRequestRecieve(sender,true);
       }
       if (from === "MAIN INFORMATION") {
         editFriendType("isHeFriend-true");
@@ -299,14 +299,14 @@ const useProfile = () => {
     }
   };
 
-  const cancelFriendRequestSentToMeApi = async (senderId, from) => {
+  const cancelFriendRequestSentToMeApi = async (sender, from) => {
     startLoadingAndDisable();
     var toastId = toast.loading("Wait...");
     try {
       const response = await axios.post(
         `${host}/profile/cancelFriendRequestSentToMe`,
         {
-          senderId,
+          senderId:sender.userId,
         },
         {
           headers: { Authorization: `Bearer ${getToken()}` },
@@ -315,7 +315,7 @@ const useProfile = () => {
       toast.success(response.data.message, { id: toastId });
 
       if (from === "INCOMING REQUESTS") {
-        RemoveRequestFromFriendsRequestRecieve(senderId);
+        RemoveRequestFromFriendsRequestRecieve(sender);
       }
       if (from === "MAIN INFORMATION") {
         editFriendType("isHeSendFriendRequestToYou-false");
@@ -666,7 +666,7 @@ const useProfile = () => {
       stopLoadingAndDisable();
     }
   };
-  const acceptPageInvite = async (_InvitationId, idPage) => {
+  const acceptPageInvite = async (_InvitationId, page) => {
     startLoadingAndDisable();
     var toastId = toast.loading("Wait...");
     try {
@@ -680,7 +680,7 @@ const useProfile = () => {
         }
       );
       toast.success(response.data.message, { id: toastId });
-      AcceptPageInvite(idPage);
+      AcceptPageInvite(page);
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {

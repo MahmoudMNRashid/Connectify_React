@@ -26,7 +26,7 @@ const Home = () => {
     addPostInformation({}, {}, {}, {}, {}, "home");
     openModal("post", content.CREATE_POST);
   };
-  console.log(posts)
+
 
   return (
     <div>

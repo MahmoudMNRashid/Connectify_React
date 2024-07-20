@@ -32,7 +32,7 @@ const FriendRequestCard = ({ request, out, me }) => {
     }
   };
   const handleAcceptRequest = () => {
-    acceptfriendApi(userId, "INCOMING REQUESTS");
+    acceptfriendApi(request, "INCOMING REQUESTS");
   };
   const navigate = useNavigate();
   const { resetAllStates } = useContext(ProfileContext);

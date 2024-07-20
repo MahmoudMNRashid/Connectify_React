@@ -11,8 +11,13 @@ import Loader2 from "../Loader2";
 import { MainContext } from "../../../context/MainContext";
 const CommentsModal = () => {
   const { loading } = useFetchedComments();
-  const { closeModal, comments, addActiveupdatedComment, changeModeToCreate } =
-    useContext(PostContext);
+  const {
+    closeModal,
+    comments,
+    addActiveupdatedComment,
+    changeModeToCreate,
+    postInformation,
+  } = useContext(PostContext);
 
   const handleCLoseTheCommentsModal = () => {
     closeModal("c");
@@ -22,7 +27,7 @@ const CommentsModal = () => {
   };
 
   const { disableIsActive } = useContext(MainContext);
-const commentsa = comments?.comments
+  const commentsa = comments?.comments;
   return (
     <>
       <button
@@ -53,15 +58,15 @@ const commentsa = comments?.comments
                 />
               );
             })}
-            {!loading &&commentsa?.length === 0 && (
+            {!loading && commentsa?.length === 0 && (
               <p
                 style={{
                   fontSize: "1rem",
                   padding: "2rem",
                   boxShadow:
                     "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-                display:'flex',
-                justifyContent:'center'
+                  display: "flex",
+                  justifyContent: "center",
                 }}
               >
                 No Comments
@@ -70,9 +75,11 @@ const commentsa = comments?.comments
             {loading && <Loader2 />}
           </section>
         </div>
-        <footer>
-          <CreateComment />
-        </footer>
+        {postInformation.permission.canCommentOrLike && (
+          <footer>
+            <CreateComment />
+          </footer>
+        )}
       </div>
     </>
   );

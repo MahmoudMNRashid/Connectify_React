@@ -1,5 +1,6 @@
 import { createContext, useCallback, useState } from "react";
 import { getFullName, getLogo, getUserId } from "../util/help";
+import Cookies from "js-cookie";
 
 export const ProfileContext = createContext({
   selectedTap: "",
@@ -458,31 +459,48 @@ export default function ProfileContextProvider({ children }) {
       return oldMainInfo;
     });
   }, []);
-  const handleAcceptPageInvite = useCallback((idPage) => {
-    var filteredCount;
-    setPageInvites((prev) => {
-      const oldInvites = { ...prev };
-      const invitesWithoutDeletedInvite = oldInvites.invites.filter(
-        (invite) => {
-          invite.page.pageId !== idPage;
-        }
-      );
-      filteredCount =
-        oldInvites.invites.length - invitesWithoutDeletedInvite.length;
-      const newInvites = {
-        invites: invitesWithoutDeletedInvite,
-        total: filteredCount,
-      };
+  const handleAcceptPageInvite = useCallback(
+    (page) => {
+      var filteredCount;
+      setPageInvites((prev) => {
+        const oldInvites = { ...prev };
+        const invitesWithoutDeletedInvite = oldInvites.invites.filter(
+          (invite) => {
+            invite.page.pageId !== page.pageId;
+          }
+        );
+        filteredCount =
+          oldInvites.invites.length - invitesWithoutDeletedInvite.length;
+        const newInvites = {
+          invites: invitesWithoutDeletedInvite,
+          total: filteredCount,
+        };
 
-      return newInvites;
-    });
-    setMainInformation((prev) => {
-      const oldMainInfo = { ...prev };
+        return newInvites;
+      });
+      setMainInformation((prev) => {
+        const oldMainInfo = { ...prev };
 
-      oldMainInfo.pageInvites -= filteredCount;
-      return oldMainInfo;
-    });
-  }, []);
+        oldMainInfo.pageInvites -= filteredCount;
+        return oldMainInfo;
+      });
+
+      if (!joinedPages.hasMore) {
+        setJoinedPages((prev) => {
+          const newPages = [...prev.pages];
+          newPages.push(page);
+          return {
+            pages: newPages,
+            total: prev.total + 1,
+            hasMore: prev.hasMore,
+            firstTime: prev.firstTime,
+          };
+        });
+      }
+    },
+    [joinedPages]
+  );
+
   const handleDeleteGroupInvite = useCallback((idInvite) => {
     setGroupInvites((prev) => {
       const oldInvites = { ...prev };
@@ -612,10 +630,10 @@ export default function ProfileContextProvider({ children }) {
     setFriendsRequestRecieve(requests);
   }, []);
 
-  const handleRemoveRequestFromFriendsRequestRecieve = (userId) => {
+  const handleRemoveRequestFromFriendsRequestRecieve = (user, accept) => {
     setFriendsRequestRecieve((prev) => {
       const newRequests = prev.requests.filter(
-        (request) => request.userId !== userId
+        (request) => request.userId !== user.userId
       );
 
       return { requests: newRequests, total: prev.total - 1 };
@@ -626,6 +644,26 @@ export default function ProfileContextProvider({ children }) {
       oldMainInfo.incomingRequest -= 1;
       return oldMainInfo;
     });
+    if (accept && !friends.hasMore) {
+      setFriends((prev) => {
+        const newFriends = [...prev.friends];
+        newFriends.push(user);
+        return {
+          friends: newFriends,
+          total: prev.total + 1,
+          hasMore: prev.hasMore,
+          firstTime: prev.firstTime,
+        };
+      });
+    }
+    if (accept) {
+      setMainInformation((prev) => {
+        const oldMainInfo = { ...prev };
+
+        oldMainInfo.friends += 1;
+        return oldMainInfo;
+      });
+    }
   };
   const handleDeletePost = (postId) => {
     if (posts.firstTime) {
@@ -729,6 +767,14 @@ export default function ProfileContextProvider({ children }) {
       info.profilePhotos.push({ asset, date: new Date() });
       return info;
     });
+
+    const cookieName = "Jto__Uid";
+    const cookieValue = Cookies.get(cookieName);
+    const parts = cookieValue.split("__&");
+    parts[4] = asset.public_id;
+    parts[5] = asset.link;
+    const newCookieValue = parts.join("__&");
+    Cookies.set(cookieName, newCookieValue);
   };
   const handleDeleteCurrentPhotoOrPrevious = (publicId) => {
     setMainInformation((prev) => {
@@ -747,10 +793,18 @@ export default function ProfileContextProvider({ children }) {
         return asset.asset.public_id === publicId;
       });
 
-      previousPhoto.data = new Date();
+      previousPhoto.date = new Date();
       const newPhotos = info.profilePhotos.filter((asset) => {
         return asset.asset.public_id !== publicId;
       });
+
+      const cookieName = "Jto__Uid";
+      const cookieValue = Cookies.get(cookieName);
+      const parts = cookieValue.split("__&");
+      parts[4] = previousPhoto.asset.public_id;
+      parts[5] = previousPhoto.asset.link;
+      const newCookieValue = parts.join("__&");
+      Cookies.set(cookieName, newCookieValue);
 
       newPhotos.push(previousPhoto);
 

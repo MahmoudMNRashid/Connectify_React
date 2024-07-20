@@ -20,7 +20,7 @@ import { MainContext, content } from "../../context/MainContext.jsx";
 
 const Post = ({ data, place, hideMenu }) => {
   //Hooks
-
+  console.log(data);
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
   //Variables
@@ -37,9 +37,14 @@ const Post = ({ data, place, hideMenu }) => {
     canReport: data.canReport ? data.canReport : null,
     canBlocked: data.canBlock ? data.canBlock : null,
     isHeOwnerOfPost: data.isHeOwnerOfPost,
-    canCommentOrLike: data.canCommentOrLike ? data.canCommentOrLike : null,
+    canCommentOrLike:
+      "canCommentOrLike" in data
+        ? data.canCommentOrLike
+        : "canCommentOrLike" in postContent
+        ? postContent.canCommentOrLike
+        : true,
   };
-
+  console.log(permission.canCommentOrLike);
   //Functions
 
   const handleMoveToGroup = () => {
@@ -371,26 +376,35 @@ const Post = ({ data, place, hideMenu }) => {
           </div>
           <div>
             <p>{postContent.numberOfComments}</p>
-            <img src={comment} />
+            <img
+              src={comment}
+              onClick={
+                handleAddInformationAboutPostForGetCommentsAndOpenTheModal
+              }
+            />
           </div>
         </div>
 
-        <div className={classes.like_comment}>
-          <button
-            disabled={loading || disableIsActive}
-            onClick={handleAddLikeOrRemoveLike}
-          >
-            <img src={isHeLiked ? bigLike : noLike} />
-            <p>Love</p>
-          </button>
-          <button
-            disabled={disableIsActive}
-            onClick={handleAddInformationAboutPostForGetCommentsAndOpenTheModal}
-          >
-            <img src={bigComment} />
-            <p>Comment</p>
-          </button>
-        </div>
+        {permission.canCommentOrLike && (
+          <div className={classes.like_comment}>
+            <button
+              disabled={loading || disableIsActive}
+              onClick={handleAddLikeOrRemoveLike}
+            >
+              <img src={isHeLiked ? bigLike : noLike} />
+              <p>Love</p>
+            </button>
+            <button
+              disabled={disableIsActive}
+              onClick={
+                handleAddInformationAboutPostForGetCommentsAndOpenTheModal
+              }
+            >
+              <img src={bigComment} />
+              <p>Comment</p>
+            </button>
+          </div>
+        )}
       </footer>
     </div>
   );

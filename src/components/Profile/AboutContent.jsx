@@ -7,7 +7,7 @@ import { extractAndConvertDataProfile } from "../../util/help";
 const AboutContent = () => {
   const { mainInformation } = useContext(ProfileContext);
   const convertedInformation = extractAndConvertDataProfile(mainInformation);
- 
+ console.log(mainInformation)
  
   return (
     <div className="container__profile">

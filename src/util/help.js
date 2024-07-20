@@ -1,25 +1,24 @@
-
 import Cookies from "js-cookie";
 import validator from "validator";
 
-export const host = "https://connectify-eosin.vercel.app";
-export const localHost = "http://localhost:8080";
+export const localHost = "https://connectify-eosin.vercel.app";
+export const host = "http://localhost:8080";
 
 export const getToken = () => {
   return Cookies.get("Jto__Uid")?.split("__&")[0];
 };
 
 export const getUserId = () => {
-  return Cookies.get("Jto__Uid").split("__&")[1];
+  return Cookies.get("Jto__Uid")?.split("__&")[1];
 };
 export const getFullName = () => {
-  const firstName = Cookies.get("Jto__Uid").split("__&")[2];
-  const lastName = Cookies.get("Jto__Uid").split("__&")[3];
+  const firstName = Cookies.get("Jto__Uid")?.split("__&")[2];
+  const lastName = Cookies.get("Jto__Uid")?.split("__&")[3];
   return firstName + "   " + lastName;
 };
 export const getLogo = () => {
-  const public_id = Cookies.get("Jto__Uid").split("__&")[4];
-  const link = Cookies.get("Jto__Uid").split("__&")[5];
+  const public_id = Cookies.get("Jto__Uid")?.split("__&")[4];
+  const link = Cookies.get("Jto__Uid")?.split("__&")[5];
   const logo = {
     asset: { public_id, link, resource_type: "image" },
   };
@@ -27,22 +26,17 @@ export const getLogo = () => {
   return logo;
 };
 
-export const clearCookies = ()=>{
-
-  Cookies.remove('Jto__Uid')
-}
+export const clearCookies = () => {
+  Cookies.remove("Jto__Uid");
+};
 export const getExpireDate = () => {
   const date = Cookies.get("Jto__Uid").split("__&")[6];
-
 
   return date;
 };
 
 export function convertDateFormat(dateTimeString) {
-
-
   const date = new Date(dateTimeString);
-  
 
   // Convert UTC time to local time zone
   const options = {
