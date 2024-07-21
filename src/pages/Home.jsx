@@ -14,13 +14,14 @@ import MainModalInstance from "../components/UI/Modals/MainModal";
 import CreateButton from "../components/UI/CreateButton";
 import { FaPlus } from "react-icons/fa";
 import { Helmet } from "react-helmet";
+import { IoIosRefresh } from "react-icons/io";
 
 const Home = () => {
   const { modalEditNameIsOpen, openModal } = useContext(MainContext);
   const { loading } = useFetchedPost(`${host}/profile/homePosts`, "HOME_POSTS");
   const { modalIsOpen, commentsModalIsOpen, addPostInformation } =
     useContext(PostContext);
-  const { posts: data } = useContext(PostContext);
+  const { posts: data,resetPostsStates } = useContext(PostContext);
   const posts = data.posts;
 
   const openCreatePostModal = () => {
@@ -87,10 +88,16 @@ const Home = () => {
       </div>
 
       <CreateButton
-        style={{ bottom: "10px", right: "10px", backgroundColor: "#003C43" }}
+        style={{ bottom: "10px", right: "10px", backgroundColor: "#EECEB9" }}
         fn={openCreatePostModal}
         tooltip="Create Post"
         icon={FaPlus}
+      />
+      <CreateButton
+        style={{ bottom: "10px", left: "10px", backgroundColor: "#987D9A" }}
+        fn={resetPostsStates}
+        tooltip="Refresh"
+        icon={IoIosRefresh}
       />
     </div>
   );

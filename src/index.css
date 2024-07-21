@@ -160,7 +160,8 @@ li {
 .left {
   width: 100px;
   position: relative;
-
+background-color: #212832;
+padding: 10px;
 
 }
 .right {
