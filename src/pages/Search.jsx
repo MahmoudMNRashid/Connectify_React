@@ -6,6 +6,7 @@ import GroupTab from "../components/Search/GroupTab";
 import PageTab from "../components/Search/PageTab";
 import { MainContext } from "../context/MainContext";
 import NavBar from "../components/UI/NavBar";
+import { Helmet } from "react-helmet";
 
 const Search = () => {
   const {
@@ -36,6 +37,10 @@ const Search = () => {
   };
   return (
     <>
+      {" "}
+      <Helmet>
+        <title>Search</title>
+      </Helmet>
       <NavBar />
       <div className="container_search">
         <form
@@ -54,7 +59,7 @@ const Search = () => {
         </form>
         <Tabs
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
-          textColor="black"
+          textColor="inherit"
           indicatorColor="primary"
           variant="fullWidth"
           value={value}

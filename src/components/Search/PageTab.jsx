@@ -29,7 +29,7 @@ const PageTab = ({ query, startSearch }) => {
         No result
       </p>
     )}
-  {!loading && !pagesResult.firstTime && <p>please search</p>}
+  {!loading && !pagesResult.firstTime && <p>Please search</p>}
   {loading && <Loader />}
 </div>;
 };

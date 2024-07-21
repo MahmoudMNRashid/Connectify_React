@@ -1,7 +1,6 @@
 import {
   RouterProvider,
   createBrowserRouter,
-  redirect,
 } from "react-router-dom";
 import "./App.css";
 import { Auth } from "./pages/Auth";
@@ -13,33 +12,23 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Error from "./pages/CustomError";
 import { Toaster } from "react-hot-toast";
-import PostContextProvider, { PostContext } from "./context/PostContext";
+import PostContextProvider from "./context/PostContext";
 import Test from "./pages/Test";
-import MainContextProvider, { MainContext } from "./context/MainContext";
+import MainContextProvider from "./context/MainContext";
 import AuthGuard from "./pages/AuthGuard";
-import ProfileContextProvider, {
-  ProfileContext,
-} from "./context/ProfileContext";
+import ProfileContextProvider from "./context/ProfileContext";
 import Group from "./pages/Group";
-import GroupContextProvider, { GroupContext } from "./context/GroupContext";
+import GroupContextProvider  from "./context/GroupContext";
 import Page from "./pages/Page";
-import PageContextProvider, { PageContext } from "./context/PageContext";
+import PageContextProvider from "./context/PageContext";
 import Search from "./pages/Search";
-import { clearCookies } from "./util/help";
-import { useContext } from "react";
+
 import { useNetworkStatus } from "./hooks/UseNetworkStatus";
 import Offline from "./pages/Offline";
+import Logout from "./pages/Logout";
 function App() {
   const { isOnline } = useNetworkStatus();
-  const { resetAllStates } = useContext(ProfileContext);
-  const { resetPageStates } = useContext(PageContext);
-  const { resetPostsStates } = useContext(PostContext);
-  const { resetGroupStates } = useContext(GroupContext);
-  const {
-    resetGroupsResultSearch,
-    resetPagesResultSearch,
-    resetUsersResultSearch,
-  } = useContext(MainContext);
+ 
   const router = createBrowserRouter([
     {
       path: "/",
@@ -78,18 +67,7 @@ function App() {
         },
         {
           path: "/logout",
-          loader: () => {
-            console.log("first");
-            clearCookies();
-            resetAllStates();
-            resetPageStates();
-            resetPostsStates();
-            resetGroupStates();
-            resetGroupsResultSearch(),
-              resetPagesResultSearch(),
-              resetUsersResultSearch();
-            return redirect("/auth?mode=login");
-          },
+         element:<Logout/>
         },
         {
           path: "/search",

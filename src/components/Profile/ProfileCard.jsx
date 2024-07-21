@@ -84,9 +84,11 @@ const ProfileCard = () => {
   const { addAssets, openModal: openAssetsModal } = useContext(PostContext);
 
   const handleAddAssetsToContextAndOpenTheModal = () => {
-    addAssets([mainInformation.backgroundPhotos]);
-    openAssetsModal("a");
-    document.body.classList.add("hide__scroll");
+    if (mainInformation.backgroundPhotos) {
+      addAssets([mainInformation.backgroundPhotos]);
+      openAssetsModal("a");
+      document.body.classList.add("hide__scroll");
+    }
   };
 
   const showEditBioButton = isHeOwner && bio !== "";

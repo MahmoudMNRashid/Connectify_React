@@ -29,7 +29,7 @@ const UserTab = ({ query, startSearch }) => {
             No result
           </p>
         )}
-        {!loading && !usersResult.firstTime && <p>please search</p>}
+        {!loading && !usersResult.firstTime && <p> Please search</p>}
       {loading && <Loader />}
     </div>
   );

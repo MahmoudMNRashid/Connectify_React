@@ -1,6 +1,7 @@
 import { createContext, useCallback, useState } from "react";
 import { getFullName, getLogo, getUserId } from "../util/help";
 
+
 export const PostContext = createContext({
   //all this for one post
   assets: [],
@@ -494,6 +495,7 @@ export default function PostContextProvider({ children }) {
     setIsUpdateMode(true);
   }, []);
   const handleResetPostsStates = useCallback(() => {
+    console.log('das')
     setPosts({
       posts: [],
       total: 0,

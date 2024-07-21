@@ -3,14 +3,19 @@ import classes from "./Error.module.css";
 import { MdHome, MdOutlineCancel } from "react-icons/md";
 import { IoIosRefresh } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { MainContext } from "../../../context/MainContext";
+import { useContext } from "react";
 
 const ErrorModal = () => {
+  const { closeErrorModal } = useContext(MainContext);
   const navigate = useNavigate();
   const handleClick = () => {
+    closeErrorModal();
     window.location.reload();
   };
 
   const handleMove = () => {
+    closeErrorModal();
     navigate("/", { replace: true });
   };
   return (

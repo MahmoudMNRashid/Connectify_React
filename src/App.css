@@ -55,7 +55,14 @@
   width: 100%;
   overflow: hidden;
   border-radius: 1rem;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+}
+
+.offline__container > div:nth-child(1) > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8d493a;
 }
 
 .offline__container button {

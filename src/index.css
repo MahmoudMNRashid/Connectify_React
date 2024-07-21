@@ -91,7 +91,7 @@ li {
 
   width: 100%;
   position: relative;
-  background-color: white;
+  /* background-color: white; */
 }
 
 @media (min-width: 768px) {

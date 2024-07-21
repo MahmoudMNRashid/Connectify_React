@@ -36,6 +36,7 @@ import NavBar from "../components/UI/NavBar";
 import { RiMenu2Fill } from "react-icons/ri";
 import TabsMobile from "../components/UI/TabsMobile";
 import ErrorModalInstance from "../components/UI/Modals/Error";
+import { Helmet } from "react-helmet";
 
 const Page = () => {
   const {
@@ -188,6 +189,11 @@ const Page = () => {
   const tabsToDisplay = roleBasedTabs[role] || [];
   return (
     <div>
+      {!isLoading && (
+        <Helmet>
+          <title>{pageInformation.name}</title>
+        </Helmet>
+      )}
       {modalIsOpen && <ModalInstance />}
       {commentsModalIsOpen && <CommentsModalInstance />}
       {modalEditNameIsOpen && <MainModalInstance />}{" "}

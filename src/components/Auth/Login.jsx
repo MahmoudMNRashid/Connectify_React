@@ -90,7 +90,35 @@ export const LoginForm = () => {
           expires: new Date(formattedDate),
         }
       );
-
+      const isLocalhost =
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1";
+      if (isLocalhost) {
+        console.log(window.location.hostname);
+        Cookies.set(
+          "Jto__Uid",
+          `${token}__&${userId}__&${firstName}__&${lastName}__&${
+            logo ? logo.asset.public_id : "undefined"
+          }__&${logo ? logo.asset.link : "undefined"}__&${expireDate}`,
+          {
+            // httpOnly: true,
+            // secure: true,
+            expires: new Date(formattedDate),
+          }
+        );
+      } else {
+        Cookies.set(
+          "Jto__Uid",
+          `${token}__&${userId}__&${firstName}__&${lastName}__&${
+            logo ? logo.asset.public_id : "undefined"
+          }__&${logo ? logo.asset.link : "undefined"}__&${expireDate}`,
+          {
+            httpOnly: true,
+            secure: true,
+            expires: new Date(formattedDate),
+          }
+        );
+      }
       navigate("/", { replace: true });
     } catch (error) {
       toast.error(error.response.data.message || "Something went wrong", {
@@ -159,7 +187,11 @@ export const LoginForm = () => {
         <footer className={classes.footer}>
           <p className={classes.form__text}>
             Dont have an account?
-            <button   className={classes["button--signup"]} type="button"  disabled={isLoading}>
+            <button
+              className={classes["button--signup"]}
+              type="button"
+              disabled={isLoading}
+            >
               <Link to={`?mode=signup`}> Register Here</Link>
             </button>
           </p>

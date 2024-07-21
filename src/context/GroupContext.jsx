@@ -816,6 +816,7 @@ export default function GroupContextProvider({ children }) {
   };
 
   const handleResetGroupStates = useCallback(() => {
+    console.log("done");
     setGroupInformation({});
     setGroupPosts({
       posts: [],

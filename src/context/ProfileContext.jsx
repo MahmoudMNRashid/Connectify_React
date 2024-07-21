@@ -814,6 +814,7 @@ export default function ProfileContextProvider({ children }) {
   };
 
   const handleResetAllStates = useCallback(() => {
+  
     setSelectedTap("");
     setMainInformation({});
     setFriends({

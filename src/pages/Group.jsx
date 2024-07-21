@@ -43,6 +43,7 @@ import NavBar from "../components/UI/NavBar";
 import { RiMenu2Fill } from "react-icons/ri";
 import TabsMobile from "../components/UI/TabsMobile";
 import ErrorModalInstance from "../components/UI/Modals/Error";
+import { Helmet } from "react-helmet";
 const Group = () => {
   const { getgroupInformation, isLoading } = useGroup();
   const { modalIsOpen, commentsModalIsOpen } = useContext(PostContext);
@@ -213,10 +214,15 @@ const Group = () => {
   const tabsToDisplay = roleBasedTabs[role] || [];
   return (
     <>
+      {!isLoading && (
+        <Helmet>
+          <title>{groupInformation.name}</title>
+        </Helmet>
+      )}
       {modalIsOpen && <ModalInstance />}{" "}
       {modalEditNameIsOpen && <MainModalInstance />}
       {commentsModalIsOpen && <CommentsModalInstance />}
-      {modalErrorIsOpen && <ErrorModalInstance/>}
+      {modalErrorIsOpen && <ErrorModalInstance />}
       <Toaster />
       <NavBar />{" "}
       <div style={{ position: "relative" }} className="navbar__mobile">

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import offline from "../assets/No_internet_connection_illustration_concept_vector003_generated.jpg";
+import offline from "../assets/no internet.svg";
 import { MainContext } from "../context/MainContext";
 const Offline = () => {
   const { disableIsActive } = useContext(MainContext);
@@ -10,6 +10,10 @@ const Offline = () => {
     <div className="offline__container">
       <div>
         <img src={offline} />
+        <div>
+          {" "}
+          <h2>No Internet Connection</h2>
+        </div>
         <button disabled={disableIsActive} onClick={handleReload}>
           Try Again
         </button>

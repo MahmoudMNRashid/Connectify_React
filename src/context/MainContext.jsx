@@ -57,6 +57,7 @@ export const MainContext = createContext({
   ///////////////////////
   modalErrorIsOpen: false,
   openErrorModal: () => {},
+  closeErrorModal: () => {},
 });
 
 export default function MainContextProvider({ children }) {
@@ -228,6 +229,9 @@ export default function MainContextProvider({ children }) {
   const handleOpenErrorModal = useCallback(() => {
     setModalErrorIsOpen(true);
   }, []);
+  const handleCloseErrorModal = useCallback(() => {
+    setModalErrorIsOpen(false);
+  }, []);
 
   const ctxValue = {
     disableIsActive,
@@ -261,6 +265,7 @@ export default function MainContextProvider({ children }) {
     ///////////////
     modalErrorIsOpen,
     openErrorModal: handleOpenErrorModal,
+    closeErrorModal: handleCloseErrorModal,
   };
   return (
     <MainContext.Provider value={ctxValue}>{children}</MainContext.Provider>

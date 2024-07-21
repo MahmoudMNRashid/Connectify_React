@@ -30,7 +30,7 @@ const GroupTab = ({ query, startSearch }) => {
             No result
           </p>
         )}
-      {!loading && !groupsResult.firstTime && <p>please search</p>}
+      {!loading && !groupsResult.firstTime && <p>Please search</p>}
       {loading && <Loader />}
     </div>
   );

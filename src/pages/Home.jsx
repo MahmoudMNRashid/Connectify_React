@@ -13,6 +13,7 @@ import MainModalInstance from "../components/UI/Modals/MainModal";
 
 import CreateButton from "../components/UI/CreateButton";
 import { FaPlus } from "react-icons/fa";
+import { Helmet } from "react-helmet";
 
 const Home = () => {
   const { modalEditNameIsOpen, openModal } = useContext(MainContext);
@@ -27,9 +28,11 @@ const Home = () => {
     openModal("post", content.CREATE_POST);
   };
 
-
   return (
     <div>
+      <Helmet>
+        <title>Home</title>
+      </Helmet>
       <Toaster />
       <NavBar />
       {modalIsOpen && <ModalInstance />}
@@ -82,7 +85,7 @@ const Home = () => {
           </p>
         )}
       </div>
-    
+
       <CreateButton
         style={{ bottom: "10px", right: "10px", backgroundColor: "#003C43" }}
         fn={openCreatePostModal}
