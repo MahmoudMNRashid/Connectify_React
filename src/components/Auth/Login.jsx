@@ -107,6 +107,7 @@ export const LoginForm = () => {
           }
         );
       } else {
+        console.log("not local host");
         Cookies.set(
           "Jto__Uid",
           `${token}__&${userId}__&${firstName}__&${lastName}__&${
