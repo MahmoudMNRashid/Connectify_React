@@ -14,7 +14,7 @@ const BlockedUsersContent = () => {
     `${host}/profile/blockedUsers/${userId}`,
     "BLOCKED__USERS"
   );
-  console.log(blockedUsers);
+
   return (
     <>
       <div className="container__profile ">

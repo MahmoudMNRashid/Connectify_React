@@ -19,7 +19,7 @@ const Content__Rates = () => {
   const canAddRate =
     !rates.find((rate) => rate.from.userId === getUserId()) &&
     !pageInformation.isHeOwner;
-  console.log(rates);
+
 
   const handleOpenModalAddRate = () => {
     openModal("rate", content.ADD_RATE);

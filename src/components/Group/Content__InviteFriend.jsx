@@ -16,7 +16,7 @@ const Content__InviteFriend = () => {
   const { groupFriendsNotJoin } = useContext(GroupContext);
 
   const friends = groupFriendsNotJoin.friends;
-  console.log(friends);
+ 
   return (
     <>
       <div className="M_A_M__Content__Container">

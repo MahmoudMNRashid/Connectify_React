@@ -14,7 +14,7 @@ const GroupInvitationsContent = () => {
     `${host}/profile/getInvitationsSentToMeFromGroups/${userId}`
   ,'GROUP_INVITATIONS');
   const { groupInvites } = useContext(ProfileContext);
-  console.log(groupInvites)
+
   return (
     <div className="container__profile">
       <header className={classes.header}>

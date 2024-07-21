@@ -10,7 +10,7 @@ import MainModalInstance from "../UI/Modals/MainModal";
 import { useNavigate } from "react-router-dom";
 
 const RateCard = ({ data: rate }) => {
-  console.log(rate);
+
   const valueRate = rate.infoRate.value;
   const dateRate = convertDateFormat(rate.infoRate.ratingDate);
   const commentRate = rate.infoRate.comment;

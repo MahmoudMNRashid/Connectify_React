@@ -3,7 +3,7 @@ import FriendRequestCard from "./FriendRequestCard";
 import useFetchedPost from "../../hooks/UseFetchedPost";
 import { host } from "../../util/help";
 import { ProfileContext } from "../../context/ProfileContext";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import SkeletonLoader2 from "../UI/SkeletonLoader2";
 import classes from "./FriendsContent.module.css";
 import { LuGitPullRequestClosed } from "react-icons/lu";
@@ -24,13 +24,7 @@ const OutgoingRequestsContent = () => {
     <SkeletonLoader2 key={index} />
   ));
 
-  useEffect(() => {
-    console.log('start')
-  
-    return () => {
-    console.log('finish')  
-    }
-  },[])
+
   
   return (
     <div className="container__profile">

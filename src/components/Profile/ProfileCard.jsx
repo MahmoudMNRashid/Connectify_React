@@ -84,7 +84,11 @@ const ProfileCard = () => {
   const { addAssets, openModal: openAssetsModal } = useContext(PostContext);
 
   const handleAddAssetsToContextAndOpenTheModal = () => {
-    if (mainInformation.backgroundPhotos) {
+    
+    if (
+      mainInformation.backgroundPhotos &&
+      mainInformation.backgroundPhotos.length > 0
+    ) {
       addAssets([mainInformation.backgroundPhotos]);
       openAssetsModal("a");
       document.body.classList.add("hide__scroll");

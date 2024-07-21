@@ -495,7 +495,7 @@ export default function PostContextProvider({ children }) {
     setIsUpdateMode(true);
   }, []);
   const handleResetPostsStates = useCallback(() => {
-    console.log('das')
+
     setPosts({
       posts: [],
       total: 0,

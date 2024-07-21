@@ -11,7 +11,7 @@ import Loader2 from "../UI/Loader2";
 import { MainContext } from "../../context/MainContext";
 
 const PageInvitationCard = ({ invite }) => {
-  console.log(invite)
+
   const { disableIsActive } = useContext(MainContext);
   const { selectTap } = useContext(ProfileContext);
   const { deletePageInvite, isLoading } = useProfile();

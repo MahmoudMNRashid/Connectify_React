@@ -94,7 +94,7 @@ export const LoginForm = () => {
         window.location.hostname === "localhost" ||
         window.location.hostname === "127.0.0.1";
       if (isLocalhost) {
-        console.log(window.location.hostname);
+     
         Cookies.set(
           "Jto__Uid",
           `${token}__&${userId}__&${firstName}__&${lastName}__&${
@@ -107,7 +107,7 @@ export const LoginForm = () => {
           }
         );
       } else {
-        console.log("not local host");
+
         Cookies.set(
           "Jto__Uid",
           `${token}__&${userId}__&${firstName}__&${lastName}__&${

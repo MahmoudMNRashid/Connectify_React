@@ -21,7 +21,7 @@ const PostsContent = () => {
     "PROFILE_POSTS"
   );
   const { posts, mainInformation } = useContext(ProfileContext);
-  console.log(posts)
+ 
   const openCreatePostModal = () => {
     addPostInformation({}, {}, {}, {}, {}, "profile");
     openModal("post", content.CREATE_POST);

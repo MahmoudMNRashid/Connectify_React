@@ -18,7 +18,7 @@ const DefaultErrorCard = ({ status,message }) => {
   } else {
     error = _403;
   }
-console.log(status)
+
   return (
     <div className={classes.container}>
       <section className={classes["section--left"]}>

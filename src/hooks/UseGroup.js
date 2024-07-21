@@ -153,7 +153,7 @@ const useGroup = () => {
           data: { _id: reportId, groupId },
         }
       );
-      console.log(response);
+    
       removeReport(reportId);
       toast.success(response.data.message);
     } catch (error) {
@@ -327,7 +327,7 @@ const useGroup = () => {
   };
 
   const deletePost = async (postId) => {
-    console.log("aaaa");
+ 
     startLoadingAndDisable();
     try {
       const response = await axios.delete(
@@ -338,7 +338,7 @@ const useGroup = () => {
           data: { postId, groupId },
         }
       );
-      console.log(response);
+     
       removePost(postId);
       toast.success(response.data.message);
     } catch (error) {

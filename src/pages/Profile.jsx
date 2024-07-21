@@ -123,12 +123,12 @@ const Profile = () => {
   useEffect(() => {
     const handle = () => {
       if (location.pathname.includes("/profile")) {
-        console.log("aaasssdddfffggghhh");
+     
         resetAllStates();
       }
     };
     window.addEventListener("popstate", () => {
-      console.log("qqqqqqqqqqqqqqq");
+  
       handle();
     });
     return () => {

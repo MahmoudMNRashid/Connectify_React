@@ -218,7 +218,6 @@ const usePost = () => {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
 
-      console.log(response);
       toast.success(response.data.message, { id: toastId });
 
       closeModal();

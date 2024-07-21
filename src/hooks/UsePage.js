@@ -87,7 +87,7 @@ const usePage = () => {
         }
       );
 
-      console.log(response);
+    
       followPage_();
       toast.success(response.data.message, { id: toastId });
     } catch (error) {

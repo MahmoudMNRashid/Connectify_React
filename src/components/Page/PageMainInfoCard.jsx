@@ -30,7 +30,7 @@ const PageMainInfoCard = () => {
   const isHeOwner = pageInformation.isHeOwner;
   const bio = pageInformation.bio;
   const categories = pageInformation.categories;
-  console.log(pageInformation);
+
   const finalCategories = categories?.join(",");
   const showButtonFollow = !isHeFollowers;
   const showButtonFollowing = isHeFollowers;

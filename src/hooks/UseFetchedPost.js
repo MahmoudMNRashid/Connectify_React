@@ -82,7 +82,7 @@ const useFetchedPost = (url, type) => {
       const response = await axios.get(`${url + "?page=1"}`, {
         headers: { Authorization: "Bearer " + getToken() },
       });
-      console.log(response);
+     
       if (response.data.homePosts) {
         addPosts(
           response.data.homePosts,

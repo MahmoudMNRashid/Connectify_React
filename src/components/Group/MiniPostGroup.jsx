@@ -22,7 +22,7 @@ const MiniPostGroup = ({ post, your }) => {
   };
 
   const yourLogo = getLogo();
-  console.log(yourLogo);
+ 
   return (
     <div id="miniPost" className={classes.post}>
       <header className={classes.header}>
