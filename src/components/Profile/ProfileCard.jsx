@@ -241,6 +241,7 @@ const ButtonType = ({
     unfriendApi,
     acceptfriendApi,
     cancelFriendRequestSentToMeApi,
+    blockUser,
   } = useProfile();
   const [showMenu, setShowMenu] = useState(false);
   const [showMenu2, setShowMenu2] = useState(false);
@@ -265,7 +266,12 @@ const ButtonType = ({
                 >
                   <BsFillPersonDashFill /> Unfriend
                 </button>
-                <button disabled={disableIsActive}>
+                <button
+                  disabled={disableIsActive}
+                  onClick={() => {
+                    blockUser(mainInformation._id);
+                  }}
+                >
                   <BsFillPersonDashFill /> block
                 </button>
               </main>

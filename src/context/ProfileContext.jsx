@@ -54,9 +54,12 @@ export const ProfileContext = createContext({
   deletePost____: () => {},
   updatePost____: () => {},
   createPost____: () => {},
+  blockedUsers: { users: [], total: 0, hasMore: true, firstTime: false },
+  addBlockedUsers: () => {},
   addNewPhoto: () => {},
   deleteCurrentPhotoOrPrevious: () => {},
   setPreviousPhotoAsCurrentProfilePhoto_: () => {},
+  unblockUser__: () => {},
   resetAllStates: () => {},
 });
 
@@ -65,6 +68,12 @@ export default function ProfileContextProvider({ children }) {
   const [mainInformation, setMainInformation] = useState({});
   const [friends, setFriends] = useState({
     friends: [],
+    total: 0,
+    hasMore: true,
+    firstTime: false,
+  });
+  const [blockedUsers, setBlockedUsers] = useState({
+    users: [],
     total: 0,
     hasMore: true,
     firstTime: false,
@@ -598,6 +607,19 @@ export default function ProfileContextProvider({ children }) {
     },
     []
   );
+  const handleAddBlockedUsers = useCallback(
+    (newUsers, total, hasMore, firstTime) => {
+      setBlockedUsers((prev) => {
+        return {
+          users: [...prev.users, ...newUsers],
+          total: total,
+          hasMore,
+          firstTime,
+        };
+      });
+    },
+    []
+  );
   const setFriendsRequestSendDirectly = useCallback((requests) => {
     setFriendsRequestSend(requests);
   }, []);
@@ -608,7 +630,12 @@ export default function ProfileContextProvider({ children }) {
         (request) => request.userId !== userId
       );
 
-      return { requests: newRequests, total: prev.total - 1 };
+      return {
+        requests: newRequests,
+        total: prev.total - 1,
+        hasMore: prev.hasMore,
+        firstTime: prev.firstTime,
+      };
     });
   };
   const handleAddFriendsRequestRecieve = useCallback(
@@ -813,8 +840,19 @@ export default function ProfileContextProvider({ children }) {
     });
   };
 
+  const handleUnblockUser = (userId) => {
+    setBlockedUsers((prev) => {
+      const newUsers = prev.users.filter((user) => user.userId !== userId);
+
+      return {
+        users: newUsers,
+        total: prev.total - 1,
+        hasMore: prev.hasMore,
+        firstTime: prev.firstTime,
+      };
+    });
+  };
   const handleResetAllStates = useCallback(() => {
-  
     setSelectedTap("");
     setMainInformation({});
     setFriends({
@@ -917,10 +955,13 @@ export default function ProfileContextProvider({ children }) {
     deletePost____: handleDeletePost,
     updatePost____: handleUpdatePost,
     createPost____: handleCreatePost,
+    blockedUsers,
+    addBlockedUsers: handleAddBlockedUsers,
     addNewPhoto: handleAddNewPhotoAndSet,
     deleteCurrentPhotoOrPrevious: handleDeleteCurrentPhotoOrPrevious,
     setPreviousPhotoAsCurrentProfilePhoto_:
       handleSetPreviousPhotoAsCurrentProfilePhoto,
+    unblockUser__: handleUnblockUser,
     resetAllStates: handleResetAllStates,
   };
   return (

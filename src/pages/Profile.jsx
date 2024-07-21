@@ -23,6 +23,7 @@ import { useLocation } from "react-router-dom";
 import AuthGuard from "./AuthGuard";
 import SettingsContent from "../components/Profile/SettingsContent";
 import ErrorModalInstance from "../components/UI/Modals/Error";
+import BlockedUsersContent from "../components/Profile/BlockedUsersContent";
 
 const Profile = () => {
   const { selectedTap, resetAllStates } = useContext(ProfileContext);
@@ -95,6 +96,12 @@ const Profile = () => {
         return (
           <AuthGuard>
             <IncomingRequestsContent />
+          </AuthGuard>
+        );
+      case "Blocked Users":
+        return (
+          <AuthGuard>
+            <BlockedUsersContent />
           </AuthGuard>
         );
       default:

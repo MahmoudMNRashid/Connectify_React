@@ -26,6 +26,7 @@ const useProfile = () => {
     addNewPhoto,
     deleteCurrentPhotoOrPrevious,
     setPreviousPhotoAsCurrentProfilePhoto_,
+    unblockUser__,
   } = useContext(ProfileContext);
   const {
     startTheDisable,
@@ -161,7 +162,7 @@ const useProfile = () => {
       const response = await axios.post(
         `${host}/profile/cancelFriendRequestSentByMe`,
         {
-          reciverId:reciver.userId,
+          reciverId: reciver.userId,
         },
         {
           headers: { Authorization: `Bearer ${getToken()}` },
@@ -266,7 +267,7 @@ const useProfile = () => {
       const response = await axios.post(
         `${host}/profile/acceptFriendrequest`,
         {
-          senderId:sender.userId,
+          senderId: sender.userId,
         },
         {
           headers: { Authorization: `Bearer ${getToken()}` },
@@ -275,7 +276,7 @@ const useProfile = () => {
       toast.success(response.data.message, { id: toastId });
 
       if (from === "INCOMING REQUESTS") {
-        RemoveRequestFromFriendsRequestRecieve(sender,true);
+        RemoveRequestFromFriendsRequestRecieve(sender, true);
       }
       if (from === "MAIN INFORMATION") {
         editFriendType("isHeFriend-true");
@@ -306,7 +307,7 @@ const useProfile = () => {
       const response = await axios.post(
         `${host}/profile/cancelFriendRequestSentToMe`,
         {
-          senderId:sender.userId,
+          senderId: sender.userId,
         },
         {
           headers: { Authorization: `Bearer ${getToken()}` },
@@ -905,6 +906,72 @@ const useProfile = () => {
     }
   };
 
+  const blockUser = async (_id) => {
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
+    try {
+      const response = await axios.post(
+        `${host}/profile/blockProfile`,
+        {
+          _id,
+        },
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
+      toast.success(response.data.message, { id: toastId });
+      navigate(".", { replace: true });
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
+    } finally {
+      stopLoadingAndDisable();
+    }
+  };
+  const unblockUser = async (_id) => {
+    startLoadingAndDisable();
+    var toastId = toast.loading("Wait...");
+    try {
+      const response = await axios.post(
+        `${host}/profile/unblockProfile`,
+        {
+          _id,
+        },
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
+      toast.success(response.data.message, { id: toastId });
+      unblockUser__(_id);
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        navigate("/error", {
+          state: {
+            status: error.response.status,
+            message: error.response.data.message,
+          },
+          replace: true,
+        });
+      }
+      toast.error(error.response?.data.message || "Something went wrong", {
+        id: toastId,
+      });
+    } finally {
+      stopLoadingAndDisable();
+    }
+  };
   return {
     isLoading,
     getMainInformation: getMainInformationApi,
@@ -929,6 +996,8 @@ const useProfile = () => {
     addNewProfilePhotoAndSet,
     deleteCurrentPhotoOrPreviousPhoto,
     setPreviousPhotoAsCurrentProfilePhoto,
+    blockUser,
+    unblockUser,
   };
 };
 export default useProfile;

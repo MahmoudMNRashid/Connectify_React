@@ -21,6 +21,7 @@ const useFetchedPost = (url, type) => {
     addOwnedPages,
     addFriendsRequestSend,
     addFriendsRequestRecieve,
+    addBlockedUsers,
     addPosts: addProfilePosts,
     posts: profilePosts,
     friendsRequestSend,
@@ -31,6 +32,7 @@ const useFetchedPost = (url, type) => {
     groupInvites,
     pageInvites,
     friends,
+    blockedUsers,
   } = useContext(ProfileContext);
 
   const {
@@ -101,6 +103,14 @@ const useFetchedPost = (url, type) => {
       if (response.data.followers) {
         addFriends(
           response.data.followers,
+          response.data.extraInfo.totalItems,
+          response.data.extraInfo.hasNextPage,
+          true
+        );
+      }
+      if (response.data.blockedUsers) {
+        addBlockedUsers(
+          response.data.blockedUsers,
           response.data.extraInfo.totalItems,
           response.data.extraInfo.hasNextPage,
           true
@@ -346,12 +356,16 @@ const useFetchedPost = (url, type) => {
     addPosts,
     addProfilePosts,
     addFriends,
+    addBlockedUsers,
   ]);
   useEffect(() => {
     if (profilePosts.firstTime === true && type === "PROFILE_POSTS") {
       return;
     }
     if (friends.firstTime === true && type === "FRIENDS") {
+      return;
+    }
+    if (blockedUsers.firstTime === true && type === "BLOCKED__USERS") {
       return;
     }
     if (pageInvites.firstTime === true && type === "PAGE_INVITATIONS") {
@@ -478,6 +492,7 @@ const useFetchedPost = (url, type) => {
     friends,
     groupInvites,
     pageInvites,
+    blockedUsers,
   ]);
 
   const handleScroll = useCallback(async () => {
@@ -509,6 +524,14 @@ const useFetchedPost = (url, type) => {
         if (response.data.followers) {
           addFriends(
             response.data.followers,
+            response.data.extraInfo.totalItems,
+            response.data.extraInfo.hasNextPage,
+            true
+          );
+        }
+        if (response.data.blockedUsers) {
+          addBlockedUsers(
+            response.data.blockedUsers,
             response.data.extraInfo.totalItems,
             response.data.extraInfo.hasNextPage,
             true
@@ -758,10 +781,14 @@ const useFetchedPost = (url, type) => {
     addPosts,
     addProfilePosts,
     addFriends,
+    addBlockedUsers,
   ]);
 
   useEffect(() => {
     if (!friends.hasMore && type === "FRIENDS") {
+      return;
+    }
+    if (!blockedUsers.hasMore && type === "BLOCKED__USERS") {
       return;
     }
     if (!groupInvites.hasMore && type === "GROUP_INVITATIONS") {
@@ -875,6 +902,7 @@ const useFetchedPost = (url, type) => {
     friends,
     groupInvites,
     pageInvites,
+    blockedUsers,
   ]);
 
   return { loading };

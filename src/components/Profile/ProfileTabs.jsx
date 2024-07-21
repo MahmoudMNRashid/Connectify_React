@@ -25,6 +25,7 @@ const ProfileTabs = () => {
     "Owned Pages",
     "Incoming Requests",
     "Outgoing Requests",
+    "Blocked Users"
   ];
 
   const ownerTabs = [
@@ -34,6 +35,7 @@ const ProfileTabs = () => {
     "Incoming Requests",
     "Outgoing Requests",
     "Settings",
+    "Blocked Users",
   ];
 
   const filteredTabs = allTabs.filter(
