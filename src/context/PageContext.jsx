@@ -533,7 +533,10 @@ export default function PageContextProvider({ children }) {
         return rate.infoRate.ratingId !== ratingId;
       });
 
-      const newAvg = +prev.avgRate * +prev.total - +value;
+      const newSum = +prev.avgRate * +prev.total - +value;
+      const newTotal = +prev.total - 1;
+
+      const newAvg = newTotal > 0 ? newSum / newTotal : 0;
       return {
         rates: newRates,
         hasMore: prev.hasMore,
@@ -565,7 +568,11 @@ export default function PageContextProvider({ children }) {
 
       const newRates = [rate, ...rates];
 
-      const newAvg = (prev.avgRate + newRate.value) / (prev.total + 1);
+      const newSum = +prev.avgRate * +prev.total + +newRate.value;
+      const newTotal = +prev.total + 1;
+
+      const newAvg = newSum / newTotal;
+
       return {
         rates: newRates,
         hasMore: prev.hasMore,
