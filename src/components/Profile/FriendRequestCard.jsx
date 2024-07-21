@@ -26,9 +26,9 @@ const FriendRequestCard = ({ request, out, me }) => {
     useProfile();
   const handleCancelRequest = () => {
     if (me) {
-      cancelFriendRequestSentByMeApi(userId, "OUTGOING REQUESTS");
+      cancelFriendRequestSentByMeApi(request, "OUTGOING REQUESTS");
     } else {
-      cancelFriendRequestSentToMeApi(userId, "INCOMING REQUESTS");
+      cancelFriendRequestSentToMeApi(request, "INCOMING REQUESTS");
     }
   };
   const handleAcceptRequest = () => {

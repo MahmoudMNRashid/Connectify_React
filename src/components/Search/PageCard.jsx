@@ -4,7 +4,7 @@ import defaultLogoPage from "../../assets/post/page_default.svg";
 import { useNavigate } from "react-router-dom";
 const PageCard = ({ page }) => {
   const name = page.name;
-  const logo = page.log ? page.log.link : defaultLogoPage;
+  const logo = page.logo ? page.logo.link : defaultLogoPage;
   const pageId = page._id;
   const bio = page.bio;
   const areYouOwner = page.areYouOwner;

@@ -85,9 +85,9 @@ const ProfileCard = () => {
   const { addAssets, openModal: openAssetsModal } = useContext(PostContext);
 
   const handleAddAssetsToContextAndOpenTheModal = () => {
+  
     if (
-      mainInformation.backgroundPhotos &&
-      mainInformation.backgroundPhotos.length > 0
+      mainInformation.backgroundPhotos
     ) {
       addAssets([mainInformation.backgroundPhotos]);
       openAssetsModal("a");

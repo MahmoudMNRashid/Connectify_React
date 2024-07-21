@@ -13,13 +13,15 @@ const Content__Rates = () => {
 
   const { loading } = useFetchedPost(`${host}/page/rates/${pageId}`, "RATES");
   const { pageRates, pageInformation } = useContext(PageContext);
-  const { openModal, modalEditNameIsOpen,disableIsActive } = useContext(MainContext);
+  const { openModal, modalEditNameIsOpen, disableIsActive } =
+    useContext(MainContext);
+  
   const rates = pageRates.rates;
   const avgRate = pageRates.avgRate;
   const canAddRate =
     !rates.find((rate) => rate.from.userId === getUserId()) &&
-    !pageInformation.isHeOwner;
-
+    !pageInformation.isHeOwner &&
+    pageInformation.isHeFollowers;
 
   const handleOpenModalAddRate = () => {
     openModal("rate", content.ADD_RATE);
@@ -28,7 +30,7 @@ const Content__Rates = () => {
     <>
       {modalEditNameIsOpen && <EditNameModalInstance />}
       <div className="rate">
-        {avgRate !== 0 && <p>{`Average :  ${avgRate}`} </p>}
+        {avgRate !== 0 && <p>{`Average :  ${avgRate.toFixed(2)}`} </p>}
         {canAddRate && (
           <button disabled={disableIsActive} onClick={handleOpenModalAddRate}>
             + Add Rate

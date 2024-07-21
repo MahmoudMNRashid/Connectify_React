@@ -171,7 +171,7 @@ const useProfile = () => {
       toast.success(response.data.message, { id: toastId });
 
       if (from === "OUTGOING REQUESTS") {
-        RemoveRequestFromFriendsRequestSend(reciver);
+        RemoveRequestFromFriendsRequestSend(reciver.userId);
       }
       if (from === "MAIN INFORMATION") {
         editFriendType("areYouSendFriendRequestToHim-false");
