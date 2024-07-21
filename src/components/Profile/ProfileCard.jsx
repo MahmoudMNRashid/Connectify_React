@@ -23,6 +23,7 @@ import { FcRemoveImage } from "react-icons/fc";
 
 import { TbEditCircle } from "react-icons/tb";
 import { PostContext } from "../../context/PostContext";
+import { Helmet } from "react-helmet";
 const ProfileCard = () => {
   const { mainInformation } = useContext(ProfileContext);
   const { openModal, modalEditNameIsOpen, openConfirmModal, disableIsActive } =
@@ -84,7 +85,6 @@ const ProfileCard = () => {
   const { addAssets, openModal: openAssetsModal } = useContext(PostContext);
 
   const handleAddAssetsToContextAndOpenTheModal = () => {
-    
     if (
       mainInformation.backgroundPhotos &&
       mainInformation.backgroundPhotos.length > 0
@@ -119,6 +119,13 @@ const ProfileCard = () => {
   };
   return (
     <>
+      {!isLoading && (
+        <Helmet>
+          <title>
+            {`${mainInformation.firstName}   ${mainInformation.lastName}`}
+          </title>
+        </Helmet>
+      )}
       {modalEditNameIsOpen && <EditNameModalInstance />}
 
       {isLoading && <SkeletonLoaders />}

@@ -143,6 +143,7 @@ const Profile = () => {
   }, [location]);
   return (
     <div>
+    
       {modalIsOpen && <ModalInstance />}
       {commentsModalIsOpen && <CommentsModalInstance />}
       {confirmModalIsOpen && <ConfirmModalInstance />}{" "}

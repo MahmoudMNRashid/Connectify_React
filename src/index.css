@@ -281,6 +281,8 @@ li {
 } */
 
 .container_search {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   padding: 2rem;
   margin-left: auto;
   margin-right: auto;
