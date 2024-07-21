@@ -159,10 +159,9 @@ li {
 }
 .left {
   width: 100px;
-  position: sticky;
-  top: 0;
-  /* height: 100vh; */
-  background-color: #212832;
+  position: relative;
+
+
 }
 .right {
   width: 100%;
