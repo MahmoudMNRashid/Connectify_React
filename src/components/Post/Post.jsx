@@ -20,6 +20,7 @@ import { MainContext, content } from "../../context/MainContext.jsx";
 
 const Post = ({ data, place, hideMenu }) => {
   //Hooks
+  console.log(data)
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
   //Variables

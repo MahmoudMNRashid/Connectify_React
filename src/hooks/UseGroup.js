@@ -153,7 +153,7 @@ const useGroup = () => {
           data: { _id: reportId, groupId },
         }
       );
-    
+
       removeReport(reportId);
       toast.success(response.data.message);
     } catch (error) {
@@ -227,6 +227,7 @@ const useGroup = () => {
         removeAllPostsForMember(memberId);
       }
       toast.success(response.data.message);
+      closeModal();
     } catch (error) {
       console.log(error);
       if (error.response?.status === 403 || error.response?.status === 401) {
@@ -327,7 +328,6 @@ const useGroup = () => {
   };
 
   const deletePost = async (postId) => {
- 
     startLoadingAndDisable();
     try {
       const response = await axios.delete(
@@ -338,7 +338,7 @@ const useGroup = () => {
           data: { postId, groupId },
         }
       );
-     
+
       removePost(postId);
       toast.success(response.data.message);
     } catch (error) {
